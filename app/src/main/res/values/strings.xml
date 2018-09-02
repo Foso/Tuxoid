@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Tuxoid</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="strPlayer">Dies ist der Spieler, er möchte an die Fische.</string>
+    <string name="strFish">Dies sind die Fische</string>
+    <string name="strXCrate">X-Kiste</string>
+    <string name="strPlusCrate">+ - Kiste</string>
+    <string name="strHoleCrate">Dies ist ein Loch im Boden, man muss eine + Kiste hineinschieben damit man darüber laufen kann</string>
+    <string name="strHole">Das ist ein Loch</string>
+    <string name="strArrowRed">Die roten Pfeile verschwinden wenn jemand darüber läuft</string>
+    <string name="strArrow">Diese Pfeile bleiben dauerhaft</string>
+    <string name="strRedButton">Diese Fläche aktiviert etwas wenn sie bedeckt ist.</string>
+    <string name="strDoor">Diese Tür öffnet sich nur mit dem Schlüssel mit der gleichen Nummer</string>
+
+</resources>
