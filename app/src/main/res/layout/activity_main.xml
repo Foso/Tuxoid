@@ -1,4 +1,4 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/rel1"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -6,14 +6,25 @@
 
     >
 
+
+
     <GridLayout
+
         android:id="@+id/glGame"
         android:layout_width="wrap_content"
-        android:layout_height="fill_parent"
+        android:layout_height="wrap_content"
         android:layout_weight="1"
         android:background="@android:color/black"
        >
 
     </GridLayout>
 
-</LinearLayout>
+<jensklingenberg.de.tuxoid.ui.GView
+    android:id="@+id/canvas"
+android:layout_alignLeft="@id/glGame"
+    android:layout_alignRight="@id/glGame"
+    android:layout_alignBottom="@id/glGame"
+    android:layout_alignTop="@id/glGame"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"></jensklingenberg.de.tuxoid.ui.GView>
+</RelativeLayout>

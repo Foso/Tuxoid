@@ -1,5 +1,6 @@
 package jensklingenberg.de.tuxoid.utils;
 
+import android.app.Application;
 import android.content.Context;
 import android.content.res.AssetManager;
 
@@ -8,6 +9,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
+import jensklingenberg.de.tuxoid.MyApp;
+import jensklingenberg.de.tuxoid.interfaces.Removable;
 import jensklingenberg.de.tuxoid.model.Element.Element;
 import jensklingenberg.de.tuxoid.model.Element.ElementType;
 
@@ -24,6 +27,7 @@ public class LoadGame {
     private LevelLoadListener loadListener;
     private Context context;
 
+
     public LoadGame(Context context){
         this.context=context;
     }
@@ -33,8 +37,12 @@ public class LoadGame {
         this.loadListener=listener;
     }
 
-
     public void createLevel(int aktLevel) throws IOException {
+        createLevel(String.valueOf(aktLevel));
+    }
+
+
+        public void createLevel(String aktLevel) throws IOException {
         AssetManager assetManager = context.getAssets();
         ebene = 0;
         String[] num = null;
@@ -86,12 +94,12 @@ public class LoadGame {
 
                 for (int n = 0; n < num.length; n++)
                 {
-                    Element ele = Element.Companion.elementFactory(Integer.parseInt(num[n]), ebene,i, n);
+                    Element ele = Element.elementFactory(Integer.parseInt(num[n]), ebene,i, n);
 
                     levelE[ebene][i][n] = ele;
                     levelEo[ebene][i][n] = ele;
 
-                    if (levelEo[ebene][i][n].isRemovable()) {
+                    if (levelEo[ebene][i][n] instanceof Removable) {
                         levelEo[ebene][i][n] = Element.elementFactory(ElementType.BACKGROUND, ebene, i, n);
                     }
 

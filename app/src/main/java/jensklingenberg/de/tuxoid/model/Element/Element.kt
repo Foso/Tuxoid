@@ -2,17 +2,22 @@ package jensklingenberg.de.tuxoid.model.Element
 
 import android.graphics.Bitmap
 import android.util.Log
-import jensklingenberg.de.tuxoid.MainActivity
+import jensklingenberg.de.tuxoid.LevelHelper
+import jensklingenberg.de.tuxoid.interfaces.ICollectable
+import jensklingenberg.de.tuxoid.interfaces.Moveable
+import jensklingenberg.de.tuxoid.interfaces.Removable
+import jensklingenberg.de.tuxoid.model.Coordinate
 import jensklingenberg.de.tuxoid.model.Element.Character.NPC
 import jensklingenberg.de.tuxoid.model.Element.Character.Player
-import jensklingenberg.de.tuxoid.model.Element.Collectable.Fish
-import jensklingenberg.de.tuxoid.model.Element.Collectable.Key
 import jensklingenberg.de.tuxoid.model.Element.Destination.*
-import jensklingenberg.de.tuxoid.model.Element.Moveable.Crate_Block
-import jensklingenberg.de.tuxoid.model.Element.Moveable.Crate_Blue
+import jensklingenberg.de.tuxoid.model.Game
 import jensklingenberg.de.tuxoid.model.MyImage
 
-open class Element {
+open class Element :IElementGroup {
+
+
+    override val elementGroup: ElementGroup
+        get() = ElementGroup.EMPTY
     //public String getGroup() {
     //return group;
     //}
@@ -25,10 +30,7 @@ open class Element {
     open var type: Int = 0
     private var group: ElementGroup? = null
 
-    //ICollectable
-    //Destination
-    //Moveable
-    //Arrow
+
 
 
     constructor(type: Int, z: Int, y: Int, x: Int) {
@@ -39,23 +41,44 @@ open class Element {
 
     constructor() {}
 
-    open val isRemovable: Boolean
-        get() {
-            val reMoveable = false
-            return reMoveable
-        }
 
     fun setGroup(group: ElementGroup) {
         this.group = group
     }
 
-    open val elementGroup: ElementGroup
-        get() = ElementGroup.EMPTY
+
 
     companion object {
         private val TAG = Element::class.java.simpleName
 
-        //IMAGE
+
+        val collectableList = ArrayList<Int>().apply {
+            add(ElementType.FISH)
+            add(ElementType.KEY1)
+        }
+
+        val destinationsList = ArrayList<Int>().apply {
+
+            add(ElementType.BACKGROUND)
+            add(ElementType.HOLE1)
+            add(ElementType.TELEIN1)
+            add(ElementType.LADDER_DOWN)
+            add(ElementType.LADDER_UP)
+            add(ElementType.MOVING_WOOD)
+            add(ElementType.RED_BUTTON)
+            add(ElementType.SWITCH)
+
+        }
+
+        val moveablesList = ArrayList<Int>().apply {
+            add(ElementType.CRATE_BLOCK)
+            add(ElementType.CRATE_BLUE)
+        }
+
+        val arrowList = ArrayList<Int>().apply {
+            add(ElementType.ARROW_DOWN)
+        }
+
 
       @JvmStatic  fun elementFactory(type: Int, z: Int, y: Int, x: Int): Element {
 
@@ -83,31 +106,62 @@ open class Element {
 
                 ElementType.BACKGROUND -> return Background(type, z, y, x)
 
-                ElementType.DOOR1 -> return Door(1, type, z, y, x)
+                ElementType.DOOR1 -> {
+                    Game.mapDoor.put(1, Coordinate(z,y,x));
 
-                ElementType.DOOR2 -> return Door(2, type, z, y, x)
+                    return Door(type, z, y, x)
+                }
 
-                ElementType.EXIT -> return Exit(type, z, y, x)
+                ElementType.DOOR2 -> {
+                    return Door(type, z, y, x)
+                }
 
-                ElementType.FISH -> return Fish(type, z, y, x)
+                ElementType.EXIT -> {
+                    Game.setExitPos(z, y, x);
 
-                ElementType.GATE -> return Gate(type, z, y, x)
+                    return Exit(type, z, y, x)
+                }
+
+                ElementType.FISH -> {
+                    LevelHelper.game.addFish()
+
+                    return Fish(type, z, y, x)
+                }
+
+                ElementType.GATE -> {
+                    Game.gate = intArrayOf(z, y, x)
+
+                    return Gate(type, z, y, x)
+                }
 
                 ElementType.GATE_HALF -> return Gate_Half(type, z, y, x)
 
                 ElementType.HOLE1 -> return Hole1(type, z, y, x)
 
-                ElementType.KEY1 -> return Key(1, type, z, y, x)
+                ElementType.KEY1 -> {
+                    Game.mapKey.put(1, intArrayOf(y, x))
 
-                ElementType.KEY2 -> return Key(2, type, z, y, x)
+                    return Key(type, z, y, x)
+                }
+
+                ElementType.KEY2 -> {
+                    Game.mapKey.put(2, intArrayOf(y, x))
+
+                    return Key(type, z, y, x)
+                }
 
                 ElementType.LADDER_DOWN -> return Ladder_Down(type, z, y, x)
 
                 ElementType.LADDER_UP -> return Ladder_Up(type, z, y, x)
 
-                ElementType.MOVING_WOOD -> return Moving_Wood(type, z, y, x)
+                ElementType.MOVING_WOOD -> {
 
-                ElementType.MOVING_WATER -> return Moving_Water(type, z, y, x)
+                    return Moving_Wood(type, z, y, x)
+                }
+
+                ElementType.MOVING_WATER -> {
+                    return Moving_Water(type, z, y, x)
+                }
 
                 ElementType.NPC1 -> return NPC(type, z, y, x, 1)
 
@@ -133,9 +187,17 @@ open class Element {
 
                 ElementType.SWITCH_CRATE_BLOCK -> return Switch_Crate_Block(type, z, y, x)
 
-                ElementType.TELEIN1 -> return TeleIn1(type, z, y, x)
+                ElementType.TELEIN1 -> {
+                    Game.setTeleInPos(z, y, x)
 
-                ElementType.TELEOUT1 -> return TeleOut1(type, z, y, x)
+                    return TeleIn1(type, z, y, x)
+                }
+
+                ElementType.TELEOUT1 -> {
+                    Game.setTeleOutPos(z, y, x)
+
+                    return TeleOut1(type, z, y, x)
+                }
             }
 
             return Element(type, z, y, x)
@@ -149,3 +211,23 @@ open class Element {
         }
     }
 }
+
+class Background(type: Int, z: Int, y: Int, x: Int) : Element(type, z, y, x)
+class Door(type: Int, z: Int, y: Int, x: Int) : Element(type, z, y, x), Removable
+class Exit(type: Int, z: Int, y: Int, x: Int) : Element(type, z, y, x)
+class Fish(type: Int, z: Int, y: Int, x: Int) : Element(type, z, y, x), Removable
+class Gate(type: Int, z: Int, y: Int, x: Int) : Element(type, z, y, x), Removable
+class Gate_Half(type: Int, z: Int, y: Int, x: Int) : Destination(type, z, y, x)
+class Hole1(type: Int, z: Int, y: Int, x: Int) : Destination(type, z, y, x)
+class Ice(type: Int, z: Int, y: Int, x: Int) : Destination(type, z, y, x)
+class Key(type: Int, z: Int, y: Int, x: Int) : Element(type, z, y, x), ICollectable, Removable
+class Ladder_Down(type: Int, z: Int, y: Int, x: Int) : Destination(type, z, y, x)
+class Ladder_Up(type: Int, z: Int, y: Int, x: Int) : Destination(type, z, y, x)
+class Moving_Water(type: Int, z: Int, y: Int, x: Int) : Element(type, z, y, x)
+class Moving_Wood(type: Int, z: Int, y: Int, x: Int): Destination(type, z, y, x)
+class Red_Button(type: Int, z: Int, y: Int, x: Int) : Destination(type, z, y, x)
+class Switch(type: Int, z: Int, y: Int, x: Int) : Destination(type, z, y, x)
+class Switch_Crate_Block(type: Int, z: Int, y: Int, x: Int) : Destination(type, z, y, x)
+class TeleIn1(type: Int, z: Int, y: Int, x: Int) : Element(type, z, y, x)
+class Crate_Block(type: Int, z: Int, y: Int, x: Int) : Element(type, z, y, x), Moveable, Removable
+class Crate_Blue(type: Int, z: Int, y: Int, x: Int) : Element(type, z, y, x), Moveable, Removable

@@ -8,19 +8,26 @@ import jensklingenberg.de.tuxoid.model.Element.*
 import jensklingenberg.de.tuxoid.model.Element.Character.NPC
 import jensklingenberg.de.tuxoid.model.Element.Character.Player
 import jensklingenberg.de.tuxoid.model.Element.ElementType.*
+import jensklingenberg.de.tuxoid.model.Element.Timer.Timer_Arrow
+import jensklingenberg.de.tuxoid.model.Element.Timer.Timer_Water
+import jensklingenberg.de.tuxoid.model.Element.Timer.Timer_ice
+import jensklingenberg.de.tuxoid.model.Element.Timer.Timer_npc
 import jensklingenberg.de.tuxoid.model.Game
 import jensklingenberg.de.tuxoid.utils.DirectionUtils
-import jensklingenberg.de.tuxoid.utils.MoveUtils
 
-class LevelHelper(){
+class LevelHelper():Timer_Arrow.TimerClock,Timer_Water.TimerClock,Timer_ice.TimerClock,Timer_npc.TimerClock{
+
+
+    var bMovingDirRight = false
     var teleport = false
-    //var handler = Handler()
+    var handler : Handler?=null
     @JvmField var aktLevel = 8
-@JvmField var aktEbene = 1
+    @JvmField var aktEbene = 1
     @JvmField var level: Array<Array<Array<Element>>>? = null
     @JvmField var levelo: Array<Array<Array<Element>>>? = null
 
-    @JvmField var bTimer = false
+    @JvmField var arrowTimerRunning = false
+    @JvmField var iceTimerRunning = false
 
     @JvmField var OZ = 0
 
@@ -32,18 +39,186 @@ class LevelHelper(){
     @JvmField var playY: Int = 0
 
 
-
-
     var listener:Listener?=null
 
     var timer_water: Runnable? = null
-     var timer_arrow: Runnable? = null
-     var timer_ice: Runnable? = null
+    var timer_arrow: Runnable? = null
+    var timer_ice: Runnable? = null
+
+
+
+    override fun npcTimerUpdate(npc: Int, type: Int) {
+
+        if (NPC.getMapNpcTimerStatus(npc)) {
+
+            val ObjectZ = NPC.getMapNpcPosZ(npc)
+            val ObjectY = NPC.getMapNpcPosY(npc)
+            val ObjectX = NPC.getMapNpcPosX(npc)
+
+            checkMove(
+                NPC.getMapNpcDirection(npc),
+                ElementType.BACKGROUND, Coordinate(
+                  aktEbene,
+                    ObjectY, ObjectX
+                ), Element.elementFactory(type, ObjectZ, ObjectY, ObjectX)
+            )
+
+            //  this.mainActivity.handler.postDelayed(this, 300);
+
+            NPC.startTimer(npc, 200, this, type)
+
+        } else {
+            NPC.stopTimer(npc)
+        }
+    }
+
+
+    override fun iceTimerUpdate() {
+        if (iceTimerRunning) {
+
+            checkMove(
+                Player.getPlayerDirection(), ElementType.ICE,
+
+                Coordinate(
+                    aktEbene,
+                    Player.getPlayPosY(),
+                    Player.getPlayPosX()
+                ),
+                Element.elementFactory(
+                    ElementType.PLAYER, Player.getPlayPosZ(), Player.getPlayPosY(),
+                    Player.getPlayPosX()
+                )
+            )
+
+           handler?.postDelayed(timer_ice, 200)
+
+        }
+
+    }
+
+
+
+
+
+
+fun setPlayer(z: Int,y: Int,x: Int){
+    setPos(
+        ElementType.PLAYER,
+        Coordinate(z,y,x)
+    )
+
+}
+
+    override fun waterTimerUpdate() {
+
+        val mapMoving = game.mapMoving
+        val mwZ = game.moving_Wood[0]
+        val mwY =game.moving_Wood[1]
+        val mwX = game.moving_Wood[2]
+
+        var dirX = 0
+
+        if (mwX == mapMoving.get(mapMoving.size() - 1)[2]) {
+            bMovingDirRight = false
+
+        }
+
+        if (mwX == mapMoving.get(0)[2]) {
+            bMovingDirRight = true
+
+        }
+
+        dirX = if(bMovingDirRight) 1 else -1
+
+
+        when(level!![mwZ][mwY][mwX].type) {
+             ElementType.PLAYER -> {
+                setPlayer(mwZ,mwY,mwX + dirX)
+                setPos(
+                    ElementType.MOVING_WATER,
+                    Coordinate(mwZ, mwY, mwX)
+                )
+
+
+             }
+            ElementType.CRATE_BLOCK -> {
+                setPos(
+                    ElementType.CRATE_BLOCK,
+                    Coordinate(mwZ, mwY, mwX + dirX)
+                )
+                setPos(
+                    ElementType.MOVING_WATER,
+                    Coordinate(mwZ, mwY, mwX)
+                )
+                game.setMoving(ElementType.MOVING_WOOD,mwZ, mwY, mwX + dirX)
+
+            }
+            ElementType.CRATE_BLUE -> {
+                setPos(
+                    ElementType.CRATE_BLUE,
+                    Coordinate(mwZ, mwY, mwX + dirX)
+                )
+                setPos(
+                    ElementType.MOVING_WATER,
+                    Coordinate(mwZ, mwY, mwX)
+                )
+                game.setMoving(ElementType.MOVING_WOOD,mwZ, mwY, mwX + dirX)
+
+            }
+
+
+
+            else->{
+                setPos(
+                    ElementType.MOVING_WATER,
+                    Coordinate(mwZ, mwY, mwX)
+                )
+
+                setPos(
+                    ElementType.MOVING_WOOD,
+                    Coordinate(mwZ, mwY, mwX+dirX)
+                )
+                game.setMoving(ElementType.MOVING_WOOD,mwZ, mwY, mwX + dirX)
+
+
+
+            }
+
+
+        }
+
+        //refresh();
+
+        /* and here comes the "trick" */
+        handler?.postDelayed(timer_water, 1000)
+        
+        
+    }
+
+
+    override fun arrowTimerUpdate() {
+        if (arrowTimerRunning) {
+
+            checkMove(
+                Player.getPlayerDirection(), ElementType.BACKGROUND,
+                Coordinate(aktEbene, Player.getPlayPosY(), Player.getPlayPosX()),
+                Element.elementFactory(
+                    ElementType.PLAYER, Player.getPlayPosZ(), Player.getPlayPosY(),
+                    Player.getPlayPosX()
+                )
+            )
+
+            handler?.postDelayed(timer_arrow, 200)
+
+        }
+    }
+
+
 
    init {
-       //timer_water = Timer_Water(activity)
-      // timer_arrow = Timer_Arrow(activity, ElementType.PLAYER)
-      // timer_ice = Timer_ice(activity, ElementType.PLAYER)
+       timer_water = Timer_Water(this)
+       timer_arrow = Timer_Arrow(this)
+       timer_ice = Timer_ice(this)
        aktEbene = 0
 
    }
@@ -63,7 +238,7 @@ class LevelHelper(){
         )
         aktEbene = z
 
-        if (getOldElementAt(z, y, x).elementGroup is Arrow) {
+        if (getOldElementAt(z, y, x).elementGroup == ElementGroup.Arrow) {
             NPC.setMapNpcDirection(id, (levelo!![z][y][x] as Arrow).direction)
 
             if ((getOldElementAt(z, y, x) as Arrow).usedStatus == false) {
@@ -73,24 +248,24 @@ class LevelHelper(){
             if (NPC.getMapNpcTimerStatus(id) == false) {
 
                 NPC.setMapNpcTimerStatus(id, true)
-                NPC.startTimer(id, 200,  MainActivity.getActivity(), ElementType.NPC2)
+                NPC.startTimer(id, 200,  this, ElementType.NPC2)
             }
         }
     }
 
     fun activateArrow(z: Int, y: Int, x: Int) {
         /*Sorgt dafür das Arrows aktiviert werden, wenn der Player darauf tritt */
-        if (levelo!![z][y][x].elementGroup is Arrow) {
+        if (levelo!![z][y][x].elementGroup == ElementGroup.Arrow) {
 
             Player.setPlayerDirection((levelo!![z][y][x] as Arrow).direction)
             if ((levelo!![z][y][x] as Arrow).usedStatus == false) {
                 changeLevel(levelo!!, BACKGROUND, Coordinate(z, y, x))
             }
 
-            if (bTimer == false) {
-                //handler.removeCallbacks(timer_arrow)
-                bTimer = true
-                //handler.postDelayed(timer_arrow, 200)
+            if (arrowTimerRunning == false) {
+                handler?.removeCallbacks(timer_arrow)
+                arrowTimerRunning = true
+                handler?.postDelayed(timer_arrow, 200)
             }
         }
     }
@@ -99,15 +274,15 @@ class LevelHelper(){
         when (aktObject) {
             ElementType.FISH -> {
                 setPos(callingCharacter.type, Coordinate(aktEbene, y, x))
-                Game.eatFish()
+                game.eatFish()
             }
 
             ElementType.KEY1 -> {
                 setPos(callingCharacter.type, Coordinate(aktEbene, y, x))
                 setPos(
                     BACKGROUND, Coordinate(
-                        aktEbene, Game.mapDoor.get(1).y,
-                        Game.mapDoor.get(1).x
+                        aktEbene, game.mapDoor.get(1).y,
+                        game.mapDoor.get(1).x
                     )
                 )
             }
@@ -116,8 +291,8 @@ class LevelHelper(){
                 setPos(callingCharacter.type, Coordinate(aktEbene, y, x))
                 setPos(
                     BACKGROUND, Coordinate(
-                        aktEbene, Game.mapDoor.get(2).y,
-                        Game.mapDoor.get(2).x
+                        aktEbene, game.mapDoor.get(2).y,
+                        game.mapDoor.get(2).x
                     )
                 )
             }
@@ -135,15 +310,15 @@ class LevelHelper(){
         val y = newCoord.y
         val x = newCoord.x
 
-        val oldType = getOldElementAt(z, y, x).type
+        val oldType = getOldElementAt(z, y, x).type//Prüfen ob was auf RedButton steht
 
-        if (ElementType.SWITCH == oldType) {
-            if (ElementType.CRATE_BLOCK == newType) {
+        when (oldType) {
+            ElementType.SWITCH -> if (ElementType.CRATE_BLOCK == newType) {
                 setPos(ElementType.SWITCH_CRATE_BLOCK, Coordinate(aktEbene, y, x))
-                if (Gate.getGate() != null) {
+                if (Game.getGate() != null) {
                     setPos(
-                        BACKGROUND,
-                        Coordinate(Gate.getGate()[0], Gate.getGate()[1], Gate.getGate()[2])
+                        newType = BACKGROUND,
+                        newCoord = Coordinate(Game.getGate()!![0], Game.getGate()!![1], Game.getGate()!![2])
                     )
                 }
                 changeLevel(
@@ -183,18 +358,18 @@ class LevelHelper(){
                     level!![z][y][x]
                 )
 
-                //imgGameField[y][x].setImageBitmap(getElementAt(aktEbene, y, x).getImage());
-                MainActivity.getActivity().setImage(y, x, level!![aktEbene][y][x].image)
+                //MainActivity.getActivity().setImage(y, x, level!![aktEbene][y][x].image)
+                listener?.onRefresh()
             }
+
             ElementType.MOVING_WOOD -> {
                 level!![z][y][x] = Element.changeElement(
                     ElementType.MOVING_WOOD, ElementGroup.Destination,
                     level!![z][y][x]
                 )
 
-                Game.setMoving_Wood(z, y, x)
-                //imgGameField[y][x].setImageBitmap(level[aktEbene][y][x].getImage());
-                MainActivity.getActivity().setImage(y, x, level!![aktEbene][y][x].image)
+                game.setMoving(ElementType.MOVING_WOOD,z, y, x)
+                listener?.onRefresh()
             }
             else -> {
                 changeLevel(level!!, newType, Coordinate(z, y, x))
@@ -203,24 +378,24 @@ class LevelHelper(){
                 checkIfRedButtonCovered(z, y, x)
 
                 //imgGameField[y][x].setImageBitmap(level[aktEbene][y][x].getImage());
-                MainActivity.getActivity().setImage(y, x, level!![aktEbene][y][x].image)
+                //MainActivity.getActivity().setImage(y, x, level!![aktEbene][y][x].image)
+                listener?.onRefresh()
             }
         }
     }
 
-fun screenTouched(y: Int, x: Int) {
+fun screenTouched(touchY: Int, touchX: Int) {
     playZ = Player.getPosition().z
     playX = Player.getPosition().x
     playY = Player.getPosition().y
 
-    if (bTimer == false) {
-        val touchDirection =
-            DirectionUtils.getTouchedDirection(y, x, playX, playY)
+    if (arrowTimerRunning == false) {
+        val touchDirection = DirectionUtils.getTouchedDirection(touchY, touchX, playX, playY)
         checkMove(
-            touchDirection,
-            ElementType.PLAYER,
-            Coordinate(aktEbene, playY, playX),
-            level!![playZ][playY][playX]
+            direction = touchDirection,
+            Object = ElementType.PLAYER,
+            newCoord = Coordinate(aktEbene, playY, playX),
+            callingCharacter = level!![playZ][playY][playX]
         )
 
         teleport = false
@@ -294,26 +469,18 @@ val TAG = "HH"
             nextObjectGroup = getElementAt(z, y + dirY, x + dirX).elementGroup
         }
 
-        when (getElementAt(z, y, x).elementGroup) {
 
-            is Arrow -> move_to_arrow(
-                direction,
-                y,
-                x,
-                callingCharacter,
-                dirX,
-                dirY,
-                aktObject
-            )
-
-            ElementGroup.Collectable -> move_To_Collectable(
+        if(Element.collectableList.contains(getElementAt(z, y, x).type)){
+            move_To_Collectable(
                 y,
                 x,
                 aktObject,
                 callingCharacter
             )
+        }
 
-            ElementGroup.Destination -> move_to_destination(
+        if(Element.destinationsList.contains(getElementAt(z, y, x).type)){
+            move_to_destination(
                 direction,
                 Object,
                 y,
@@ -323,8 +490,10 @@ val TAG = "HH"
                 dirY,
                 aktObject
             )
+        }
 
-            ElementGroup.Moveable -> move_moveable(
+        if(Element.moveablesList.contains(getElementAt(z, y, x).type)){
+            move_moveable(
                 direction,
                 newCoord,
                 callingCharacter,
@@ -333,6 +502,25 @@ val TAG = "HH"
                 aktObject,
                 nextObjectGroup
             )
+        }
+
+
+
+
+            when (getElementAt(z, y, x).elementGroup) {
+
+            ElementGroup.Arrow -> move_to_arrow(
+                direction,
+                y,
+                x,
+                callingCharacter,
+                dirX,
+                dirY,
+                aktObject
+            )
+
+
+
 
             ElementGroup.charNPC -> move_character(
                 direction, z, y, x, callingCharacter, dirX, dirY, aktObject,
@@ -346,7 +534,7 @@ val TAG = "HH"
             ElementGroup.TeleportOut -> if (Object == ElementType.TELEIN1) {
                 checkMove(
                     direction, aktObject,
-                    Coordinate(TeleOut.getTeleOutPosZ(), y + dirY, x + dirX), callingCharacter
+                    Coordinate(Game.getTeleOutPosZ(), y + dirY, x + dirX), callingCharacter
                 )
             }
         }
@@ -361,38 +549,50 @@ val TAG = "HH"
         val y = newCoord.y
         val x = newCoord.x
 
+        val nexDes= getElementAt(z, y + dirY, x + dirX).type
+
         when (aktObject) {
 
-            ElementType.CRATE_BLUE -> if (MoveUtils.Crate_blue_can_move(nextObjectDestination)) {
+            ElementType.CRATE_BLUE -> if (Crate_blue_can_move(nexDes)) {
                 checkMove(direction, aktObject, Coordinate(z, y + dirY, x + dirX), callingCharacter)
             }
 
-            ElementType.CRATE_BLOCK -> if (MoveUtils.Crate_block_can_move(nextObjectDestination)) {
+            ElementType.CRATE_BLOCK -> if (Crate_block_can_move(nexDes)) {
                 checkMove(direction, aktObject, Coordinate(z, y + dirY, x + dirX), callingCharacter)
             }
         }
     }
 
+    fun Crate_block_can_move(nextObjectDestination: Int): Boolean {
+        return Element.destinationsList.contains(nextObjectDestination)||Element.arrowList.contains(nextObjectDestination)
+        //return nextObjectDestination == ElementGroup.Destination || nextObjectDestination == ElementGroup.Arrow
+    }
+
+
+    fun Crate_blue_can_move(nextObjectDestination: Int): Boolean {
+        return Element.moveablesList.contains(nextObjectDestination)||Element.destinationsList.contains(nextObjectDestination)||Element.arrowList.contains(nextObjectDestination)
+       // return nextObjectDestination == ElementGroup.Moveable || nextObjectDestination == ElementGroup.Destination || nextObjectDestination == ElementGroup.Arrow
+    }
+
 
     private fun stopTimer(callingCharacter: Int) {
 
-        if (ElementType.PLAYER == callingCharacter) {
-            bTimer = false
-        }
-
-        if (ElementType.NPC1 == callingCharacter) {
+        when (callingCharacter) {
+            ElementType.PLAYER -> arrowTimerRunning = false
+            ElementType.NPC1 -> {
             NPC.setMapNpcTimerStatus(1, false)
-            NPC.stopTimer(1)
-        }
+            NPC.stopTimer(1) }
 
-        if (ElementType.NPC2 == callingCharacter) {
-            NPC.setMapNpcTimerStatus(2, false)
-            NPC.stopTimer(2)
-        }
+            ElementType.NPC2 -> {
+                NPC.setMapNpcTimerStatus(2, false)
+                NPC.stopTimer(2)
+            }
 
-        if (ElementType.NPC3 == callingCharacter) {
-            NPC.setMapNpcTimerStatus(3, false)
-            NPC.stopTimer(3)
+            ElementType.NPC3 -> {
+                NPC.setMapNpcTimerStatus(3, false)
+                NPC.stopTimer(3)
+            }
+
         }
     }
 
@@ -428,7 +628,7 @@ val TAG = "HH"
                 Player.setPlayerDirection(direction)
                 checkMove(direction, aktObject, Coordinate(z, y + dirY, x + dirX), callingCharacter)
             } else {
-                //handler.removeCallbacks(timer_arrow)
+                handler?.removeCallbacks(timer_arrow)
             }
         }
     }
@@ -450,7 +650,7 @@ val TAG = "HH"
 
         when (aktObject) {
 
-            BACKGROUND ->
+            ElementType.BACKGROUND ->
 
                 if (teleport) {
                     move_teleport(direction, y, x, dirX, dirY)
@@ -458,7 +658,7 @@ val TAG = "HH"
                     move(aktObject, direction, y, x, dirX, dirY, callingCharacter)
                 }
 
-            GATE_HALF -> move(aktObject, direction, y, x, dirX, dirY, callingCharacter)
+            ElementType.GATE_HALF -> move(aktObject, direction, y, x, dirX, dirY, callingCharacter)
 
             ElementType.HOLE1 -> if (ElementType.PLAYER != Object) {
                 move(aktObject, direction, y, x, dirX, dirY, callingCharacter)
@@ -495,8 +695,8 @@ val TAG = "HH"
              checkMove(
                     direction, aktObject,
                     Coordinate(
-                        TeleOut.getTeleOutPosZ(), TeleOut.getTeleOutPosY(),
-                        TeleOut.getTeleOutPosX()
+                        Game.getTeleOutPosZ(), Game.getTeleOutPosY(),
+                        Game.getTeleOutPosX()
                     ), callingCharacter
                 )
             }
@@ -640,13 +840,13 @@ val TAG = "HH"
     // Called when teleport found
     fun move_teleport(direction: Direction, y: Int, x: Int, dirX: Int, dirY: Int) {
 
-        val tOZ = TeleOut.getTeleOutPosZ()
-        val tOY = TeleOut.getTeleOutPosY()
-        val tOX = TeleOut.getTeleOutPosX()
+        val tOZ = Game.getTeleOutPosZ()
+        val tOY = Game.getTeleOutPosY()
+        val tOX = Game.getTeleOutPosX()
 
-        val tIZ = TeleIn.getTeleInPosZ()
-        val tIY = TeleIn.getTeleInPosY()
-        val tIX = TeleIn.getTeleInPosX()
+        val tIZ = Game.getTeleInPosZ()
+        val tIY = Game.getTeleInPosY()
+        val tIX = Game.getTeleInPosX()
 
         // Left Right
         if (DirectionUtils.DirectionLeftOrRight(direction)) {
@@ -747,9 +947,9 @@ listener?.onRefresh()
         if (ElementType.RED_BUTTON == levelo!![z][y][x].type) {
 
             if (ElementType.RED_BUTTON == level!![z][y][x].type) {
-                //handler.removeCallbacks(timer_water)
+                handler?.removeCallbacks(timer_water)
             } else {
-                //handler.post(timer_water)
+                handler?.post(timer_water)
             }
         }
     }
@@ -760,23 +960,19 @@ listener?.onRefresh()
 
 
 
+    fun changeLevel(level: Array<Array<Array<Element>>>,newType: Int, newCoord: Coordinate) {
+        val z = newCoord.z
+        val y = newCoord.y
+        val x = newCoord.x
 
-    companion object {
-
-
-
-
-
-        @JvmStatic  fun changeLevel(level: Array<Array<Array<Element>>>,newType: Int, newCoord: Coordinate) {
-            val z = newCoord.z
-            val y = newCoord.y
-            val x = newCoord.x
-
-            level[z][y][x] = Element.elementFactory(newType, z, y, x)
-        }
-
-        
+        level[z][y][x] = Element.elementFactory(newType, z, y, x)
     }
+
+companion object {
+   @JvmStatic val game = Game()
+
+}
+
 }
 
 interface Listener{

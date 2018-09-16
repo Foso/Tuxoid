@@ -9,7 +9,7 @@ android {
             }
 
     compileSdkVersion 27
-    buildToolsVersion "27.0.3"
+    buildToolsVersion '27.0.3'
     defaultConfig {
         applicationId "jensklingenberg.de.tuxoid"
         minSdkVersion 16

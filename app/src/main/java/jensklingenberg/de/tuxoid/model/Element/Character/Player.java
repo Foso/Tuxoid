@@ -5,6 +5,7 @@ import android.util.Log;
 
 import jensklingenberg.de.tuxoid.interfaces.Moveable;
 import jensklingenberg.de.tuxoid.interfaces.Playable;
+import jensklingenberg.de.tuxoid.interfaces.Removable;
 import jensklingenberg.de.tuxoid.model.Coordinate;
 import jensklingenberg.de.tuxoid.model.Direction;
 import jensklingenberg.de.tuxoid.model.Element.Element;
@@ -14,21 +15,18 @@ import jensklingenberg.de.tuxoid.model.MyImage;
 /**
  * Created by jens on 09.02.16.
  */
-public class Player extends Element implements Moveable, Playable {
+public class Player extends Element implements Moveable, Playable,Removable {
 
     private static int[] playPos = new int[3]; //x,y,z
     private static Direction playDirection;
     private static Coordinate position;
-    private Bitmap image;
-    private int type;
+
 
 
 
     public Player(int type, int z, int y, int x) {
         super(type, z, y, x);
-        this.type = type;
-        this.image = MyImage.getImage(type);
-        setPlayPos(z, y, x);
+
 
     }
 
@@ -62,14 +60,15 @@ public class Player extends Element implements Moveable, Playable {
         return position;
     }
 
-    @Override
-    public boolean isRemovable() {
-        boolean reMoveable = true;
-        return reMoveable;
-    }
+
 
     @Override
     public ElementGroup getElementGroup() {
         return ElementGroup.charPlayer;
+    }
+
+    @Override
+    public boolean isRemovable() {
+        return true;
     }
 }

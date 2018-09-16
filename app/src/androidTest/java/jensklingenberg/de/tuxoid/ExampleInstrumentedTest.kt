@@ -50,20 +50,100 @@ class ExampleInstrumentedTest {
 
         // assertEquals("jensklingenberg.de.tuxoid", appContext.getPackageName());
 
-
-        val tt = LevelTest.tst()
+val ee = LoadGame(appContext)
+        ee.createLevel("t1")
         val helper= LevelHelper()
 
-        helper.setLevel(tt,tt)
+        helper.setLevel(ee.levelE,ee.levelEo)
 
         helper.screenTouched(0,1)
 
-
-        Assert.assertEquals(ElementType.BACKGROUND, helper.level!![0][0][1].type)
+val tye= helper.level!![0][0][1].type
+        Assert.assertEquals(ElementType.PLAYER,tye )
 
         //Assert.assertTrue(helper.level[0][0][1].elementGroup==Background)
 
 
+
+    }
+
+
+    @Test
+    @Throws(Exception::class)
+    fun moveCrateBlueToBackground() {
+        // Context of the app under test.
+        val appContext = InstrumentationRegistry.getTargetContext()
+
+        // assertEquals("jensklingenberg.de.tuxoid", appContext.getPackageName());
+
+        val ee = LoadGame(appContext)
+        ee.createLevel("t2")
+        val helper= LevelHelper()
+
+        helper.setLevel(ee.levelE,ee.levelEo)
+
+        helper.screenTouched(0,1)
+
+        val tye= helper.level!![0][0][2].type
+        Assert.assertEquals(ElementType.CRATE_BLUE,tye )
+
+    }
+
+    @Test
+    @Throws(Exception::class)
+    fun moveToFish() {
+        // Context of the app under test.
+        val appContext = InstrumentationRegistry.getTargetContext()
+
+        val ee = LoadGame(appContext)
+        ee.createLevel("t3")
+        val helper= LevelHelper()
+
+        helper.setLevel(ee.levelE,ee.levelEo)
+
+        helper.screenTouched(0,1)
+
+        val tye= helper.level!![0][0][1].type
+        Assert.assertEquals(ElementType.PLAYER,tye )
+
+    }
+
+    @Test
+    @Throws(Exception::class)
+    fun whenMoveToKeyDoorShouldOpen() {
+        // Context of the app under test.
+        val appContext = InstrumentationRegistry.getTargetContext()
+
+        val ee = LoadGame(appContext)
+        ee.createLevel("t4")
+        val helper= LevelHelper()
+
+        helper.setLevel(ee.levelE,ee.levelEo)
+
+        helper.screenTouched(0,1)
+
+        val tye= helper.level!![0][0][2].type
+        Assert.assertEquals(ElementType.BACKGROUND,tye )
+
+    }
+
+
+    @Test
+    @Throws(Exception::class)
+    fun whenMoveToTeleInComeOutNextToTeleportOut() {
+        // Context of the app under test.
+        val appContext = InstrumentationRegistry.getTargetContext()
+
+        val ee = LoadGame(appContext)
+        ee.createLevel("t5")
+        val helper= LevelHelper()
+
+        helper.setLevel(ee.levelE,ee.levelEo)
+
+        helper.screenTouched(0,1)
+
+        val tye= helper.level!![0][0][3].type
+        Assert.assertEquals(ElementType.PLAYER,tye )
 
     }
 }

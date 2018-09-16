@@ -5,4 +5,5 @@ package jensklingenberg.de.tuxoid.interfaces;
  */
 
 public interface Moveable {
+
 }

@@ -81,7 +81,7 @@ public class NPC extends Element implements Moveable, Playable {
         mapNpcTimerRunnable.put(npcNumber, timer_npc);
     }
 
-    public static void startTimer(int npcNumber, int time, MainActivity activity, int type) {
+    public static void startTimer(int npcNumber, int time, Timer_npc.TimerClock activity, int type) {
 
         setMapNpcTimerRunnable(npcNumber, new Timer_npc(activity, npcNumber, type));
         handler.postDelayed(getMapNpcTimerRunnable(npcNumber), time);
@@ -98,10 +98,6 @@ public class NPC extends Element implements Moveable, Playable {
         return NpcNumber;
     }
 
-    @Override
-    public boolean isRemovable() {
-        return true;
-    }
 
     @Override
     public ElementGroup getElementGroup() {

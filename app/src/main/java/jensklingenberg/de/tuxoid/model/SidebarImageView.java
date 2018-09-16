@@ -23,29 +23,23 @@ public class SidebarImageView extends android.support.v7.widget.AppCompatImageVi
         this.setTag(Tag);
         this.setImageBitmap(bmp);
 
-        this.setOnTouchListener(new OnTouchListener() {
+        this.setOnTouchListener((v, event) -> {
 
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
+            if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                ClipData data = ClipData.newPlainText("",
+                        "");
 
-                if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    ClipData data = ClipData.newPlainText("",
-                            "");
-
-                    DragShadowBuilder shadowBuilder = new DragShadowBuilder(
-                            v);
-                    v.startDrag(data, shadowBuilder, v, 0);
-                    Element ele = (Element) v.getTag();
-                    //DragElement = ele;
-                    Sidebar.setDragElement(ele);
-                    // v.setVisibility(View.INVISIBLE);
-                    return true;
-                } else {
-                    return false;
-                }
-
+                DragShadowBuilder shadowBuilder = new DragShadowBuilder(
+                        v);
+                v.startDrag(data, shadowBuilder, v, 0);
+                Element ele = (Element) v.getTag();
+                //DragElement = ele;
+                Sidebar.setDragElement(ele);
+                // v.setVisibility(View.INVISIBLE);
+                return true;
+            } else {
+                return false;
             }
-
 
         });
 

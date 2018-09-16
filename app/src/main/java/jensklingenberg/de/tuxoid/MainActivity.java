@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.Point;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -16,13 +17,13 @@ import java.io.IOException;
 import de.jensklingenberg.tuxoid.R;
 import jensklingenberg.de.tuxoid.model.GameImageView;
 import jensklingenberg.de.tuxoid.model.MyImage;
+import jensklingenberg.de.tuxoid.ui.GView;
 import jensklingenberg.de.tuxoid.utils.LoadGame;
 
 public class MainActivity extends Activity implements Listener {
     private static final String TAG = MainActivity.class.getSimpleName();
 
     private static MainActivity activity;
-    public boolean bMovingDirRight = false;
     private GridLayout grid;
     private ImageView[][] imgGameField;
     public LevelHelper levelHelper;
@@ -31,18 +32,23 @@ public static String ARG_LEVEL = "ARG_LEVEL";
     public static MainActivity getActivity() {
         return activity;
     }
+    GView gView ;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         activity = this;
-        new MyImage(this);
 
         Bundle extras = getIntent().getExtras();
         setContentView(R.layout.activity_main);
+
+        gView = findViewById(R.id.canvas);
+
+
         levelHelper = new LevelHelper();
         levelHelper.setListener(this);
+        levelHelper.setHandler(new Handler());
         grid = findViewById(R.id.glGame);
 
         if (extras != null) {
@@ -88,13 +94,15 @@ public static String ARG_LEVEL = "ARG_LEVEL";
 
       //  imgGameField = GameImageView.initGameField(levelHelper.level);
 
+        gView.setWidthL(width / lvlWidht);
+        gView.setHeightL(height / lvlHeight);
+
         for (int y = 0; y < lvlHeight; y++) {
 
             for (int x = 0; x < levelHelper.level[levelHelper.aktEbene][y].length; x++) {
 
                 imgGameField[y][x] = new GameImageView(this, levelHelper.level[levelHelper.aktEbene][y][x]);
                 imgGameField[y][x].setId(x);
-
                 imgGameField[y][x].setTag(new int[]{y, x});
                 imgGameField[y][x].setLayoutParams(new LinearLayout.LayoutParams(width / lvlWidht, height / lvlHeight));
                 imgGameField[y][x].setOnClickListener(v -> {
@@ -106,9 +114,9 @@ public static String ARG_LEVEL = "ARG_LEVEL";
         }
 
 
-        for (int y = 0; y < imgGameField.length; y++) {
-            for (int i = 0; i < imgGameField[y].length; i++) {
-                grid.addView(imgGameField[y][i]);
+        for (ImageView[] anImgGameField : imgGameField) {
+            for (ImageView anAnImgGameField : anImgGameField) {
+                grid.addView(anAnImgGameField);
             }
         }
 
@@ -116,51 +124,20 @@ public static String ARG_LEVEL = "ARG_LEVEL";
     }
 
     private void refresh() {
-        for (int y = 0; y < levelHelper.level[levelHelper.aktEbene].length; y++) {
-
-            for (int x = 0; x < levelHelper.level[levelHelper.aktEbene][0].length; x++) {
-                imgGameField[y][x].setImageBitmap(levelHelper.level[levelHelper.aktEbene][y][x].getImage());
-            }
-        }
+        GView gView = findViewById(R.id.canvas);
+        gView.refresh(levelHelper.level,levelHelper.aktEbene);
+        gView.invalidate();
     }
 
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify getMapMovingWood parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
 
 
-    public void setImage(int y, int x, Bitmap image) {
-        imgGameField[y][x].setImageBitmap(image);
-    }
+
 
     public void screenTouched(int y, int x) {
         levelHelper.screenTouched(y,x);
     }
 
-    public boolean getIceTimer() {
-        return levelHelper.bTimer;
-    }
-
-
-    public boolean getbTimer() {
-        return levelHelper.bTimer;
-    }
 
 
 
@@ -168,4 +145,6 @@ public static String ARG_LEVEL = "ARG_LEVEL";
     public void onRefresh() {
         refresh();
     }
+
+
 }
