@@ -1,4 +1,4 @@
-package jensklingenberg.de.tuxoid.model.Element;
+package jensklingenberg.de.tuxoid.model.element;
 
 public final class ElementType {
     public static final int BACKGROUND = 0;

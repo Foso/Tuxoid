@@ -5,14 +5,14 @@ import android.util.Log
 import jensklingenberg.de.tuxoid.interfaces.Removable
 import jensklingenberg.de.tuxoid.model.Coordinate
 import jensklingenberg.de.tuxoid.model.Direction
-import jensklingenberg.de.tuxoid.model.Element.*
-import jensklingenberg.de.tuxoid.model.Element.Character.NPC
-import jensklingenberg.de.tuxoid.model.Element.Character.Player
-import jensklingenberg.de.tuxoid.model.Element.ElementType.*
-import jensklingenberg.de.tuxoid.model.Element.Timer.Timer_Arrow
-import jensklingenberg.de.tuxoid.model.Element.Timer.Timer_Water
-import jensklingenberg.de.tuxoid.model.Element.Timer.Timer_ice
-import jensklingenberg.de.tuxoid.model.Element.Timer.Timer_npc
+import jensklingenberg.de.tuxoid.model.element.*
+import jensklingenberg.de.tuxoid.model.element.character.NPC
+import jensklingenberg.de.tuxoid.model.element.character.Player
+import jensklingenberg.de.tuxoid.model.element.ElementType.*
+import jensklingenberg.de.tuxoid.model.element.Timer.Timer_Arrow
+import jensklingenberg.de.tuxoid.model.element.Timer.Timer_Water
+import jensklingenberg.de.tuxoid.model.element.Timer.Timer_ice
+import jensklingenberg.de.tuxoid.model.element.Timer.Timer_npc
 import jensklingenberg.de.tuxoid.model.Game
 import jensklingenberg.de.tuxoid.utils.DirectionUtils
 

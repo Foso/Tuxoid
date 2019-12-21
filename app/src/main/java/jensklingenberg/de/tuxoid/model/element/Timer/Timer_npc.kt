@@ -1,12 +1,6 @@
-package jensklingenberg.de.tuxoid.model.Element.Timer
+package jensklingenberg.de.tuxoid.model.element.Timer
 
-import android.util.Log
-
-import jensklingenberg.de.tuxoid.MainActivity
-import jensklingenberg.de.tuxoid.model.Coordinate
-import jensklingenberg.de.tuxoid.model.Element.Character.NPC
-import jensklingenberg.de.tuxoid.model.Element.Element
-import jensklingenberg.de.tuxoid.model.Element.ElementType
+import jensklingenberg.de.tuxoid.model.element.Element
 
 class Timer_npc
 /**

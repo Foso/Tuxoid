@@ -1,7 +1,7 @@
 package jensklingenberg.de.tuxoid.model
 
 import android.util.SparseArray
-import jensklingenberg.de.tuxoid.model.Element.ElementType
+import jensklingenberg.de.tuxoid.model.element.ElementType
 
 /**
  * Created by jens on 18.04.17.

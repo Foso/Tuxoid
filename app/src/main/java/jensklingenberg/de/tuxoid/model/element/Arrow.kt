@@ -1,6 +1,4 @@
-package jensklingenberg.de.tuxoid.model.Element
-
-import android.graphics.Bitmap
+package jensklingenberg.de.tuxoid.model.element
 
 import jensklingenberg.de.tuxoid.interfaces.IReachable
 import jensklingenberg.de.tuxoid.model.Direction

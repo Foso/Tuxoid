@@ -1,7 +1,6 @@
 package jensklingenberg.de.tuxoid;
 
-import jensklingenberg.de.tuxoid.model.Element.Element;
-import jensklingenberg.de.tuxoid.model.Element.ElementType;
+import jensklingenberg.de.tuxoid.model.element.Element;
 
 public class LevelTest {
 

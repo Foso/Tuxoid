@@ -1,15 +1,14 @@
-package jensklingenberg.de.tuxoid.model.Element
+package jensklingenberg.de.tuxoid.model.element
 
 import android.graphics.Bitmap
-import android.util.Log
 import jensklingenberg.de.tuxoid.LevelHelper
 import jensklingenberg.de.tuxoid.interfaces.ICollectable
 import jensklingenberg.de.tuxoid.interfaces.Moveable
 import jensklingenberg.de.tuxoid.interfaces.Removable
 import jensklingenberg.de.tuxoid.model.Coordinate
-import jensklingenberg.de.tuxoid.model.Element.Character.NPC
-import jensklingenberg.de.tuxoid.model.Element.Character.Player
-import jensklingenberg.de.tuxoid.model.Element.Destination.*
+import jensklingenberg.de.tuxoid.model.element.character.NPC
+import jensklingenberg.de.tuxoid.model.element.character.Player
+import jensklingenberg.de.tuxoid.model.element.Destination.*
 import jensklingenberg.de.tuxoid.model.Game
 import jensklingenberg.de.tuxoid.model.MyImage
 

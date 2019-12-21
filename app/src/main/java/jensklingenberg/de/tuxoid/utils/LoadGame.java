@@ -1,6 +1,5 @@
 package jensklingenberg.de.tuxoid.utils;
 
-import android.app.Application;
 import android.content.Context;
 import android.content.res.AssetManager;
 
@@ -9,10 +8,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-import jensklingenberg.de.tuxoid.MyApp;
 import jensklingenberg.de.tuxoid.interfaces.Removable;
-import jensklingenberg.de.tuxoid.model.Element.Element;
-import jensklingenberg.de.tuxoid.model.Element.ElementType;
+import jensklingenberg.de.tuxoid.model.element.Element;
+import jensklingenberg.de.tuxoid.model.element.ElementType;
 
 /*Loads the Level from Textfile
  *

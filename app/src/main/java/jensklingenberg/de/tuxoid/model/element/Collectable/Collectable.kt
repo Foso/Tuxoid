@@ -1,8 +1,8 @@
-package jensklingenberg.de.tuxoid.model.Element.Collectable
+package jensklingenberg.de.tuxoid.model.element.Collectable
 
 import jensklingenberg.de.tuxoid.interfaces.IReachable
-import jensklingenberg.de.tuxoid.model.Element.Element
-import jensklingenberg.de.tuxoid.model.Element.ElementGroup
+import jensklingenberg.de.tuxoid.model.element.Element
+import jensklingenberg.de.tuxoid.model.element.ElementGroup
 
 /**
  * Created by jens on 18.04.17.

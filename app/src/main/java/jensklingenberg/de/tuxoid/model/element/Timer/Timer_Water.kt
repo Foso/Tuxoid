@@ -1,4 +1,4 @@
-package jensklingenberg.de.tuxoid.model.Element.Timer
+package jensklingenberg.de.tuxoid.model.element.Timer
 
 class Timer_Water
 /**

@@ -1,6 +1,6 @@
 package jensklingenberg.de.tuxoid.utils
 
-import jensklingenberg.de.tuxoid.model.Element.Element
+import jensklingenberg.de.tuxoid.model.element.Element
 
 interface LevelLoadListener {
     fun onLevelLoaded(

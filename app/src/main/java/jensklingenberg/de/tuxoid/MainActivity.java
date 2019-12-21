@@ -1,14 +1,11 @@
 package jensklingenberg.de.tuxoid;
 
 import android.app.Activity;
-import android.content.ClipData;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.Display;
 import android.view.DragEvent;
-import android.view.MotionEvent;
-import android.view.View;
 import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -18,9 +15,7 @@ import java.io.IOException;
 
 import de.jensklingenberg.tuxoid.R;
 import jensklingenberg.de.tuxoid.model.Coordinate;
-import jensklingenberg.de.tuxoid.model.Element.Arrow;
-import jensklingenberg.de.tuxoid.model.Element.Element;
-import jensklingenberg.de.tuxoid.model.Element.ElementType;
+import jensklingenberg.de.tuxoid.model.element.Element;
 import jensklingenberg.de.tuxoid.model.GameImageView;
 import jensklingenberg.de.tuxoid.model.SidebarImageView;
 import jensklingenberg.de.tuxoid.ui.GView;

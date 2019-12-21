@@ -5,7 +5,7 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 
 import jensklingenberg.de.tuxoid.MainActivity;
-import jensklingenberg.de.tuxoid.model.Element.Element;
+import jensklingenberg.de.tuxoid.model.element.Element;
 import jensklingenberg.de.tuxoid.model.SidebarImageView;
 import jensklingenberg.de.tuxoid.utils.LoadSidebar;
 

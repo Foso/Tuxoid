@@ -9,7 +9,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 
 import jensklingenberg.de.tuxoid.MainActivity;
-import jensklingenberg.de.tuxoid.model.Element.Element;
+import jensklingenberg.de.tuxoid.model.element.Element;
 
 public class LoadSidebar {
 

@@ -5,8 +5,7 @@ import android.graphics.Canvas
 import android.graphics.Rect
 import android.util.AttributeSet
 import android.view.View
-import jensklingenberg.de.tuxoid.model.Element.Element
-import jensklingenberg.de.tuxoid.model.Element.ElementType
+import jensklingenberg.de.tuxoid.model.element.Element
 import jensklingenberg.de.tuxoid.model.MyImage
 
 class GView(context: Context?, attrs: AttributeSet?) : View(context, attrs) {

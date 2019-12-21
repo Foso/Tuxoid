@@ -1,16 +1,15 @@
-package jensklingenberg.de.tuxoid.model.Element.Character;
+package jensklingenberg.de.tuxoid.model.element.character;
 
 import android.os.Handler;
 import android.util.Log;
 import android.util.SparseArray;
 
-import jensklingenberg.de.tuxoid.MainActivity;
 import jensklingenberg.de.tuxoid.interfaces.Moveable;
 import jensklingenberg.de.tuxoid.interfaces.Playable;
 import jensklingenberg.de.tuxoid.model.Direction;
-import jensklingenberg.de.tuxoid.model.Element.Element;
-import jensklingenberg.de.tuxoid.model.Element.ElementGroup;
-import jensklingenberg.de.tuxoid.model.Element.Timer.Timer_npc;
+import jensklingenberg.de.tuxoid.model.element.Element;
+import jensklingenberg.de.tuxoid.model.element.ElementGroup;
+import jensklingenberg.de.tuxoid.model.element.Timer.Timer_npc;
 
 /**
  * Created by jens on 11.02.16.

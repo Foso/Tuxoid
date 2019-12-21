@@ -1,6 +1,5 @@
-package jensklingenberg.de.tuxoid.model.Element.Character
+package jensklingenberg.de.tuxoid.model.element.character
 
-import android.graphics.Bitmap
 import android.util.Log
 
 import jensklingenberg.de.tuxoid.interfaces.Moveable
@@ -8,9 +7,8 @@ import jensklingenberg.de.tuxoid.interfaces.Playable
 import jensklingenberg.de.tuxoid.interfaces.Removable
 import jensklingenberg.de.tuxoid.model.Coordinate
 import jensklingenberg.de.tuxoid.model.Direction
-import jensklingenberg.de.tuxoid.model.Element.Element
-import jensklingenberg.de.tuxoid.model.Element.ElementGroup
-import jensklingenberg.de.tuxoid.model.MyImage
+import jensklingenberg.de.tuxoid.model.element.Element
+import jensklingenberg.de.tuxoid.model.element.ElementGroup
 
 /**
  * Created by jens on 09.02.16.

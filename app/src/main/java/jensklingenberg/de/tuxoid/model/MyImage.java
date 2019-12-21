@@ -5,8 +5,7 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 
 import de.jensklingenberg.tuxoid.R;
-import jensklingenberg.de.tuxoid.MainActivity;
-import jensklingenberg.de.tuxoid.model.Element.ElementType;
+import jensklingenberg.de.tuxoid.model.element.ElementType;
 
 import static android.graphics.BitmapFactory.decodeResource;
 

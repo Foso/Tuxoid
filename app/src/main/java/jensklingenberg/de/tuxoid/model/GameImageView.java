@@ -5,7 +5,7 @@ import android.content.Context;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.widget.ImageView;
-import jensklingenberg.de.tuxoid.model.Element.Element;
+import jensklingenberg.de.tuxoid.model.element.Element;
 
 /**
  * Created by jens on 22/7/17.

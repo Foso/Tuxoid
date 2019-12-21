@@ -1,4 +1,4 @@
-package jensklingenberg.de.tuxoid.model.Element
+package jensklingenberg.de.tuxoid.model.element
 
 /**
  * Created by jens on 20.04.17.

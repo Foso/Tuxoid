@@ -2,7 +2,7 @@ package jensklingenberg.de.tuxoid
 
 import android.support.test.InstrumentationRegistry
 import android.support.test.runner.AndroidJUnit4
-import jensklingenberg.de.tuxoid.model.Element.ElementType
+import jensklingenberg.de.tuxoid.model.element.ElementType
 import jensklingenberg.de.tuxoid.utils.LoadGame
 import junit.framework.Assert
 import org.junit.Assert.assertEquals
