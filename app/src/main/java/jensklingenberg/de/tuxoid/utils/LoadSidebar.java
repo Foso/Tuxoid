@@ -88,6 +88,7 @@ public class LoadSidebar {
             reader.close();
             return sidebarElement;
         } catch (FileNotFoundException e) {
+            return sidebarElement;
 
         } catch (IOException e) {
             e.printStackTrace();

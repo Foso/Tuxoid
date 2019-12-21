@@ -40,7 +40,7 @@ public class Sidebar extends TableLayout {
             this.addView(tableRow[y]);
 
             for (int x = 0; x < sidebarElement[0][y].length; x++) {
-                sidebarImage[y][x] = new SidebarImageView(MainActivity.getActivity(), sidebarElement[0][y][x], sidebarElement[0][y][x].getImage());
+                sidebarImage[y][x] = new SidebarImageView(MainActivity.getActivity(), sidebarElement[0][y][x]);
                 tableRow[y].addView(sidebarImage[y][x]);
             }
 

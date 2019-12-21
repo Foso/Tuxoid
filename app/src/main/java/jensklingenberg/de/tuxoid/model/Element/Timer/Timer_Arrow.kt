@@ -8,11 +8,11 @@ class Timer_Arrow
     /**
      *
      */
-    private val mainActivity: TimerClock
+    private val timerClock: TimerClock
 ) : Runnable {
 
     override fun run() {
-        mainActivity.arrowTimerUpdate()
+        timerClock.arrowTimerUpdate()
 
 
     }

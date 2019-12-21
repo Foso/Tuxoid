@@ -17,7 +17,7 @@ class Timer_npc
 
 
     override fun run() {
-mainActivity?.npcTimerUpdate(npc,type)
+mainActivity.npcTimerUpdate(npc,type)
 
 
     }

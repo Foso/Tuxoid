@@ -1,19 +1,14 @@
 package jensklingenberg.de.tuxoid
 
-import android.content.Context
 import android.support.test.InstrumentationRegistry
 import android.support.test.runner.AndroidJUnit4
-import jensklingenberg.de.tuxoid.model.Element.Destination.Background
-import jensklingenberg.de.tuxoid.model.Element.ElementGroup
 import jensklingenberg.de.tuxoid.model.Element.ElementType
 import jensklingenberg.de.tuxoid.utils.LoadGame
 import junit.framework.Assert
-
-import org.junit.Test
-import org.junit.runner.RunWith
-
 import org.junit.Assert.assertEquals
 import org.junit.Before
+import org.junit.Test
+import org.junit.runner.RunWith
 
 /**
  * Instrumentation test, which will execute on an Android device.

@@ -47,7 +47,7 @@ class Arrow(type: Int, z: Int, y: Int, x: Int, val usedStatus: Boolean, val dire
 
         }
 
-        fun newArrow(type: Int, z: Int, y: Int, x: Int): Arrow {
+        @JvmStatic fun newArrow(type: Int, z: Int, y: Int, x: Int): Arrow {
 
             var direction: Direction = Direction.STAY
 
@@ -62,6 +62,7 @@ class Arrow(type: Int, z: Int, y: Int, x: Int, val usedStatus: Boolean, val dire
             }
 
             return Arrow(type, z, y, x, true, direction)
+
 
 
         }

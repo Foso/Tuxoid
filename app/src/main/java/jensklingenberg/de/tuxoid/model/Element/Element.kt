@@ -39,6 +39,8 @@ open class Element :IElementGroup {
 
     }
 
+
+
     constructor() {}
 
 
@@ -77,10 +79,16 @@ open class Element :IElementGroup {
 
         val arrowList = ArrayList<Int>().apply {
             add(ElementType.ARROW_DOWN)
+            add(ElementType.ARROW_DOWN_RED)
+        }
+
+        @JvmStatic  fun elementFactory(type: Int, coordinate: Coordinate): Element {
+            return elementFactory(type,coordinate.z,coordinate.y,coordinate.x)
         }
 
 
-      @JvmStatic  fun elementFactory(type: Int, z: Int, y: Int, x: Int): Element {
+
+            @JvmStatic  fun elementFactory(type: Int, z: Int, y: Int, x: Int): Element {
 
             if (ElementType.ArrowGroup.isInThisGroup(type)) {
 
@@ -89,8 +97,6 @@ open class Element :IElementGroup {
             }
 
             when (type) {
-
-
 
                 ElementType.ARROW_UP_RED -> return Arrow.newArrowRed(type, z, y, x)
 
@@ -104,7 +110,7 @@ open class Element :IElementGroup {
 
                 ElementType.CRATE_BLOCK -> return Crate_Block(type, z, y, x)
 
-                ElementType.BACKGROUND -> return Background(type, z, y, x)
+                ElementType.BACKGROUND -> return Background(z, y, x)
 
                 ElementType.DOOR1 -> {
                     Game.mapDoor.put(1, Coordinate(z,y,x));
@@ -125,7 +131,7 @@ open class Element :IElementGroup {
                 ElementType.FISH -> {
                     LevelHelper.game.addFish()
 
-                    return Fish(type, z, y, x)
+                    return Fish( z, y, x)
                 }
 
                 ElementType.GATE -> {
@@ -171,13 +177,11 @@ open class Element :IElementGroup {
 
                 ElementType.NPC4 -> return NPC(type, z, y, x, 4)
 
-                ElementType.ICE -> return Ice(type, z, y, x)
+                ElementType.ICE -> return Ice( z, y, x)
 
-                ElementType.WALL -> return Wall(type, z, y, x)
+                ElementType.WALL -> return Wall( z, y, x)
 
                 ElementType.PLAYER -> {
-                  Log.d("hhh","ppp")
-                  print("PLAYER CREATED")
                   Player.setPlayPos(z,y,x)
                   return Player(type, z, y, x)}
 
@@ -212,14 +216,14 @@ open class Element :IElementGroup {
     }
 }
 
-class Background(type: Int, z: Int, y: Int, x: Int) : Element(type, z, y, x)
+class Background(z: Int, y: Int, x: Int) : Element(ElementType.BACKGROUND, z, y, x)
 class Door(type: Int, z: Int, y: Int, x: Int) : Element(type, z, y, x), Removable
 class Exit(type: Int, z: Int, y: Int, x: Int) : Element(type, z, y, x)
-class Fish(type: Int, z: Int, y: Int, x: Int) : Element(type, z, y, x), Removable
+class Fish( z: Int, y: Int, x: Int) : Element(ElementType.FISH, z, y, x), Removable
 class Gate(type: Int, z: Int, y: Int, x: Int) : Element(type, z, y, x), Removable
 class Gate_Half(type: Int, z: Int, y: Int, x: Int) : Destination(type, z, y, x)
 class Hole1(type: Int, z: Int, y: Int, x: Int) : Destination(type, z, y, x)
-class Ice(type: Int, z: Int, y: Int, x: Int) : Destination(type, z, y, x)
+class Ice( z: Int, y: Int, x: Int) : Destination(ElementType.ICE, z, y, x)
 class Key(type: Int, z: Int, y: Int, x: Int) : Element(type, z, y, x), ICollectable, Removable
 class Ladder_Down(type: Int, z: Int, y: Int, x: Int) : Destination(type, z, y, x)
 class Ladder_Up(type: Int, z: Int, y: Int, x: Int) : Destination(type, z, y, x)
@@ -231,3 +235,9 @@ class Switch_Crate_Block(type: Int, z: Int, y: Int, x: Int) : Destination(type, 
 class TeleIn1(type: Int, z: Int, y: Int, x: Int) : Element(type, z, y, x)
 class Crate_Block(type: Int, z: Int, y: Int, x: Int) : Element(type, z, y, x), Moveable, Removable
 class Crate_Blue(type: Int, z: Int, y: Int, x: Int) : Element(type, z, y, x), Moveable, Removable
+class TeleOut1(type: Int, z: Int, y: Int, x: Int) : Element(type, z, y, x) {
+    override val elementGroup= ElementGroup.TeleportOut
+}
+class Wall(z: Int, y: Int, x: Int) : Element(ElementType.WALL, z, y, x) {
+    override val elementGroup= ElementGroup.WALL
+}

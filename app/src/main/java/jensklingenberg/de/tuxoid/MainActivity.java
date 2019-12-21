@@ -1,24 +1,32 @@
 package jensklingenberg.de.tuxoid;
 
 import android.app.Activity;
-import android.graphics.Bitmap;
+import android.content.ClipData;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.Display;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.view.DragEvent;
+import android.view.MotionEvent;
+import android.view.View;
 import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import java.io.IOException;
 
 import de.jensklingenberg.tuxoid.R;
+import jensklingenberg.de.tuxoid.model.Coordinate;
+import jensklingenberg.de.tuxoid.model.Element.Arrow;
+import jensklingenberg.de.tuxoid.model.Element.Element;
+import jensklingenberg.de.tuxoid.model.Element.ElementType;
 import jensklingenberg.de.tuxoid.model.GameImageView;
-import jensklingenberg.de.tuxoid.model.MyImage;
+import jensklingenberg.de.tuxoid.model.SidebarImageView;
 import jensklingenberg.de.tuxoid.ui.GView;
+import jensklingenberg.de.tuxoid.ui.Sidebar;
 import jensklingenberg.de.tuxoid.utils.LoadGame;
+import jensklingenberg.de.tuxoid.utils.LoadSidebar;
 
 public class MainActivity extends Activity implements Listener {
     private static final String TAG = MainActivity.class.getSimpleName();
@@ -44,6 +52,7 @@ public static String ARG_LEVEL = "ARG_LEVEL";
         setContentView(R.layout.activity_main);
 
         gView = findViewById(R.id.canvas);
+        LinearLayout rel = findViewById(R.id.sidebarLayout);
 
 
         levelHelper = new LevelHelper();
@@ -55,6 +64,20 @@ public static String ARG_LEVEL = "ARG_LEVEL";
             levelHelper.aktLevel = extras.getInt(ARG_LEVEL);
         }
         createLevel(levelHelper.aktLevel);
+
+
+        Element[][][]  sidebar = new LoadSidebar().createLevel(levelHelper.aktLevel);
+
+        if(null != sidebar){
+            for (Element[] elements : sidebar[0]) {
+                SidebarImageView side = new SidebarImageView(this,elements[0]);
+
+                  rel.addView(side);
+            }
+        }
+
+
+
 
     }
 
@@ -76,38 +99,49 @@ public static String ARG_LEVEL = "ARG_LEVEL";
     }
 
     private void initImgGameField() {
+        RelativeLayout ggView = findViewById(R.id.rel1);
+
         Display display = getWindowManager().getDefaultDisplay();
         Point size = new Point();
         display.getSize(size);
-        int width = size.x;
+        int width = size.x-100;
         int height = size.y;
-        grid.getLayoutParams().height = height;
-        grid.getLayoutParams().width = width;
+       // grid.getLayoutParams().height = height;
+        //grid.getLayoutParams().width = width;
 
-        int lvlHeight = levelHelper.level[levelHelper.aktEbene].length;
-        int lvlWidht = levelHelper.level[levelHelper.aktEbene][0].length;
+        int lvlRows = levelHelper.level[levelHelper.aktEbene].length;
+        int lvlColums = levelHelper.level[levelHelper.aktEbene][0].length;
 
-        grid.setRowCount(lvlHeight);
-        grid.setColumnCount(lvlWidht);
+        grid.setRowCount(lvlRows);
+        grid.setColumnCount(lvlColums);
 
-        imgGameField = new ImageView[lvlHeight][lvlWidht];
+        imgGameField = new ImageView[lvlRows][lvlColums];
 
       //  imgGameField = GameImageView.initGameField(levelHelper.level);
 
-        gView.setWidthL(width / lvlWidht);
-        gView.setHeightL(height / lvlHeight);
+        gView.setWidthL(width / lvlColums);
+        gView.setHeightL(height / lvlRows);
 
-        for (int y = 0; y < lvlHeight; y++) {
+        for (int y = 0; y < lvlRows; y++) {
 
             for (int x = 0; x < levelHelper.level[levelHelper.aktEbene][y].length; x++) {
 
                 imgGameField[y][x] = new GameImageView(this, levelHelper.level[levelHelper.aktEbene][y][x]);
                 imgGameField[y][x].setId(x);
                 imgGameField[y][x].setTag(new int[]{y, x});
-                imgGameField[y][x].setLayoutParams(new LinearLayout.LayoutParams(width / lvlWidht, height / lvlHeight));
+                imgGameField[y][x].setLayoutParams(new LinearLayout.LayoutParams(width / lvlColums, height / lvlRows));
                 imgGameField[y][x].setOnClickListener(v -> {
                     int[] coord = (int[]) v.getTag();
                     screenTouched(coord[0], coord[1]);
+                });
+
+                imgGameField[y][x].setOnDragListener((v, event) -> {
+
+                    if (event.getAction() == DragEvent.ACTION_DROP) {
+                        int[] cord = (int[]) v.getTag();
+                        levelHelper.onDrag(new Coordinate(levelHelper.aktEbene,cord[0],cord[1]),Sidebar.DragElement);
+                    }
+                    return true;
                 });
 
             }
@@ -129,17 +163,9 @@ public static String ARG_LEVEL = "ARG_LEVEL";
         gView.invalidate();
     }
 
-
-
-
-
-
     public void screenTouched(int y, int x) {
         levelHelper.screenTouched(y,x);
     }
-
-
-
 
     @Override
     public void onRefresh() {
