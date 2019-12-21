@@ -26,21 +26,23 @@
     </facet>
     <facet type="kotlin-language" name="Kotlin">
       <configuration version="3" platform="JVM 1.6" allPlatforms="JVM [1.6]" useProjectSettings="false">
-        <compilerSettings />
+        <compilerSettings>
+          <option name="additionalArguments" value="-Xallow-no-source-files" />
+        </compilerSettings>
         <compilerArguments>
           <option name="destination" value="$MODULE_DIR$/build/tmp/kotlin-classes/debug" />
+          <option name="classpath" value="$USER_HOME$/.gradle/caches/transforms-2/files-2.1/4a6e74ce52a9985c796bef256152057b/jars/classes.jar:/home/jens/.gradle/caches/transforms-2/files-2.1/be47ae58bbd1167182e736d749da1b90/jars/classes.jar:/home/jens/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib-jdk7/1.3.61/70dffc5f8ac5ea7c34f30deac5b9d8b1d48af066/kotlin-stdlib-jdk7-1.3.61.jar:/home/jens/.gradle/caches/transforms-2/files-2.1/9d7987adebd1ecb0da6010ee50ce589f/jars/classes.jar:/home/jens/.gradle/caches/transforms-2/files-2.1/9a4ddeca484665265a5a614e8fe27d50/jars/classes.jar:/home/jens/.gradle/caches/transforms-2/files-2.1/95820604103104a27a5a7abbbc2ae900/jars/classes.jar:/home/jens/.gradle/caches/transforms-2/files-2.1/a4363c69ea3364be31d45739be170f1b/jars/classes.jar:/home/jens/.gradle/caches/transforms-2/files-2.1/97002a9f0613ccfce74d631de9f01998/jars/classes.jar:/home/jens/.gradle/caches/transforms-2/files-2.1/5b51fa603789d27c2fea39cbb301fdd2/jars/classes.jar:/home/jens/.gradle/caches/modules-2/files-2.1/com.android.support/support-annotations/27.1.0/39ded76b5e1ce1c5b2688e1d25cdc20ecee32007/support-annotations-27.1.0.jar:/home/jens/Code/Android/Sdk/extras/m2repository/com/android/support/constraint/constraint-layout-solver/1.0.2/constraint-layout-solver-1.0.2.jar:/home/jens/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib/1.3.61/4702105e97f7396ae41b113fdbdc180ec1eb1e36/kotlin-stdlib-1.3.61.jar:/home/jens/.gradle/caches/transforms-2/files-2.1/6bf85c81cea86eb7cc2f2dfd46974412/jars/classes.jar:/home/jens/.gradle/caches/transforms-2/files-2.1/8238c20f186a1e745bfdc2abd82cfc41/jars/classes.jar:/home/jens/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib-common/1.3.61/65abb71d5afb850b68be03987b08e2c864ca3110/kotlin-stdlib-common-1.3.61.jar:/home/jens/.gradle/caches/modules-2/files-2.1/org.jetbrains/annotations/13.0/919f0dfe192fb4e063e7dacadee7f8bb9a2672a9/annotations-13.0.jar:/home/jens/.gradle/caches/transforms-2/files-2.1/8dad8318e0be08dbc94732d3289818e5/jars/classes.jar:/home/jens/.gradle/caches/modules-2/files-2.1/android.arch.lifecycle/common/1.1.0/edf3f7bfb84a7521d0599efa3b0113a0ee90f85/common-1.1.0.jar:/home/jens/.gradle/caches/transforms-2/files-2.1/517b886a168317e51b55a0bbd018a941/jars/classes.jar:/home/jens/.gradle/caches/modules-2/files-2.1/android.arch.core/common/1.1.0/8007981f7d7540d89cd18471b8e5dcd2b4f99167/common-1.1.0.jar:/home/jens/Code/Android/Sdk/platforms/android-27/android.jar" />
           <option name="noStdlib" value="true" />
           <option name="noReflect" value="true" />
           <option name="moduleName" value="app_debug" />
-          <option name="languageVersion" value="1.2" />
-          <option name="apiVersion" value="1.2" />
+          <option name="languageVersion" value="1.3" />
+          <option name="apiVersion" value="1.3" />
           <option name="pluginOptions">
             <array />
           </option>
           <option name="pluginClasspaths">
             <array />
           </option>
-          <option name="coroutinesState" value="warn" />
           <option name="errors">
             <ArgumentParseErrors />
           </option>
@@ -125,10 +127,11 @@
     <orderEntry type="library" scope="TEST" name="Gradle: com.android.support.test:runner:0.5@aar" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: com.android.support.test.espresso:espresso-idling-resource:2.2.2@aar" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: com.android.support.test:exposed-instrumentation-api-publish:0.5@aar" level="project" />
-    <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.2.30@jar" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.3.61@jar" level="project" />
     <orderEntry type="library" name="Gradle: com.android.support:support-annotations:27.1.0@jar" level="project" />
     <orderEntry type="library" name="Gradle: com.android.support.constraint:constraint-layout-solver:1.0.2@jar" level="project" />
-    <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib:1.2.30@jar" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib:1.3.61@jar" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib-common:1.3.61@jar" level="project" />
     <orderEntry type="library" name="Gradle: org.jetbrains:annotations:13.0@jar" level="project" />
     <orderEntry type="library" name="Gradle: android.arch.lifecycle:common:1.1.0@jar" level="project" />
     <orderEntry type="library" name="Gradle: android.arch.core:common:1.1.0@jar" level="project" />
