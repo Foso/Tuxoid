@@ -1,0 +1,53 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rel1"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal">
+
+
+    <RelativeLayout
+        android:id="@+id/ggView"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_alignLeft="@id/sidebarLayout"
+        android:layout_alignParentLeft="true"
+        android:orientation="horizontal">
+
+
+        <GridLayout
+
+            android:id="@+id/glGame"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@android:color/black">
+
+        </GridLayout>
+
+        <de.jensklingenberg.tuxoid.ui.GView
+            android:id="@+id/canvas"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/glGame"
+            android:layout_alignLeft="@id/glGame"
+            android:layout_alignRight="@id/glGame"
+            android:layout_alignTop="@id/glGame" />
+
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/sidebarLayout"
+
+        android:layout_width="50dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+
+
+    </LinearLayout>
+
+
+
+</RelativeLayout>

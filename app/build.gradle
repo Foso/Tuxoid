@@ -1,22 +1,42 @@
+buildscript {
+    apply from: './constants.gradle'
+}
+
+
+
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+apply plugin: 'androidx.navigation.safeargs.kotlin'
 
 android {
+    packagingOptions {
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/kotlinx-io.kotlin_module'
+        exclude 'META-INF/atomicfu.kotlin_module'
+        exclude 'META-INF/kotlinx-coroutines-io.kotlin_module'
+        exclude 'META-INF/INDEX.LIST'
+        exclude 'META-INF/io.netty.versions.properties'
+        exclude 'META-INF/kotlinx-coroutines-core.kotlin_module'
 
+    }
+    lintOptions {
+        abortOnError false
+    }
     aaptOptions
             {
                 cruncherEnabled = false
             }
 
-    compileSdkVersion 27
-    buildToolsVersion '27.0.3'
+    compileSdkVersion configuration.compileSdk
     defaultConfig {
-        applicationId "jensklingenberg.de.tuxoid"
+        applicationId "de.jensklingenberg.tuxoid"
         minSdkVersion 16
-        targetSdkVersion 27
+        targetSdkVersion 28
         versionCode 1
         versionName "1.0"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
         release {
@@ -28,22 +48,38 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    buildToolsVersion = '29.0.2'
 }
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    androidTestCompile('androidx.test.espresso:espresso-core:3.1.0', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile 'com.android.support:appcompat-v7:27.1.0'
-    compile 'com.android.support.constraint:constraint-layout:1.0.2'
-    testCompile 'junit:junit:4.12'
-    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation "androidx.appcompat:appcompat:$libs.androidX.appcompat"
+    testImplementation 'junit:junit:4.12'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib"
+
+    def fragment_version = "1.1.0"
+    implementation "androidx.fragment:fragment-ktx:$fragment_version"
+
+    implementation "androidx.constraintlayout:constraintlayout:${libs.androidX.constraintLayout}"
+
+
+    //Dagger
+    implementation "com.google.dagger:dagger-android:2.25.3"
+    implementation "com.google.dagger:dagger-android-support:2.25.3"
+    // if you use the support libraries
+    kapt "com.google.dagger:dagger-compiler:2.25.3"
+   kapt "com.google.dagger:dagger-android-processor:2.25.3"
+
+    //NavigationLib
+    implementation "androidx.navigation:navigation-fragment-ktx:$libs.androidX.nav_version"
+    implementation "androidx.navigation:navigation-ui-ktx:$libs.androidX.nav_version"
+
 }
 repositories {
     mavenCentral()
-    maven {
-        url 'https://maven.google.com/'
-        name 'Google'
-    }
+    google()
+
 }

@@ -1,53 +1,19 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/rel1"
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/container"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="horizontal">
+    android:layout_height="match_parent">
 
 
-    <RelativeLayout
-        android:id="@+id/ggView"
-        android:layout_width="wrap_content"
+
+    <fragment
+        android:id="@+id/mainNavigationFragment"
+        android:name="androidx.navigation.fragment.NavHostFragment"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignLeft="@id/sidebarLayout"
-        android:layout_alignParentLeft="true"
-        android:orientation="horizontal">
+        app:defaultNavHost="true"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        app:navGraph="@navigation/navigation_graph" />
 
-
-        <GridLayout
-
-            android:id="@+id/glGame"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@android:color/black">
-
-        </GridLayout>
-
-        <jensklingenberg.de.tuxoid.ui.GView
-            android:id="@+id/canvas"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@id/glGame"
-            android:layout_alignLeft="@id/glGame"
-            android:layout_alignRight="@id/glGame"
-            android:layout_alignTop="@id/glGame" />
-
-
-    </RelativeLayout>
-
-    <LinearLayout
-        android:id="@+id/sidebarLayout"
-
-        android:layout_width="50dp"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-
-
-
-    </LinearLayout>
-
-
-
-</RelativeLayout>
+</FrameLayout>
