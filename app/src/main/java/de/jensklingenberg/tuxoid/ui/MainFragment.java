@@ -50,6 +50,8 @@ public class MainFragment extends Fragment implements MainContract.View {
     @Inject
     LevelDataSource levelDataSource;
 
+    @Inject
+    LoadSidebar loadSidebar;
 
 
     GView gView;
@@ -86,7 +88,7 @@ public class MainFragment extends Fragment implements MainContract.View {
 
 
 
-        Element[][][] sidebar = new LoadSidebar().createLevel(levelHelper.aktLevel);
+        Element[][][] sidebar = loadSidebar.createLevel(levelHelper.aktLevel);
 
         if (null != sidebar) {
             for (Element[] elements : sidebar[0]) {

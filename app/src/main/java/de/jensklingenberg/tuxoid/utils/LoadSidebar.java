@@ -20,6 +20,16 @@ public class LoadSidebar {
     //ebene war vorher level
     private int ebene;
 
+    AssetManager assetManager;
+
+    private LoadSidebar(){
+
+    }
+
+    public LoadSidebar(AssetManager assetManager){
+        this.assetManager = assetManager;
+    }
+
     // TODO Auto-generated constructor stub
 
     public Element[][][] getLevelE() {
@@ -28,7 +38,6 @@ public class LoadSidebar {
 
     public Element[][][] createLevel(int aktLevel) {
 
-        AssetManager assetManager = MainActivity.getActivity().getAssets();
         ebene = 0;
         String[] num = null;
         String[] colCount = null; //Anzahl Felder/Spalten

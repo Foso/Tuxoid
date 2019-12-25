@@ -2,12 +2,14 @@ package de.jensklingenberg.tuxoid.data
 
 import android.app.Application
 import android.content.Context
+import android.content.res.AssetManager
 import dagger.Module
 import dagger.Provides
 import de.jensklingenberg.tuxoid.App
 import de.jensklingenberg.tuxoid.model.MyImage
 import de.jensklingenberg.tuxoid.utils.LevelHelper
 import de.jensklingenberg.tuxoid.utils.LoadGame
+import de.jensklingenberg.tuxoid.utils.LoadSidebar
 import javax.inject.Singleton
 
 @Module
@@ -16,6 +18,10 @@ open class AppModule(private val application: App) {
     @Provides
     @Singleton
     fun provideContext(): Context = application
+
+    @Provides
+    @Singleton
+    fun provideAssetManager(context:Context): AssetManager = context.assets
 
 
     @Provides
@@ -29,6 +35,10 @@ open class AppModule(private val application: App) {
     @Provides
     @Singleton
     fun provideLevelHelper(): LevelHelper = LevelHelper()
+
+    @Provides
+    @Singleton
+    fun provideLoadSidebar(assetManager: AssetManager): LoadSidebar = LoadSidebar(assetManager)
 
     @Provides
     @Singleton

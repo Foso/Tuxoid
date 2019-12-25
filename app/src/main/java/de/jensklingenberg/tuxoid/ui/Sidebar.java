@@ -12,22 +12,21 @@ public class Sidebar extends TableLayout {
 
     public static final String TAG = Sidebar.class.getSimpleName();
     public static Element DragElement;
-    LoadSidebar loadSidebar;
     SidebarImageView[][] sidebarImage;
     TableRow[] tableRow;
     MainActivity activity = new MainActivity();
     private Element[][][] sidebarElement;
     public Sidebar(Context context) {
         super(context);
+
     }
 
     public static void setDragElement(Element drag) {
         DragElement = drag;
     }
 
-    public void createLevel(int Level) {
+    public void createLevel(int Level,LoadSidebar loadSidebar,Context context) {
 
-        loadSidebar = new LoadSidebar();
         loadSidebar.createLevel(Level);
         sidebarElement = loadSidebar.getLevelE();
 
@@ -35,11 +34,11 @@ public class Sidebar extends TableLayout {
         sidebarImage = new SidebarImageView[sidebarElement[0].length][sidebarElement[0][0].length];
         for (int y = 0; y < sidebarElement[0].length; y++) {
 
-            tableRow[y] = new TableRow(MainActivity.getActivity());
+            tableRow[y] = new TableRow(context);
             this.addView(tableRow[y]);
 
             for (int x = 0; x < sidebarElement[0][y].length; x++) {
-                sidebarImage[y][x] = new SidebarImageView(MainActivity.getActivity(), sidebarElement[0][y][x]);
+                sidebarImage[y][x] = new SidebarImageView(context, sidebarElement[0][y][x]);
                 tableRow[y].addView(sidebarImage[y][x]);
             }
 

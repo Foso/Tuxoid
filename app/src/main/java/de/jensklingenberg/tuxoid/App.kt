@@ -7,19 +7,20 @@ import de.jensklingenberg.tuxoid.data.AppModule
 import de.jensklingenberg.tuxoid.data.DaggerAppComponent
 
 class App : Application() {
-    companion object {
-        lateinit var appComponent: AppComponent
-        const val FILE_AUTHORITY = "de.jensklingenberg.sheasy.fileprovider"
-    }
 
-    override fun onCreate() {
-        super.onCreate()
+    init {
         initializeDagger()
+
     }
 
-    open fun initializeDagger() {
+
+    fun initializeDagger() {
         appComponent = DaggerAppComponent.builder()
                 .appModule(AppModule(this))
                 .build()
+    }
+
+    companion object {
+        lateinit var appComponent: AppComponent
     }
 }
