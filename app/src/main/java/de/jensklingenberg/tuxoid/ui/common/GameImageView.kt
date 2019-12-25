@@ -1,4 +1,4 @@
-package de.jensklingenberg.tuxoid.model
+package de.jensklingenberg.tuxoid.ui.common
 
 import android.content.Context
 import android.util.AttributeSet
@@ -9,8 +9,8 @@ import de.jensklingenberg.tuxoid.model.element.Element
  * Created by jens on 22/7/17.
  */
 class GameImageView : AppCompatImageView {
-    constructor(context: Context?, bit: Element) : super(context) {
-        setImageBitmap(bit.image)
+    constructor(context: Context?, element: Element) : super(context) {
+        setImageBitmap(element.image)
     }
 
     constructor(context: Context?) : super(context) {}

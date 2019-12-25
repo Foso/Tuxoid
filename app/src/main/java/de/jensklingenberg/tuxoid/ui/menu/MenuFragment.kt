@@ -9,8 +9,9 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import de.jensklingenberg.tuxoid.R
 import de.jensklingenberg.tuxoid.ui.AnleitungActivity
+import de.jensklingenberg.tuxoid.ui.GameFragmentArgs
 import de.jensklingenberg.tuxoid.ui.MainActivity
-import de.jensklingenberg.tuxoid.ui.MainFragmentArgs
+
 import java.util.*
 
 class MenuFragment : Fragment(R.layout.menu),MenuContract.View{
@@ -45,7 +46,7 @@ class MenuFragment : Fragment(R.layout.menu),MenuContract.View{
             btnEntry.setOnClickListener { v: View ->
 
 
-                findNavController().navigate(R.id.mainFragment,MainFragmentArgs(i.toString()).toBundle())
+                findNavController().navigate(R.id.gameFragment,GameFragmentArgs(i.toString()).toBundle())
             }
             ll!!.addView(btnEntry)
         }

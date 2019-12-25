@@ -1,15 +1,19 @@
-package de.jensklingenberg.tuxoid.model;
+package de.jensklingenberg.tuxoid.data;
 
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.media.Image;
+
+import org.jetbrains.annotations.NotNull;
 
 import de.jensklingenberg.tuxoid.R;
+import de.jensklingenberg.tuxoid.data.ImageSource;
 import de.jensklingenberg.tuxoid.model.element.ElementType;
 
 import static android.graphics.BitmapFactory.decodeResource;
 
-public class MyImage {
+public class ImageRepository implements ImageSource {
 
 
     private static Bitmap imgArrowUp;
@@ -49,11 +53,11 @@ public class MyImage {
     private static Bitmap imgWood;
     private static Bitmap imgWood_on_water;
     private static Bitmap imgWood_on_water_horizontal;
-private Context context;
+   private Context context;
 
 
 
-    public MyImage(Context context) {
+    public ImageRepository(Context context) {
         this.context=context;
       //  getResources();
         imgArrowUp = decodeResource(getResources(), R.drawable.arrowup);
@@ -228,5 +232,23 @@ private Context context;
 
     private Resources getResources() {
         return context.getResources();
+    }
+
+    @NotNull
+    @Override
+    public Bitmap loadBitmap(int type) {
+        return getImage(type);
+    }
+
+    @NotNull
+    @Override
+    public Bitmap loadImage(int type) {
+        switch (type){
+            case R.drawable.background:
+                return imgBackground;
+        }
+        
+
+        return decodeResource(getResources(), type);
     }
 }

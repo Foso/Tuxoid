@@ -1,4 +1,4 @@
-package de.jensklingenberg.tuxoid.utils;
+package de.jensklingenberg.tuxoid.data;
 
 import android.content.res.AssetManager;
 

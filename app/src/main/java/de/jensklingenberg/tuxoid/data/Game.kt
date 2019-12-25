@@ -1,6 +1,7 @@
-package de.jensklingenberg.tuxoid.model
+package de.jensklingenberg.tuxoid.data
 
 import android.util.SparseArray
+import de.jensklingenberg.tuxoid.model.Coordinate
 import de.jensklingenberg.tuxoid.model.element.ElementType
 
 /**
@@ -131,10 +132,10 @@ class Game {
     }
 
     val mapDoor: SparseArray<Coordinate>
-        get() = Game.mapDoor
+        get() = Companion.mapDoor
 
     val mapKey: SparseArray<IntArray>
-        get() = Game.mapKey
+        get() = Companion.mapKey
 
 
 

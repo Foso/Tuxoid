@@ -3,8 +3,8 @@ package de.jensklingenberg.tuxoid
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import de.jensklingenberg.tuxoid.model.element.ElementType
-import de.jensklingenberg.tuxoid.utils.LevelHelper
-import de.jensklingenberg.tuxoid.utils.LoadGame
+import de.jensklingenberg.tuxoid.data.LevelHelper
+import de.jensklingenberg.tuxoid.data.LoadGame
 import junit.framework.Assert
 import org.junit.Assert.assertEquals
 import org.junit.Before
@@ -54,7 +54,7 @@ val ee = LoadGame(appContext)
 
         helper.screenTouched(0,1)
 
-val tye= helper.levelData!![0][0][1].type
+val tye= helper.levelData!![0][0][1].typeId
         Assert.assertEquals(ElementType.PLAYER,tye )
 
         //Assert.assertTrue(helper.level[0][0][1].elementGroup==Background)
@@ -80,7 +80,7 @@ val tye= helper.levelData!![0][0][1].type
 
         helper.screenTouched(0,1)
 
-        val tye= helper.levelData!![0][0][2].type
+        val tye= helper.levelData!![0][0][2].typeId
         Assert.assertEquals(ElementType.CRATE_BLUE,tye )
 
     }
@@ -99,7 +99,7 @@ val tye= helper.levelData!![0][0][1].type
 
         helper.screenTouched(0,1)
 
-        val tye= helper.levelData!![0][0][1].type
+        val tye= helper.levelData!![0][0][1].typeId
         Assert.assertEquals(ElementType.PLAYER,tye )
 
     }
@@ -118,7 +118,7 @@ val tye= helper.levelData!![0][0][1].type
 
         helper.screenTouched(0,1)
 
-        val tye= helper.levelData!![0][0][2].type
+        val tye= helper.levelData!![0][0][2].typeId
         Assert.assertEquals(ElementType.BACKGROUND,tye )
 
     }
@@ -138,7 +138,7 @@ val tye= helper.levelData!![0][0][1].type
 
         helper.screenTouched(0,1)
 
-        val tye= helper.levelData!![0][0][3].type
+        val tye= helper.levelData!![0][0][3].typeId
         Assert.assertEquals(ElementType.PLAYER,tye )
 
     }

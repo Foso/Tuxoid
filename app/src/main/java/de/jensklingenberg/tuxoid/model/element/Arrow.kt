@@ -2,7 +2,7 @@ package de.jensklingenberg.tuxoid.model.element
 
 import de.jensklingenberg.tuxoid.interfaces.IReachable
 import de.jensklingenberg.tuxoid.model.Direction
-import de.jensklingenberg.tuxoid.model.MyImage
+import de.jensklingenberg.tuxoid.data.ImageRepository
 
 /**
  * Created by jens on 09.02.16.
@@ -16,14 +16,13 @@ class Arrow(type: Int, z: Int, y: Int, x: Int, val usedStatus: Boolean, val dire
         get() = ElementGroup.Arrow
 
     init {
-        this.image = MyImage.getImage(type)
+
+        this.image = ImageRepository.getImage(type)
 
     }
 
 
-    override fun isReachable(): Boolean {
-        return true
-    }
+    override fun isReachable(): Boolean = true
 
     companion object {
 

@@ -6,8 +6,8 @@
     app:startDestination="@id/menuFragment">
 
     <fragment
-        android:id="@+id/mainFragment"
-        android:name="de.jensklingenberg.tuxoid.ui.MainFragment"
+        android:id="@+id/gameFragment"
+        android:name="de.jensklingenberg.tuxoid.ui.GameFragment"
         android:label="MainFragment">
         <argument
             android:name="levelId"

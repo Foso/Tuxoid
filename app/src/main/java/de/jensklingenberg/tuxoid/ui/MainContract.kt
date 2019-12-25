@@ -2,7 +2,7 @@ package de.jensklingenberg.tuxoid.ui
 
 import de.jensklingenberg.tuxoid.model.Coordinate
 import de.jensklingenberg.tuxoid.model.element.Element
-import de.jensklingenberg.tuxoid.utils.Listener
+import de.jensklingenberg.tuxoid.data.RefreshListener
 
 interface MvpPresenter{
    fun onCreate()
@@ -17,7 +17,7 @@ interface MainContract {
         fun setSidebarData(sidebar: Array<Array<Array<Element>>>)
     }
 
-    interface Presenter : Listener,MvpPresenter {
+    interface Presenter : RefreshListener,MvpPresenter {
 
         fun createLevel(level: Int)
         fun screenTouched(touchY: Int, touchX: Int)

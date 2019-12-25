@@ -1,6 +1,6 @@
 //Enthält alle Eigenschaften von einem ImageView aus der Sidebar
 
-package de.jensklingenberg.tuxoid.model;
+package de.jensklingenberg.tuxoid.ui.common;
 
 import android.content.ClipData;
 import android.content.Context;
@@ -11,7 +11,6 @@ import android.widget.LinearLayout;
 import androidx.appcompat.widget.AppCompatImageView;
 
 import de.jensklingenberg.tuxoid.model.element.Element;
-import de.jensklingenberg.tuxoid.ui.Sidebar;
 
 public class SidebarImageView extends AppCompatImageView {
 

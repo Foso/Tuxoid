@@ -1,43 +1,46 @@
 package de.jensklingenberg.tuxoid.model.element
 
 import android.graphics.Bitmap
-import de.jensklingenberg.tuxoid.utils.LevelHelper
+import de.jensklingenberg.tuxoid.App
+import de.jensklingenberg.tuxoid.data.ImageSource
+import de.jensklingenberg.tuxoid.data.LevelHelper
 import de.jensklingenberg.tuxoid.interfaces.ICollectable
 import de.jensklingenberg.tuxoid.interfaces.Moveable
 import de.jensklingenberg.tuxoid.interfaces.Removable
 import de.jensklingenberg.tuxoid.model.Coordinate
 import de.jensklingenberg.tuxoid.model.element.character.NPC
 import de.jensklingenberg.tuxoid.model.element.character.Player
-import de.jensklingenberg.tuxoid.model.element.Destination.*
-import de.jensklingenberg.tuxoid.model.Game
-import de.jensklingenberg.tuxoid.model.MyImage
+import de.jensklingenberg.tuxoid.model.element.destination.*
+import de.jensklingenberg.tuxoid.data.Game
+import de.jensklingenberg.tuxoid.data.ImageRepository
+import javax.inject.Inject
 
-open class Element :IElementGroup {
+open class Element : IElementGroup {
 
+    @Inject
+    lateinit var imageSource: ImageSource
 
-    override val elementGroup: ElementGroup
-        get() = ElementGroup.EMPTY
-    //public String getGroup() {
-    //return group;
-    //}
+    init {
+        App.appComponent.inject(this)
+    }
 
+    override val elementGroup: ElementGroup = ElementGroup.EMPTY
 
     open var image: Bitmap? = null
 
+    open val imageResId: Int = 0
+
     //METHODS
 
-    open var type: Int = 0
+    open var typeId: Int = 0
     private var group: ElementGroup? = null
 
 
-
-
     constructor(type: Int, z: Int, y: Int, x: Int) {
-        this.type = type
-        this.image = MyImage.getImage(type)
+        this.typeId = type
+        this.image = imageSource.loadBitmap(type)
 
     }
-
 
 
     constructor() {}
@@ -46,7 +49,6 @@ open class Element :IElementGroup {
     fun setGroup(group: ElementGroup) {
         this.group = group
     }
-
 
 
     companion object {
@@ -81,13 +83,14 @@ open class Element :IElementGroup {
             add(ElementType.ARROW_DOWN_RED)
         }
 
-        @JvmStatic  fun elementFactory(type: Int, coordinate: Coordinate): Element {
-            return elementFactory(type,coordinate.z,coordinate.y,coordinate.x)
+        @JvmStatic
+        fun elementFactory(type: Int, coordinate: Coordinate): Element {
+            return elementFactory(type, coordinate.z, coordinate.y, coordinate.x)
         }
 
 
-
-            @JvmStatic  fun elementFactory(type: Int, z: Int, y: Int, x: Int): Element {
+        @JvmStatic
+        fun elementFactory(type: Int, z: Int, y: Int, x: Int): Element {
 
             if (ElementType.ArrowGroup.isInThisGroup(type)) {
 
@@ -112,7 +115,7 @@ open class Element :IElementGroup {
                 ElementType.BACKGROUND -> return Background(z, y, x)
 
                 ElementType.DOOR1 -> {
-                    Game.mapDoor.put(1, Coordinate(z,y,x));
+                    Game.mapDoor.put(1, Coordinate(z, y, x));
 
                     return Door(type, z, y, x)
                 }
@@ -130,7 +133,7 @@ open class Element :IElementGroup {
                 ElementType.FISH -> {
                     LevelHelper.game.addFish()
 
-                    return Fish( z, y, x)
+                    return Fish(z, y, x)
                 }
 
                 ElementType.GATE -> {
@@ -176,13 +179,14 @@ open class Element :IElementGroup {
 
                 ElementType.NPC4 -> return NPC(type, z, y, x, 4)
 
-                ElementType.ICE -> return Ice( z, y, x)
+                ElementType.ICE -> return Ice(z, y, x)
 
-                ElementType.WALL -> return Wall( z, y, x)
+                ElementType.WALL -> return Wall(z, y, x)
 
                 ElementType.PLAYER -> {
-                  Player.setPlayPos(z,y,x)
-                  return Player(type, z, y, x)}
+                    Player.setPlayPos(z, y, x)
+                    return Player(type, z, y, x)
+                }
 
                 ElementType.RED_BUTTON -> return Red_Button(type, z, y, x)
 
@@ -207,36 +211,36 @@ open class Element :IElementGroup {
         }
 
         fun changeElement(type: Int, group: ElementGroup, element: Element): Element {
-            element.type = type
+            element.typeId = type
             element.setGroup(group)
-            element.image = MyImage.getImage(type)
+            element.image = ImageRepository.getImage(type)
             return element
         }
     }
 }
 
-class Background(z: Int, y: Int, x: Int) : Element(ElementType.BACKGROUND, z, y, x)
 class Door(type: Int, z: Int, y: Int, x: Int) : Element(type, z, y, x), Removable
 class Exit(type: Int, z: Int, y: Int, x: Int) : Element(type, z, y, x)
-class Fish( z: Int, y: Int, x: Int) : Element(ElementType.FISH, z, y, x), Removable
+class Fish(z: Int, y: Int, x: Int) : Element(ElementType.FISH, z, y, x), Removable
 class Gate(type: Int, z: Int, y: Int, x: Int) : Element(type, z, y, x), Removable
-class Gate_Half(type: Int, z: Int, y: Int, x: Int) : Destination(type, z, y, x)
-class Hole1(type: Int, z: Int, y: Int, x: Int) : Destination(type, z, y, x)
-class Ice( z: Int, y: Int, x: Int) : Destination(ElementType.ICE, z, y, x)
+class Gate_Half(type: Int, z: Int, y: Int, x: Int) : destination(type, z, y, x)
+class Hole1(type: Int, z: Int, y: Int, x: Int) : destination(type, z, y, x)
+class Ice(z: Int, y: Int, x: Int) : destination(ElementType.ICE, z, y, x)
 class Key(type: Int, z: Int, y: Int, x: Int) : Element(type, z, y, x), ICollectable, Removable
-class Ladder_Down(type: Int, z: Int, y: Int, x: Int) : Destination(type, z, y, x)
-class Ladder_Up(type: Int, z: Int, y: Int, x: Int) : Destination(type, z, y, x)
+class Ladder_Down(type: Int, z: Int, y: Int, x: Int) : destination(type, z, y, x)
+class Ladder_Up(type: Int, z: Int, y: Int, x: Int) : destination(type, z, y, x)
 class Moving_Water(type: Int, z: Int, y: Int, x: Int) : Element(type, z, y, x)
-class Moving_Wood(type: Int, z: Int, y: Int, x: Int): Destination(type, z, y, x)
-class Red_Button(type: Int, z: Int, y: Int, x: Int) : Destination(type, z, y, x)
-class Switch(type: Int, z: Int, y: Int, x: Int) : Destination(type, z, y, x)
-class Switch_Crate_Block(type: Int, z: Int, y: Int, x: Int) : Destination(type, z, y, x)
+class Moving_Wood(type: Int, z: Int, y: Int, x: Int) : destination(type, z, y, x)
+class Red_Button(type: Int, z: Int, y: Int, x: Int) : destination(type, z, y, x)
+class Switch(type: Int, z: Int, y: Int, x: Int) : destination(type, z, y, x)
+class Switch_Crate_Block(type: Int, z: Int, y: Int, x: Int) : destination(type, z, y, x)
 class TeleIn1(type: Int, z: Int, y: Int, x: Int) : Element(type, z, y, x)
 class Crate_Block(type: Int, z: Int, y: Int, x: Int) : Element(type, z, y, x), Moveable, Removable
 class Crate_Blue(type: Int, z: Int, y: Int, x: Int) : Element(type, z, y, x), Moveable, Removable
 class TeleOut1(type: Int, z: Int, y: Int, x: Int) : Element(type, z, y, x) {
-    override val elementGroup= ElementGroup.TeleportOut
+    override val elementGroup = ElementGroup.TeleportOut
 }
+
 class Wall(z: Int, y: Int, x: Int) : Element(ElementType.WALL, z, y, x) {
-    override val elementGroup= ElementGroup.WALL
+    override val elementGroup = ElementGroup.WALL
 }

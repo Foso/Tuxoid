@@ -1,12 +1,12 @@
-package de.jensklingenberg.tuxoid.ui;
+package de.jensklingenberg.tuxoid.ui.common;
 
 import android.content.Context;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 
 import de.jensklingenberg.tuxoid.model.element.Element;
-import de.jensklingenberg.tuxoid.model.SidebarImageView;
-import de.jensklingenberg.tuxoid.utils.LoadSidebar;
+import de.jensklingenberg.tuxoid.ui.MainActivity;
+import de.jensklingenberg.tuxoid.data.LoadSidebar;
 
 public class Sidebar extends TableLayout {
 

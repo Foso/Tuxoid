@@ -1,4 +1,4 @@
-package de.jensklingenberg.tuxoid.utils
+package de.jensklingenberg.tuxoid.data
 
 import android.os.Handler
 import android.util.Log
@@ -8,12 +8,13 @@ import de.jensklingenberg.tuxoid.model.Direction
 import de.jensklingenberg.tuxoid.model.element.*
 import de.jensklingenberg.tuxoid.model.element.character.NPC
 import de.jensklingenberg.tuxoid.model.element.character.Player
-import de.jensklingenberg.tuxoid.model.element.ElementType.*
 import de.jensklingenberg.tuxoid.model.element.Timer.Timer_Arrow
 import de.jensklingenberg.tuxoid.model.element.Timer.Timer_Water
 import de.jensklingenberg.tuxoid.model.element.Timer.Timer_ice
 import de.jensklingenberg.tuxoid.model.element.Timer.Timer_npc
-import de.jensklingenberg.tuxoid.model.Game
+import de.jensklingenberg.tuxoid.model.element.ElementType.Companion.BACKGROUND
+import de.jensklingenberg.tuxoid.model.element.ElementType.Companion.WALL
+import de.jensklingenberg.tuxoid.utils.DirectionUtils
 
 class LevelHelper() : Timer_Arrow.TimerClock, Timer_Water.TimerClock, Timer_ice.TimerClock,
     Timer_npc.TimerClock {
@@ -52,7 +53,7 @@ class LevelHelper() : Timer_Arrow.TimerClock, Timer_Water.TimerClock, Timer_ice.
     var playY: Int = 0
 
 
-    var listener: Listener? = null
+    var refreshListener: RefreshListener? = null
 
     var timer_water: Runnable? = null
     var timer_arrow: Runnable? = null
@@ -89,10 +90,10 @@ class LevelHelper() : Timer_Arrow.TimerClock, Timer_Water.TimerClock, Timer_ice.
         dragElement: Element
     ) {
 
-        if (getElementAt(cord).type == ElementType.BACKGROUND) {
+        if (getElementAt(cord).typeId == ElementType.BACKGROUND) {
 
             val newElement = Element.changeElement(
-                dragElement.type,
+                dragElement.typeId,
                 dragElement.elementGroup,
                 dragElement
             )
@@ -107,7 +108,7 @@ class LevelHelper() : Timer_Arrow.TimerClock, Timer_Water.TimerClock, Timer_ice.
 
             }
 
-            listener?.onRefresh()
+            refreshListener?.onRefresh()
 
 
         }
@@ -169,7 +170,7 @@ class LevelHelper() : Timer_Arrow.TimerClock, Timer_Water.TimerClock, Timer_ice.
         dirX = if (bMovingDirRight) 1 else -1
 
 
-        when (levelData!![mwZ][mwY][mwX].type) {
+        when (levelData!![mwZ][mwY][mwX].typeId) {
             ElementType.PLAYER -> {
                 setPlayer(mwZ, mwY, mwX + dirX)
                 setPos(
@@ -271,7 +272,7 @@ class LevelHelper() : Timer_Arrow.TimerClock, Timer_Water.TimerClock, Timer_ice.
         val y = npcCoord.y
 
         setPos(
-            getOldElementAt(OZ, OY, OX).type,
+            getOldElementAt(OZ, OY, OX).typeId,
             Coordinate(OZ, OY, OX)
         )
         aktEbene = z
@@ -311,12 +312,12 @@ class LevelHelper() : Timer_Arrow.TimerClock, Timer_Water.TimerClock, Timer_ice.
     fun move_To_Collectable(y: Int, x: Int, aktObject: Int, callingCharacter: Element) {
         when (aktObject) {
             ElementType.FISH -> {
-                setPos(callingCharacter.type, Coordinate(aktEbene, y, x))
+                setPos(callingCharacter.typeId, Coordinate(aktEbene, y, x))
                 game.eatFish()
             }
 
             ElementType.KEY1 -> {
-                setPos(callingCharacter.type, Coordinate(aktEbene, y, x))
+                setPos(callingCharacter.typeId, Coordinate(aktEbene, y, x))
                 setPos(
                     BACKGROUND, Coordinate(
                         aktEbene, game.mapDoor.get(1).y,
@@ -326,7 +327,7 @@ class LevelHelper() : Timer_Arrow.TimerClock, Timer_Water.TimerClock, Timer_ice.
             }
 
             ElementType.KEY2 -> {
-                setPos(callingCharacter.type, Coordinate(aktEbene, y, x))
+                setPos(callingCharacter.typeId, Coordinate(aktEbene, y, x))
                 setPos(
                     BACKGROUND, Coordinate(
                         aktEbene, game.mapDoor.get(2).y,
@@ -348,7 +349,7 @@ class LevelHelper() : Timer_Arrow.TimerClock, Timer_Water.TimerClock, Timer_ice.
         val y = newCoord.y
         val x = newCoord.x
 
-        val oldType = getOldElementAt(newCoord).type//Prüfen ob was auf RedButton steht
+        val oldType = getOldElementAt(newCoord).typeId//Prüfen ob was auf RedButton steht
 
         when (oldType) {
             ElementType.SWITCH -> if (ElementType.CRATE_BLOCK == newType) {
@@ -384,7 +385,7 @@ class LevelHelper() : Timer_Arrow.TimerClock, Timer_Water.TimerClock, Timer_ice.
                         OZ,
                         OY,
                         OX
-                    ).type, Coordinate(playZ, playY, playX)
+                    ).typeId, Coordinate(playZ, playY, playX)
                 )
                 aktEbene = z
 
@@ -401,7 +402,7 @@ class LevelHelper() : Timer_Arrow.TimerClock, Timer_Water.TimerClock, Timer_ice.
                 )
 
                 //MainActivity.getActivity().setImage(y, x, level!![aktEbene][y][x].image)
-                listener?.onRefresh()
+                refreshListener?.onRefresh()
             }
 
             ElementType.MOVING_WOOD -> {
@@ -411,7 +412,7 @@ class LevelHelper() : Timer_Arrow.TimerClock, Timer_Water.TimerClock, Timer_ice.
                 )
 
                 game.setMoving(ElementType.MOVING_WOOD, z, y, x)
-                listener?.onRefresh()
+                refreshListener?.onRefresh()
             }
             else -> {
                 changeLevel(levelData!!, newType, newCoord)
@@ -421,7 +422,7 @@ class LevelHelper() : Timer_Arrow.TimerClock, Timer_Water.TimerClock, Timer_ice.
 
                 //imgGameField[y][x].setImageBitmap(level[aktEbene][y][x].getImage());
                 //MainActivity.getActivity().setImage(y, x, level!![aktEbene][y][x].image)
-                listener?.onRefresh()
+                refreshListener?.onRefresh()
             }
         }
     }
@@ -473,7 +474,7 @@ class LevelHelper() : Timer_Arrow.TimerClock, Timer_Water.TimerClock, Timer_ice.
 
         var dirX = 0
         var dirY = 0
-        val aktObject = levelData!![z][y][x].type
+        val aktObject = levelData!![z][y][x].typeId
         var nextObjectGroup = ElementGroup.EMPTY
 
         playZ = Player.position.z
@@ -505,14 +506,14 @@ class LevelHelper() : Timer_Arrow.TimerClock, Timer_Water.TimerClock, Timer_ice.
         }
 
         if (isaWall(y, x, dirX, dirY)) {
-            Log.i(TAG, callingCharacter.type.toString())
-            stopTimer(callingCharacter.type)
+            Log.i(TAG, callingCharacter.typeId.toString())
+            stopTimer(callingCharacter.typeId)
         } else {
             nextObjectGroup = getElementAt(z, y + dirY, x + dirX).elementGroup
         }
 
 
-        if (Element.collectableList.contains(getElementAt(z, y, x).type)) {
+        if (Element.collectableList.contains(getElementAt(z, y, x).typeId)) {
             move_To_Collectable(
                 y,
                 x,
@@ -521,7 +522,7 @@ class LevelHelper() : Timer_Arrow.TimerClock, Timer_Water.TimerClock, Timer_ice.
             )
         }
 
-        if (Element.destinationsList.contains(getElementAt(z, y, x).type)) {
+        if (Element.destinationsList.contains(getElementAt(z, y, x).typeId)) {
             move_to_destination(
                 direction,
                 Object,
@@ -534,7 +535,7 @@ class LevelHelper() : Timer_Arrow.TimerClock, Timer_Water.TimerClock, Timer_ice.
             )
         }
 
-        if (Element.moveablesList.contains(getElementAt(z, y, x).type)) {
+        if (Element.moveablesList.contains(getElementAt(z, y, x).typeId)) {
             move_moveable(
                 direction,
                 newCoord,
@@ -589,7 +590,7 @@ class LevelHelper() : Timer_Arrow.TimerClock, Timer_Water.TimerClock, Timer_ice.
         val y = newCoord.y
         val x = newCoord.x
 
-        val nexDes = getElementAt(z, y + dirY, x + dirX).type
+        val nexDes = getElementAt(z, y + dirY, x + dirX).typeId
 
         when (aktObject) {
 
@@ -716,13 +717,13 @@ class LevelHelper() : Timer_Arrow.TimerClock, Timer_Water.TimerClock, Timer_ice.
             ElementType.LADDER_UP -> if (ElementType.PLAYER == Object) {
                 aktEbene--
                 setPos(ElementType.PLAYER, Coordinate(aktEbene, y, x))
-                listener?.onRefresh()
+                refreshListener?.onRefresh()
             }
 
             ElementType.LADDER_DOWN -> if (ElementType.PLAYER == Object) {
                 aktEbene++
                 setPos(ElementType.PLAYER, Coordinate(aktEbene, y, x))
-                listener?.onRefresh()
+                refreshListener?.onRefresh()
             }
 
             ElementType.MOVING_WOOD -> move(
@@ -918,7 +919,7 @@ class LevelHelper() : Timer_Arrow.TimerClock, Timer_Water.TimerClock, Timer_ice.
             var i = tIX - dirX
             while (i != playX) {
 
-                if (levelData!![tIZ][tIY][i].type != 0) {
+                if (levelData!![tIZ][tIY][i].typeId != 0) {
 
                     setPos(
                         getElementTypeAt(tIZ, tIY, i - dirX),
@@ -954,7 +955,7 @@ class LevelHelper() : Timer_Arrow.TimerClock, Timer_Water.TimerClock, Timer_ice.
             var i = tIY - dirY
             while (i != playY) {
 
-                if (levelData!![tIZ][i][tIX].type != 0) {
+                if (levelData!![tIZ][i][tIX].typeId != 0) {
                     setPos(
                         getElementTypeAt(tIZ, i - dirY, tIX),
                         Coordinate(tIZ, i, tIX)
@@ -966,7 +967,7 @@ class LevelHelper() : Timer_Arrow.TimerClock, Timer_Water.TimerClock, Timer_ice.
             }
         }
 
-        listener?.onRefresh()
+        refreshListener?.onRefresh()
 
     }
 
@@ -998,9 +999,9 @@ class LevelHelper() : Timer_Arrow.TimerClock, Timer_Water.TimerClock, Timer_ice.
     }
 
     fun checkIfRedButtonCovered(z: Int, y: Int, x: Int) {
-        if (ElementType.RED_BUTTON == levelo!![z][y][x].type) {
+        if (ElementType.RED_BUTTON == levelo!![z][y][x].typeId) {
 
-            if (ElementType.RED_BUTTON == levelData!![z][y][x].type) {
+            if (ElementType.RED_BUTTON == levelData!![z][y][x].typeId) {
                 handler?.removeCallbacks(timer_water)
             } else {
                 handler?.post(timer_water)
@@ -1009,7 +1010,7 @@ class LevelHelper() : Timer_Arrow.TimerClock, Timer_Water.TimerClock, Timer_ice.
     }
 
     fun getElementTypeAt(z: Int, y: Int, x: Int): Int {
-        return getElementAt(z, y, x).type
+        return getElementAt(z, y, x).typeId
     }
 
 
@@ -1029,7 +1030,7 @@ class LevelHelper() : Timer_Arrow.TimerClock, Timer_Water.TimerClock, Timer_ice.
 
 }
 
-interface Listener {
+interface RefreshListener {
     fun onRefresh()
     // fun onSetPos()
 }
