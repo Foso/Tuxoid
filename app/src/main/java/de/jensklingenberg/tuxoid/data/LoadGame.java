@@ -17,9 +17,7 @@ import de.jensklingenberg.tuxoid.model.element.ElementType;
 
 
 public class LoadGame {
-    private Element[][][] levelE;
-    private Element[][][] levelEo;
-    private int ebene;
+
     private LevelLoadListener loadListener;
     private AssetManager assetManager;
 
@@ -38,7 +36,9 @@ public class LoadGame {
     }
 
     public void createLevel(String aktLevel) throws IOException {
-        ebene = 0;
+         Element[][][] levelE;
+         Element[][][] levelEo;
+        int ebene = 0;
         String[] num = null;
         int colCount = 0; // Anzahl Felder/Spalten
         int[] rowCount = new int[5];
@@ -104,13 +104,7 @@ public class LoadGame {
 
     }
 
-    public Element[][][] getLevelE() {
-        return levelE;
-    }
 
-    public Element[][][] getLevelEo() {
-        return levelEo;
-    }
 
 
 }

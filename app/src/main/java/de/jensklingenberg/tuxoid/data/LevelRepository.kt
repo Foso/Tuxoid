@@ -4,20 +4,33 @@ import de.jensklingenberg.tuxoid.model.element.Element
 
 class LevelRepository(private val loadGame: LoadGame, private val loadSidebar: LoadSidebar): LevelDataSource {
 
+    private var levelE: Array<Array<Array<Element>>>? = null
+    private var levelEo: Array<Array<Array<Element>>>?=null
+
+
     override fun loadLevel(aktLevel: Int) {
         loadGame.createLevel(aktLevel)
     }
 
     override fun setListener(listener: LevelLoadListener) {
-        loadGame.setListener(listener)
+
+        loadGame.setListener(object :LevelLoadListener{
+            override fun onLevelLoaded(levelE: Array<Array<Array<Element>>>, oldLevel: Array<Array<Array<Element>>>) {
+                this@LevelRepository.levelE=levelE
+                this@LevelRepository.levelEo =oldLevel
+                listener.onLevelLoaded(levelE,oldLevel)
+            }
+
+        })
+
     }
 
-    override fun getLevelE(): Array<Array<Array<Element?>?>?>? {
-        return loadGame.levelE
+    override fun getLevelE(): Array<Array<Array<Element>>>? {
+        return levelE
     }
 
-    override fun getLevelEo(): Array<Array<Array<Element?>?>?>? {
-        return loadGame.levelEo
+    override fun getLevelOld(): Array<Array<Array<Element>>>? {
+        return levelEo
     }
 
     override fun loadSidebar(aktLevel: Int): Array< Array<Array<Element>>>? {

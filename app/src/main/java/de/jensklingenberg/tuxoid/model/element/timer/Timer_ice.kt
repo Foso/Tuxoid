@@ -1,4 +1,4 @@
-package de.jensklingenberg.tuxoid.model.element.Timer
+package de.jensklingenberg.tuxoid.model.element.timer
 
 class Timer_ice
 /**

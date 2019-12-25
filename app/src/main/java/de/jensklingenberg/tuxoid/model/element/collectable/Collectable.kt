@@ -1,4 +1,4 @@
-package de.jensklingenberg.tuxoid.model.element.Collectable
+package de.jensklingenberg.tuxoid.model.element.collectable
 
 import de.jensklingenberg.tuxoid.interfaces.IReachable
 import de.jensklingenberg.tuxoid.model.element.Element

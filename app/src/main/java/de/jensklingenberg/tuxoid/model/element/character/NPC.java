@@ -9,7 +9,7 @@ import de.jensklingenberg.tuxoid.interfaces.Playable;
 import de.jensklingenberg.tuxoid.model.Direction;
 import de.jensklingenberg.tuxoid.model.element.Element;
 import de.jensklingenberg.tuxoid.model.element.ElementGroup;
-import de.jensklingenberg.tuxoid.model.element.Timer.Timer_npc;
+import de.jensklingenberg.tuxoid.model.element.timer.Timer_npc;
 
 /**
  * Created by jens on 11.02.16.

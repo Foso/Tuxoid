@@ -2,6 +2,7 @@ package de.jensklingenberg.tuxoid.model.element
 
 import android.graphics.Bitmap
 import de.jensklingenberg.tuxoid.App
+import de.jensklingenberg.tuxoid.R
 import de.jensklingenberg.tuxoid.data.ImageSource
 import de.jensklingenberg.tuxoid.data.LevelHelper
 import de.jensklingenberg.tuxoid.interfaces.ICollectable
@@ -13,6 +14,7 @@ import de.jensklingenberg.tuxoid.model.element.character.Player
 import de.jensklingenberg.tuxoid.model.element.destination.*
 import de.jensklingenberg.tuxoid.data.Game
 import de.jensklingenberg.tuxoid.data.ImageRepository
+import de.jensklingenberg.tuxoid.interfaces.IElementGroup
 import javax.inject.Inject
 
 open class Element : IElementGroup {
@@ -223,17 +225,17 @@ class Door(type: Int, z: Int, y: Int, x: Int) : Element(type, z, y, x), Removabl
 class Exit(type: Int, z: Int, y: Int, x: Int) : Element(type, z, y, x)
 class Fish(z: Int, y: Int, x: Int) : Element(ElementType.FISH, z, y, x), Removable
 class Gate(type: Int, z: Int, y: Int, x: Int) : Element(type, z, y, x), Removable
-class Gate_Half(type: Int, z: Int, y: Int, x: Int) : destination(type, z, y, x)
-class Hole1(type: Int, z: Int, y: Int, x: Int) : destination(type, z, y, x)
-class Ice(z: Int, y: Int, x: Int) : destination(ElementType.ICE, z, y, x)
+class Gate_Half(type: Int, z: Int, y: Int, x: Int) : Destination(type, z, y, x)
+class Hole1(type: Int, z: Int, y: Int, x: Int) : Destination(type, z, y, x)
+class Ice(z: Int, y: Int, x: Int) : Destination(ElementType.ICE, z, y, x)
 class Key(type: Int, z: Int, y: Int, x: Int) : Element(type, z, y, x), ICollectable, Removable
-class Ladder_Down(type: Int, z: Int, y: Int, x: Int) : destination(type, z, y, x)
-class Ladder_Up(type: Int, z: Int, y: Int, x: Int) : destination(type, z, y, x)
+class Ladder_Down(type: Int, z: Int, y: Int, x: Int) : Destination(type, z, y, x)
+class Ladder_Up(type: Int, z: Int, y: Int, x: Int) : Destination(type, z, y, x)
 class Moving_Water(type: Int, z: Int, y: Int, x: Int) : Element(type, z, y, x)
-class Moving_Wood(type: Int, z: Int, y: Int, x: Int) : destination(type, z, y, x)
-class Red_Button(type: Int, z: Int, y: Int, x: Int) : destination(type, z, y, x)
-class Switch(type: Int, z: Int, y: Int, x: Int) : destination(type, z, y, x)
-class Switch_Crate_Block(type: Int, z: Int, y: Int, x: Int) : destination(type, z, y, x)
+class Moving_Wood(type: Int, z: Int, y: Int, x: Int) : Destination(type, z, y, x)
+class Red_Button(type: Int, z: Int, y: Int, x: Int) : Destination(type, z, y, x)
+class Switch(type: Int, z: Int, y: Int, x: Int) : Destination(type, z, y, x)
+class Switch_Crate_Block(type: Int, z: Int, y: Int, x: Int) : Destination(type, z, y, x)
 class TeleIn1(type: Int, z: Int, y: Int, x: Int) : Element(type, z, y, x)
 class Crate_Block(type: Int, z: Int, y: Int, x: Int) : Element(type, z, y, x), Moveable, Removable
 class Crate_Blue(type: Int, z: Int, y: Int, x: Int) : Element(type, z, y, x), Moveable, Removable
@@ -243,4 +245,5 @@ class TeleOut1(type: Int, z: Int, y: Int, x: Int) : Element(type, z, y, x) {
 
 class Wall(z: Int, y: Int, x: Int) : Element(ElementType.WALL, z, y, x) {
     override val elementGroup = ElementGroup.WALL
+    override val imageResId = R.drawable.wallp
 }

@@ -27,12 +27,12 @@ import de.jensklingenberg.tuxoid.ui.common.Sidebar;
 import de.jensklingenberg.tuxoid.ui.common.SidebarImageView;
 import de.jensklingenberg.tuxoid.model.element.Element;
 
-public class GameFragment extends Fragment implements MainContract.View {
+public class GameFragment extends Fragment implements GameContract.View {
 
     private GridLayout grid;
     private ImageView[][] imgGameField;
 
-    private MainContract.Presenter presenter;
+    private GameContract.Presenter presenter;
 
     private GView gView;
     private View myView;
@@ -51,7 +51,7 @@ public class GameFragment extends Fragment implements MainContract.View {
        new ImageRepository(getContext());
 
         myView = view;
-        presenter = new MainPresenter(this);
+        presenter = new GamePresenter(this);
 
         gView = view.findViewById(R.id.canvas);
 

@@ -8,7 +8,7 @@ import de.jensklingenberg.tuxoid.data.LevelHelper
 import de.jensklingenberg.tuxoid.data.LevelLoadListener
 import javax.inject.Inject
 
-class MainPresenter(val view: MainContract.View) : MainContract.Presenter {
+class GamePresenter(private val view: GameContract.View) : GameContract.Presenter {
 
     @Inject
     lateinit var levelHelper: LevelHelper

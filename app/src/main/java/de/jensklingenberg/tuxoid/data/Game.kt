@@ -16,7 +16,7 @@ class Game {
         private var TeleInPos = IntArray(3)
         var mapKey = SparseArray<IntArray>()
 
-        internal var gate: IntArray?=null
+        internal var gate: IntArray? = null
         var mapDoor = SparseArray<Coordinate>()
 
         private var TeleOutPos = IntArray(3)
@@ -38,8 +38,6 @@ class Game {
         fun getTeleOutPosX(): Int {
             return TeleOutPos[2]
         }
-
-
 
 
         fun setTeleInPos(z: Int, y: Int, x: Int) {
@@ -92,19 +90,16 @@ class Game {
     val mapMoving = SparseArray<IntArray>()
 
 
-
-
-
     fun setMoving(type: Int, z: Int, y: Int, x: Int) {
-       when(type){
-            ElementType.MOVING_WOOD->{
-                moving_Wood= intArrayOf(z,y,x)
+        when (type) {
+            ElementType.MOVING_WOOD -> {
+                moving_Wood = intArrayOf(z, y, x)
 
             }
         }
 
 
-    mapMoving.put(mapMoving.size()+1, intArrayOf(z, y, x))
+        mapMoving.put(mapMoving.size() + 1, intArrayOf(z, y, x))
 
 
     }
@@ -136,8 +131,6 @@ class Game {
 
     val mapKey: SparseArray<IntArray>
         get() = Companion.mapKey
-
-
 
 
 }

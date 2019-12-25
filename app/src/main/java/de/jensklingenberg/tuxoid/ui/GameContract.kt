@@ -10,7 +10,7 @@ interface MvpPresenter{
 }
 
 
-interface MainContract {
+interface GameContract {
     interface View {
         fun onRefresh(levelData: Array<Array<Array<Element>>>?, aktEbene: Int)
         fun setGameData(level: Array<Array<Element>>, aktEbene: Int)

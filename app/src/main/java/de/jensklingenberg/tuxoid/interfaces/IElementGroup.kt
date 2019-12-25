@@ -1,4 +1,4 @@
-package de.jensklingenberg.tuxoid.model.element.destination
+package de.jensklingenberg.tuxoid.interfaces
 
 import de.jensklingenberg.tuxoid.model.element.ElementGroup
 

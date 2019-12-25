@@ -8,16 +8,16 @@ import de.jensklingenberg.tuxoid.model.Direction
 import de.jensklingenberg.tuxoid.model.element.*
 import de.jensklingenberg.tuxoid.model.element.character.NPC
 import de.jensklingenberg.tuxoid.model.element.character.Player
-import de.jensklingenberg.tuxoid.model.element.Timer.Timer_Arrow
-import de.jensklingenberg.tuxoid.model.element.Timer.Timer_Water
-import de.jensklingenberg.tuxoid.model.element.Timer.Timer_ice
-import de.jensklingenberg.tuxoid.model.element.Timer.Timer_npc
+import de.jensklingenberg.tuxoid.model.element.timer.Timer_Arrow
+import de.jensklingenberg.tuxoid.model.element.timer.Timer_Water
+import de.jensklingenberg.tuxoid.model.element.timer.Timer_ice
+import de.jensklingenberg.tuxoid.model.element.timer.Timer_npc
 import de.jensklingenberg.tuxoid.model.element.ElementType.Companion.BACKGROUND
 import de.jensklingenberg.tuxoid.model.element.ElementType.Companion.WALL
 import de.jensklingenberg.tuxoid.utils.DirectionUtils
 
 class LevelHelper() : Timer_Arrow.TimerClock, Timer_Water.TimerClock, Timer_ice.TimerClock,
-    Timer_npc.TimerClock {
+        Timer_npc.TimerClock {
 
 
     var bMovingDirRight = false
@@ -69,11 +69,11 @@ class LevelHelper() : Timer_Arrow.TimerClock, Timer_Water.TimerClock, Timer_ice.
             val ObjectX = NPC.getMapNpcPosX(npc)
 
             checkMove(
-                NPC.getMapNpcDirection(npc),
-                ElementType.BACKGROUND, Coordinate(
+                    NPC.getMapNpcDirection(npc),
+                    ElementType.BACKGROUND, Coordinate(
                     aktEbene,
                     ObjectY, ObjectX
-                ), Element.elementFactory(type, ObjectZ, ObjectY, ObjectX)
+            ), Element.elementFactory(type, ObjectZ, ObjectY, ObjectX)
             )
 
             //  this.mainActivity.handler.postDelayed(this, 300);
@@ -86,24 +86,24 @@ class LevelHelper() : Timer_Arrow.TimerClock, Timer_Water.TimerClock, Timer_ice.
     }
 
     fun onDrag(
-        cord: Coordinate,
-        dragElement: Element
+            cord: Coordinate,
+            dragElement: Element
     ) {
 
         if (getElementAt(cord).typeId == ElementType.BACKGROUND) {
 
             val newElement = Element.changeElement(
-                dragElement.typeId,
-                dragElement.elementGroup,
-                dragElement
+                    dragElement.typeId,
+                    dragElement.elementGroup,
+                    dragElement
             )
 
             levelData!![cord.z][cord.y][cord.x] = newElement
 
             if (newElement is Removable) {
-                levelo!![cord.z][cord.y][cord.x] =  Element.elementFactory(ElementType.BACKGROUND,cord)
+                levelo!![cord.z][cord.y][cord.x] = Element.elementFactory(ElementType.BACKGROUND, cord)
 
-            }else{
+            } else {
                 levelo!![cord.z][cord.y][cord.x] = newElement
 
             }
@@ -119,18 +119,18 @@ class LevelHelper() : Timer_Arrow.TimerClock, Timer_Water.TimerClock, Timer_ice.
         if (iceTimerRunning) {
 
             checkMove(
-                Player.playerDirection, ElementType.ICE,
+                    Player.playerDirection, ElementType.ICE,
 
-                Coordinate(
-                    aktEbene,
-                    Player.position.y,
-                    Player.position.x
-                ),
-                Element.elementFactory(
-                    ElementType.PLAYER, Player.position.z, Player.position.y,
-                    Player.position.x
+                    Coordinate(
+                            aktEbene,
+                            Player.position.y,
+                            Player.position.x
+                    ),
+                    Element.elementFactory(
+                            ElementType.PLAYER, Player.position.z, Player.position.y,
+                            Player.position.x
 
-                )
+                    )
             )
 
             handler?.postDelayed(timer_ice, 200)
@@ -142,8 +142,8 @@ class LevelHelper() : Timer_Arrow.TimerClock, Timer_Water.TimerClock, Timer_ice.
 
     fun setPlayer(z: Int, y: Int, x: Int) {
         setPos(
-            ElementType.PLAYER,
-            Coordinate(z, y, x)
+                ElementType.PLAYER,
+                Coordinate(z, y, x)
         )
 
     }
@@ -174,32 +174,32 @@ class LevelHelper() : Timer_Arrow.TimerClock, Timer_Water.TimerClock, Timer_ice.
             ElementType.PLAYER -> {
                 setPlayer(mwZ, mwY, mwX + dirX)
                 setPos(
-                    ElementType.MOVING_WATER,
-                    Coordinate(mwZ, mwY, mwX)
+                        ElementType.MOVING_WATER,
+                        Coordinate(mwZ, mwY, mwX)
                 )
 
 
             }
             ElementType.CRATE_BLOCK -> {
                 setPos(
-                    ElementType.CRATE_BLOCK,
-                    Coordinate(mwZ, mwY, mwX + dirX)
+                        ElementType.CRATE_BLOCK,
+                        Coordinate(mwZ, mwY, mwX + dirX)
                 )
                 setPos(
-                    ElementType.MOVING_WATER,
-                    Coordinate(mwZ, mwY, mwX)
+                        ElementType.MOVING_WATER,
+                        Coordinate(mwZ, mwY, mwX)
                 )
                 game.setMoving(ElementType.MOVING_WOOD, mwZ, mwY, mwX + dirX)
 
             }
             ElementType.CRATE_BLUE -> {
                 setPos(
-                    ElementType.CRATE_BLUE,
-                    Coordinate(mwZ, mwY, mwX + dirX)
+                        ElementType.CRATE_BLUE,
+                        Coordinate(mwZ, mwY, mwX + dirX)
                 )
                 setPos(
-                    ElementType.MOVING_WATER,
-                    Coordinate(mwZ, mwY, mwX)
+                        ElementType.MOVING_WATER,
+                        Coordinate(mwZ, mwY, mwX)
                 )
                 game.setMoving(ElementType.MOVING_WOOD, mwZ, mwY, mwX + dirX)
 
@@ -208,13 +208,13 @@ class LevelHelper() : Timer_Arrow.TimerClock, Timer_Water.TimerClock, Timer_ice.
 
             else -> {
                 setPos(
-                    ElementType.MOVING_WATER,
-                    Coordinate(mwZ, mwY, mwX)
+                        ElementType.MOVING_WATER,
+                        Coordinate(mwZ, mwY, mwX)
                 )
 
                 setPos(
-                    ElementType.MOVING_WOOD,
-                    Coordinate(mwZ, mwY, mwX + dirX)
+                        ElementType.MOVING_WOOD,
+                        Coordinate(mwZ, mwY, mwX + dirX)
                 )
                 game.setMoving(ElementType.MOVING_WOOD, mwZ, mwY, mwX + dirX)
 
@@ -237,15 +237,15 @@ class LevelHelper() : Timer_Arrow.TimerClock, Timer_Water.TimerClock, Timer_ice.
         if (arrowTimerRunning) {
 
             checkMove(
-                Player.playerDirection, ElementType.BACKGROUND,
-                Coordinate(
-                    aktEbene, Player.position.y, Player.position.x
-                ),
-                Element.elementFactory(
-                    ElementType.PLAYER, Player.position.z, Player.position.y,
-                    Player.position.x
+                    Player.playerDirection, ElementType.BACKGROUND,
+                    Coordinate(
+                            aktEbene, Player.position.y, Player.position.x
+                    ),
+                    Element.elementFactory(
+                            ElementType.PLAYER, Player.position.z, Player.position.y,
+                            Player.position.x
 
-                )
+                    )
             )
 
             handler?.postDelayed(timer_arrow, 200)
@@ -272,8 +272,8 @@ class LevelHelper() : Timer_Arrow.TimerClock, Timer_Water.TimerClock, Timer_ice.
         val y = npcCoord.y
 
         setPos(
-            getOldElementAt(OZ, OY, OX).typeId,
-            Coordinate(OZ, OY, OX)
+                getOldElementAt(OZ, OY, OX).typeId,
+                Coordinate(OZ, OY, OX)
         )
         aktEbene = z
 
@@ -319,20 +319,20 @@ class LevelHelper() : Timer_Arrow.TimerClock, Timer_Water.TimerClock, Timer_ice.
             ElementType.KEY1 -> {
                 setPos(callingCharacter.typeId, Coordinate(aktEbene, y, x))
                 setPos(
-                    BACKGROUND, Coordinate(
+                        BACKGROUND, Coordinate(
                         aktEbene, game.mapDoor.get(1).y,
                         game.mapDoor.get(1).x
-                    )
+                )
                 )
             }
 
             ElementType.KEY2 -> {
                 setPos(callingCharacter.typeId, Coordinate(aktEbene, y, x))
                 setPos(
-                    BACKGROUND, Coordinate(
+                        BACKGROUND, Coordinate(
                         aktEbene, game.mapDoor.get(2).y,
                         game.mapDoor.get(2).x
-                    )
+                )
                 )
             }
         }
@@ -356,18 +356,18 @@ class LevelHelper() : Timer_Arrow.TimerClock, Timer_Water.TimerClock, Timer_ice.
                 setPos(ElementType.SWITCH_CRATE_BLOCK, Coordinate(aktEbene, y, x))
                 if (Game.getGate() != null) {
                     setPos(
-                        newType = BACKGROUND,
-                        newCoord = Coordinate(
-                            Game.getGate()!![0],
-                            Game.getGate()!![1],
-                            Game.getGate()!![2]
-                        )
+                            newType = BACKGROUND,
+                            newCoord = Coordinate(
+                                    Game.getGate()!![0],
+                                    Game.getGate()!![1],
+                                    Game.getGate()!![2]
+                            )
                     )
                 }
                 changeLevel(
-                    levelo!!,
-                    ElementType.SWITCH_CRATE_BLOCK,
-                    newCoord
+                        levelo!!,
+                        ElementType.SWITCH_CRATE_BLOCK,
+                        newCoord
                 )
             }
         }
@@ -381,11 +381,11 @@ class LevelHelper() : Timer_Arrow.TimerClock, Timer_Water.TimerClock, Timer_ice.
                 OY = playY
                 OX = playX
                 setPos(
-                    getOldElementAt(
-                        OZ,
-                        OY,
-                        OX
-                    ).typeId, Coordinate(playZ, playY, playX)
+                        getOldElementAt(
+                                OZ,
+                                OY,
+                                OX
+                        ).typeId, Coordinate(playZ, playY, playX)
                 )
                 aktEbene = z
 
@@ -396,9 +396,9 @@ class LevelHelper() : Timer_Arrow.TimerClock, Timer_Water.TimerClock, Timer_ice.
         when (newType) {
             ElementType.MOVING_WATER -> {
                 levelData!![z][y][x] = Element.changeElement(
-                    ElementType.MOVING_WATER,
-                    ElementGroup.EMPTY,
-                    levelData!![z][y][x]
+                        ElementType.MOVING_WATER,
+                        ElementGroup.EMPTY,
+                        levelData!![z][y][x]
                 )
 
                 //MainActivity.getActivity().setImage(y, x, level!![aktEbene][y][x].image)
@@ -407,8 +407,8 @@ class LevelHelper() : Timer_Arrow.TimerClock, Timer_Water.TimerClock, Timer_ice.
 
             ElementType.MOVING_WOOD -> {
                 levelData!![z][y][x] = Element.changeElement(
-                    ElementType.MOVING_WOOD, ElementGroup.Destination,
-                    levelData!![z][y][x]
+                        ElementType.MOVING_WOOD, ElementGroup.Destination,
+                        levelData!![z][y][x]
                 )
 
                 game.setMoving(ElementType.MOVING_WOOD, z, y, x)
@@ -432,13 +432,13 @@ class LevelHelper() : Timer_Arrow.TimerClock, Timer_Water.TimerClock, Timer_ice.
         playX = Player.position.x
         playY = Player.position.y
 
-        if (arrowTimerRunning == false) {
+        if (!arrowTimerRunning) {
             val touchDirection = DirectionUtils.getTouchedDirection(touchY, touchX, playX, playY)
             checkMove(
-                direction = touchDirection,
-                Object = ElementType.PLAYER,
-                newCoord = Coordinate(aktEbene, playY, playX),
-                callingCharacter = levelData!![playZ][playY][playX]
+                    direction = touchDirection,
+                    Object = ElementType.PLAYER,
+                    newCoord = Coordinate(aktEbene, playY, playX),
+                    callingCharacter = levelData!![playZ][playY][playX]
             )
 
             teleport = false
@@ -448,8 +448,8 @@ class LevelHelper() : Timer_Arrow.TimerClock, Timer_Water.TimerClock, Timer_ice.
 
     // Prueft ob Bewegung/Verschiebung mglich ist
     fun checkMove(
-        direction: Direction, Object: Int, newCoord: Coordinate,
-        callingCharacter: Element
+            direction: Direction, Object: Int, newCoord: Coordinate,
+            callingCharacter: Element
     ) {
 
         val z = newCoord.z
@@ -515,35 +515,36 @@ class LevelHelper() : Timer_Arrow.TimerClock, Timer_Water.TimerClock, Timer_ice.
 
         if (Element.collectableList.contains(getElementAt(z, y, x).typeId)) {
             move_To_Collectable(
-                y,
-                x,
-                aktObject,
-                callingCharacter
+                    y,
+                    x,
+                    aktObject,
+                    callingCharacter
             )
         }
 
         if (Element.destinationsList.contains(getElementAt(z, y, x).typeId)) {
+
             move_to_destination(
-                direction,
-                Object,
-                y,
-                x,
-                callingCharacter,
-                dirX,
-                dirY,
-                aktObject
+                    direction,
+                    Object,
+                    y,
+                    x,
+                    callingCharacter,
+                    dirX,
+                    dirY,
+                    aktObject
             )
         }
 
         if (Element.moveablesList.contains(getElementAt(z, y, x).typeId)) {
             move_moveable(
-                direction,
-                newCoord,
-                callingCharacter,
-                dirX,
-                dirY,
-                aktObject,
-                nextObjectGroup
+                    direction,
+                    newCoord,
+                    callingCharacter,
+                    dirX,
+                    dirY,
+                    aktObject,
+                    nextObjectGroup
             )
         }
 
@@ -553,37 +554,37 @@ class LevelHelper() : Timer_Arrow.TimerClock, Timer_Water.TimerClock, Timer_ice.
         when (getElementAt(z, y, x).elementGroup) {
 
             ElementGroup.Arrow -> move_to_arrow(
-                direction,
-                y,
-                x,
-                callingCharacter,
-                dirX,
-                dirY,
-                aktObject
+                    direction,
+                    y,
+                    x,
+                    callingCharacter,
+                    dirX,
+                    dirY,
+                    aktObject
             )
 
 
             ElementGroup.charNPC -> move_character(
-                direction, z, y, x, callingCharacter, dirX, dirY, aktObject,
-                nextObjectGroup
+                    direction, z, y, x, callingCharacter, dirX, dirY, aktObject,
+                    nextObjectGroup
             )
 
             ElementGroup.charPlayer -> move_character(
-                direction, z, y, x, callingCharacter, dirX, dirY, aktObject,
-                nextObjectGroup
+                    direction, z, y, x, callingCharacter, dirX, dirY, aktObject,
+                    nextObjectGroup
             )
             ElementGroup.TeleportOut -> if (Object == ElementType.TELEIN1) {
                 checkMove(
-                    direction, aktObject,
-                    Coordinate(Game.getTeleOutPosZ(), y + dirY, x + dirX), callingCharacter
+                        direction, aktObject,
+                        Coordinate(Game.getTeleOutPosZ(), y + dirY, x + dirX), callingCharacter
                 )
             }
         }
     }
 
     private fun move_moveable(
-        direction: Direction, newCoord: Coordinate, callingCharacter: Element,
-        dirX: Int, dirY: Int, aktObject: Int, nextObjectDestination: ElementGroup
+            direction: Direction, newCoord: Coordinate, callingCharacter: Element,
+            dirX: Int, dirY: Int, aktObject: Int, nextObjectDestination: ElementGroup
     ) {
 
         val z = newCoord.z
@@ -606,7 +607,7 @@ class LevelHelper() : Timer_Arrow.TimerClock, Timer_Water.TimerClock, Timer_ice.
 
     fun Crate_block_can_move(nextObjectDestination: Int): Boolean {
         return Element.destinationsList.contains(nextObjectDestination) || Element.arrowList.contains(
-            nextObjectDestination
+                nextObjectDestination
         )
         //return nextObjectDestination == ElementGroup.Destination || nextObjectDestination == ElementGroup.Arrow
     }
@@ -614,7 +615,7 @@ class LevelHelper() : Timer_Arrow.TimerClock, Timer_Water.TimerClock, Timer_ice.
 
     fun Crate_blue_can_move(nextObjectDestination: Int): Boolean {
         return Element.moveablesList.contains(nextObjectDestination) || Element.destinationsList.contains(
-            nextObjectDestination
+                nextObjectDestination
         ) || Element.arrowList.contains(nextObjectDestination)
         // return nextObjectDestination == ElementGroup.Moveable || nextObjectDestination == ElementGroup.Destination || nextObjectDestination == ElementGroup.Arrow
     }
@@ -643,8 +644,8 @@ class LevelHelper() : Timer_Arrow.TimerClock, Timer_Water.TimerClock, Timer_ice.
     }
 
     private fun move_character(
-        direction: Direction, z: Int, y: Int, x: Int, callingCharacter: Element,
-        dirX: Int, dirY: Int, aktObject: Int, nextObjectGroup: ElementGroup
+            direction: Direction, z: Int, y: Int, x: Int, callingCharacter: Element,
+            dirX: Int, dirY: Int, aktObject: Int, nextObjectGroup: ElementGroup
     ) {
 
         when (aktObject) {
@@ -681,8 +682,8 @@ class LevelHelper() : Timer_Arrow.TimerClock, Timer_Water.TimerClock, Timer_ice.
 
 
     fun setLevel(
-        levelE: Array<Array<Array<Element>>>,
-        levelEo: Array<Array<Array<Element>>>
+            levelE: Array<Array<Array<Element>>>,
+            levelEo: Array<Array<Array<Element>>>
     ) {
         this.levelData = levelE
         this.levelo = levelEo
@@ -690,8 +691,8 @@ class LevelHelper() : Timer_Arrow.TimerClock, Timer_Water.TimerClock, Timer_ice.
 
 
     fun move_to_destination(
-        direction: Direction, Object: Int, y: Int, x: Int,
-        callingCharacter: Element, dirX: Int, dirY: Int, aktObject: Int
+            direction: Direction, Object: Int, y: Int, x: Int,
+            callingCharacter: Element, dirX: Int, dirY: Int, aktObject: Int
     ) {
 
         when (aktObject) {
@@ -727,23 +728,23 @@ class LevelHelper() : Timer_Arrow.TimerClock, Timer_Water.TimerClock, Timer_ice.
             }
 
             ElementType.MOVING_WOOD -> move(
-                aktObject,
-                direction,
-                y,
-                x,
-                dirX,
-                dirY,
-                callingCharacter
+                    aktObject,
+                    direction,
+                    y,
+                    x,
+                    dirX,
+                    dirY,
+                    callingCharacter
             )
 
             ElementType.TELEIN1 -> {
                 teleport = true
                 checkMove(
-                    direction, aktObject,
-                    Coordinate(
-                        Game.getTeleOutPosZ(), Game.getTeleOutPosY(),
-                        Game.getTeleOutPosX()
-                    ), callingCharacter
+                        direction, aktObject,
+                        Coordinate(
+                                Game.getTeleOutPosZ(), Game.getTeleOutPosY(),
+                                Game.getTeleOutPosX()
+                        ), callingCharacter
                 )
             }
 
@@ -758,21 +759,21 @@ class LevelHelper() : Timer_Arrow.TimerClock, Timer_Water.TimerClock, Timer_ice.
             }
 
             ElementType.SWITCH_CRATE_BLOCK -> move(
-                aktObject,
-                direction,
-                y,
-                x,
-                dirX,
-                dirY,
-                callingCharacter
+                    aktObject,
+                    direction,
+                    y,
+                    x,
+                    dirX,
+                    dirY,
+                    callingCharacter
             )
         }
     }
 
 
     fun move_to_arrow(
-        direction: Direction, y: Int, x: Int, callingCharacter: Element, dirX: Int,
-        dirY: Int, aktObject: Int
+            direction: Direction, y: Int, x: Int, callingCharacter: Element, dirX: Int,
+            dirY: Int, aktObject: Int
     ) {
 
         if (teleport) {
@@ -784,8 +785,8 @@ class LevelHelper() : Timer_Arrow.TimerClock, Timer_Water.TimerClock, Timer_ice.
 
     // MOVE BACKGROUND, HOLE, RED_BUTTON
     fun move(
-        aktObject: Int, direction: Direction, y: Int, x: Int, dirX: Int, dirY: Int,
-        callingCharacter: Element
+            aktObject: Int, direction: Direction, y: Int, x: Int, dirX: Int, dirY: Int,
+            callingCharacter: Element
     ) {
 
         var charX = 0
@@ -816,28 +817,28 @@ class LevelHelper() : Timer_Arrow.TimerClock, Timer_Water.TimerClock, Timer_ice.
 
                     if (i == x) {
                         setPos(
-                            getElementTypeAt(
-                                aktEbene,
-                                y,
-                                x - dirX
-                            ), Coordinate(aktEbene + 1, y, x)
+                                getElementTypeAt(
+                                        aktEbene,
+                                        y,
+                                        x - dirX
+                                ), Coordinate(aktEbene + 1, y, x)
                         )
                     } else {
                         setPos(
-                            getElementTypeAt(
-                                aktEbene,
-                                y,
-                                i - dirX
-                            ), Coordinate(aktEbene, y, i)
+                                getElementTypeAt(
+                                        aktEbene,
+                                        y,
+                                        i - dirX
+                                ), Coordinate(aktEbene, y, i)
                         )
                     }
                 } else {
                     setPos(
-                        getElementTypeAt(
-                            aktEbene,
-                            y,
-                            i - dirX
-                        ), Coordinate(aktEbene, y, i)
+                            getElementTypeAt(
+                                    aktEbene,
+                                    y,
+                                    i - dirX
+                            ), Coordinate(aktEbene, y, i)
                     )
                 }
                 i = i - dirX - dirY
@@ -852,28 +853,28 @@ class LevelHelper() : Timer_Arrow.TimerClock, Timer_Water.TimerClock, Timer_ice.
 
                     if (i == y) {
                         setPos(
-                            getElementTypeAt(
-                                aktEbene,
-                                y - dirY,
-                                x
-                            ), Coordinate(aktEbene + 1, y, x)
+                                getElementTypeAt(
+                                        aktEbene,
+                                        y - dirY,
+                                        x
+                                ), Coordinate(aktEbene + 1, y, x)
                         )
                     } else {
                         setPos(
-                            getElementTypeAt(
-                                aktEbene,
-                                i - dirY,
-                                x
-                            ), Coordinate(aktEbene, i, x)
+                                getElementTypeAt(
+                                        aktEbene,
+                                        i - dirY,
+                                        x
+                                ), Coordinate(aktEbene, i, x)
                         )
                     }
                 } else {
                     setPos(
-                        getElementTypeAt(
-                            aktEbene,
-                            i - dirY,
-                            x
-                        ), Coordinate(aktEbene, i, x)
+                            getElementTypeAt(
+                                    aktEbene,
+                                    i - dirY,
+                                    x
+                            ), Coordinate(aktEbene, i, x)
                     )
                 }
                 i = i - dirY - dirX
@@ -903,13 +904,13 @@ class LevelHelper() : Timer_Arrow.TimerClock, Timer_Water.TimerClock, Timer_ice.
                     if (i == tOX + dirX) {
 
                         setPos(
-                            getElementTypeAt(tIZ, tIY, tIX - dirX),
-                            Coordinate(tOZ, tOY, tOX + dirX)
+                                getElementTypeAt(tIZ, tIY, tIX - dirX),
+                                Coordinate(tOZ, tOY, tOX + dirX)
                         )
                     } else {
                         setPos(
-                            getElementTypeAt(tOZ, tOY, i - dirX),
-                            Coordinate(tOZ, tOY, i)
+                                getElementTypeAt(tOZ, tOY, i - dirX),
+                                Coordinate(tOZ, tOY, i)
                         )
                     }
                     i = i - dirX
@@ -922,8 +923,8 @@ class LevelHelper() : Timer_Arrow.TimerClock, Timer_Water.TimerClock, Timer_ice.
                 if (levelData!![tIZ][tIY][i].typeId != 0) {
 
                     setPos(
-                        getElementTypeAt(tIZ, tIY, i - dirX),
-                        Coordinate(tIZ, tIY, i)
+                            getElementTypeAt(tIZ, tIY, i - dirX),
+                            Coordinate(tIZ, tIY, i)
                     )
                 } else {
                     break
@@ -939,13 +940,13 @@ class LevelHelper() : Timer_Arrow.TimerClock, Timer_Water.TimerClock, Timer_ice.
 
                     if (i == tOY + dirY) {
                         setPos(
-                            getElementTypeAt(tIZ, tIY - dirY, tIX),
-                            Coordinate(tOZ, tOY + dirY, tOX)
+                                getElementTypeAt(tIZ, tIY - dirY, tIX),
+                                Coordinate(tOZ, tOY + dirY, tOX)
                         )
                     } else {
                         setPos(
-                            getElementTypeAt(tOZ, i - dirY, tOX),
-                            Coordinate(tOZ, i, tOX)
+                                getElementTypeAt(tOZ, i - dirY, tOX),
+                                Coordinate(tOZ, i, tOX)
                         )
                     }
                     i = i - dirY
@@ -957,8 +958,8 @@ class LevelHelper() : Timer_Arrow.TimerClock, Timer_Water.TimerClock, Timer_ice.
 
                 if (levelData!![tIZ][i][tIX].typeId != 0) {
                     setPos(
-                        getElementTypeAt(tIZ, i - dirY, tIX),
-                        Coordinate(tIZ, i, tIX)
+                            getElementTypeAt(tIZ, i - dirY, tIX),
+                            Coordinate(tIZ, i, tIX)
                     )
                 } else {
                     break
@@ -977,8 +978,8 @@ class LevelHelper() : Timer_Arrow.TimerClock, Timer_Water.TimerClock, Timer_ice.
                 || x + dirX >= levelData!![aktEbene][0].size
                 || y + dirY == -1
                 || y + dirY >= levelData!![aktEbene].size)
-        ||getElementAt(aktEbene, y + dirY, x + dirX).elementGroup==ElementGroup.WALL
-                ||getElementAt(aktEbene, y + dirY, x + dirX).elementGroup==ElementGroup.WALL
+                || getElementAt(aktEbene, y + dirY, x + dirX).elementGroup == ElementGroup.WALL
+                || getElementAt(aktEbene, y + dirY, x + dirX).elementGroup == ElementGroup.WALL
     }
 
     fun getOldElementAt(cord: Coordinate): Element {
@@ -1032,5 +1033,4 @@ class LevelHelper() : Timer_Arrow.TimerClock, Timer_Water.TimerClock, Timer_ice.
 
 interface RefreshListener {
     fun onRefresh()
-    // fun onSetPos()
 }
