@@ -27,7 +27,7 @@ class LevelHelper() : Timer_Arrow.TimerClock, Timer_Water.TimerClock, Timer_ice.
     @JvmField
     var aktEbene = 1
     @JvmField
-    var level: Array<Array<Array<Element>>>? = null
+    var levelData: Array<Array<Array<Element>>>? = null
     @JvmField
     var levelo: Array<Array<Array<Element>>>? = null
 
@@ -97,7 +97,7 @@ class LevelHelper() : Timer_Arrow.TimerClock, Timer_Water.TimerClock, Timer_ice.
                 dragElement
             )
 
-            level!![cord.z][cord.y][cord.x] = newElement
+            levelData!![cord.z][cord.y][cord.x] = newElement
 
             if (newElement is Removable) {
                 levelo!![cord.z][cord.y][cord.x] =  Element.elementFactory(ElementType.BACKGROUND,cord)
@@ -169,7 +169,7 @@ class LevelHelper() : Timer_Arrow.TimerClock, Timer_Water.TimerClock, Timer_ice.
         dirX = if (bMovingDirRight) 1 else -1
 
 
-        when (level!![mwZ][mwY][mwX].type) {
+        when (levelData!![mwZ][mwY][mwX].type) {
             ElementType.PLAYER -> {
                 setPlayer(mwZ, mwY, mwX + dirX)
                 setPos(
@@ -394,10 +394,10 @@ class LevelHelper() : Timer_Arrow.TimerClock, Timer_Water.TimerClock, Timer_ice.
 
         when (newType) {
             ElementType.MOVING_WATER -> {
-                level!![z][y][x] = Element.changeElement(
+                levelData!![z][y][x] = Element.changeElement(
                     ElementType.MOVING_WATER,
                     ElementGroup.EMPTY,
-                    level!![z][y][x]
+                    levelData!![z][y][x]
                 )
 
                 //MainActivity.getActivity().setImage(y, x, level!![aktEbene][y][x].image)
@@ -405,16 +405,16 @@ class LevelHelper() : Timer_Arrow.TimerClock, Timer_Water.TimerClock, Timer_ice.
             }
 
             ElementType.MOVING_WOOD -> {
-                level!![z][y][x] = Element.changeElement(
+                levelData!![z][y][x] = Element.changeElement(
                     ElementType.MOVING_WOOD, ElementGroup.Destination,
-                    level!![z][y][x]
+                    levelData!![z][y][x]
                 )
 
                 game.setMoving(ElementType.MOVING_WOOD, z, y, x)
                 listener?.onRefresh()
             }
             else -> {
-                changeLevel(level!!, newType, newCoord)
+                changeLevel(levelData!!, newType, newCoord)
 
                 //Prüfen ob was auf RedButton steht
                 checkIfRedButtonCovered(z, y, x)
@@ -437,7 +437,7 @@ class LevelHelper() : Timer_Arrow.TimerClock, Timer_Water.TimerClock, Timer_ice.
                 direction = touchDirection,
                 Object = ElementType.PLAYER,
                 newCoord = Coordinate(aktEbene, playY, playX),
-                callingCharacter = level!![playZ][playY][playX]
+                callingCharacter = levelData!![playZ][playY][playX]
             )
 
             teleport = false
@@ -473,7 +473,7 @@ class LevelHelper() : Timer_Arrow.TimerClock, Timer_Water.TimerClock, Timer_ice.
 
         var dirX = 0
         var dirY = 0
-        val aktObject = level!![z][y][x].type
+        val aktObject = levelData!![z][y][x].type
         var nextObjectGroup = ElementGroup.EMPTY
 
         playZ = Player.position.z
@@ -683,7 +683,7 @@ class LevelHelper() : Timer_Arrow.TimerClock, Timer_Water.TimerClock, Timer_ice.
         levelE: Array<Array<Array<Element>>>,
         levelEo: Array<Array<Array<Element>>>
     ) {
-        this.level = levelE
+        this.levelData = levelE
         this.levelo = levelEo
     }
 
@@ -918,7 +918,7 @@ class LevelHelper() : Timer_Arrow.TimerClock, Timer_Water.TimerClock, Timer_ice.
             var i = tIX - dirX
             while (i != playX) {
 
-                if (level!![tIZ][tIY][i].type != 0) {
+                if (levelData!![tIZ][tIY][i].type != 0) {
 
                     setPos(
                         getElementTypeAt(tIZ, tIY, i - dirX),
@@ -954,7 +954,7 @@ class LevelHelper() : Timer_Arrow.TimerClock, Timer_Water.TimerClock, Timer_ice.
             var i = tIY - dirY
             while (i != playY) {
 
-                if (level!![tIZ][i][tIX].type != 0) {
+                if (levelData!![tIZ][i][tIX].type != 0) {
                     setPos(
                         getElementTypeAt(tIZ, i - dirY, tIX),
                         Coordinate(tIZ, i, tIX)
@@ -973,9 +973,9 @@ class LevelHelper() : Timer_Arrow.TimerClock, Timer_Water.TimerClock, Timer_ice.
 
     fun isaWall(y: Int, x: Int, dirX: Int, dirY: Int): Boolean {
         return (x + dirX == -1
-                || x + dirX >= level!![aktEbene][0].size
+                || x + dirX >= levelData!![aktEbene][0].size
                 || y + dirY == -1
-                || y + dirY >= level!![aktEbene].size)
+                || y + dirY >= levelData!![aktEbene].size)
         ||getElementAt(aktEbene, y + dirY, x + dirX).elementGroup==ElementGroup.WALL
                 ||getElementAt(aktEbene, y + dirY, x + dirX).elementGroup==ElementGroup.WALL
     }
@@ -994,13 +994,13 @@ class LevelHelper() : Timer_Arrow.TimerClock, Timer_Water.TimerClock, Timer_ice.
 
 
     fun getElementAt(z: Int, y: Int, x: Int): Element {
-        return level!![z][y][x]
+        return levelData!![z][y][x]
     }
 
     fun checkIfRedButtonCovered(z: Int, y: Int, x: Int) {
         if (ElementType.RED_BUTTON == levelo!![z][y][x].type) {
 
-            if (ElementType.RED_BUTTON == level!![z][y][x].type) {
+            if (ElementType.RED_BUTTON == levelData!![z][y][x].type) {
                 handler?.removeCallbacks(timer_water)
             } else {
                 handler?.post(timer_water)

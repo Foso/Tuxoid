@@ -6,7 +6,7 @@ import de.jensklingenberg.tuxoid.utils.LoadGame
 
 
 interface LevelDataSource{
-    fun createLevel(aktLevel:Int)
+    fun loadLevel(aktLevel:Int)
     fun setListener(listener: LevelLoadListener)
     fun getLevelE(): Array<Array<Array<Element?>?>?>?
 
@@ -15,7 +15,7 @@ interface LevelDataSource{
 
 class LevelRepository(val loadGame: LoadGame): LevelDataSource{
 
-    override fun createLevel(aktLevel: Int) {
+    override fun loadLevel(aktLevel: Int) {
         loadGame.createLevel(aktLevel)
     }
 

@@ -2,7 +2,6 @@ package de.jensklingenberg.tuxoid.ui;
 
 import android.graphics.Point;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.Display;
 import android.view.DragEvent;
 import android.view.LayoutInflater;
@@ -18,44 +17,23 @@ import androidx.fragment.app.Fragment;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.io.IOException;
-
-import javax.inject.Inject;
-
 import de.jensklingenberg.tuxoid.App;
 import de.jensklingenberg.tuxoid.R;
-import de.jensklingenberg.tuxoid.data.LevelDataSource;
 import de.jensklingenberg.tuxoid.model.Coordinate;
 import de.jensklingenberg.tuxoid.model.GameImageView;
+import de.jensklingenberg.tuxoid.model.MyImage;
 import de.jensklingenberg.tuxoid.model.SidebarImageView;
 import de.jensklingenberg.tuxoid.model.element.Element;
-import de.jensklingenberg.tuxoid.utils.LevelHelper;
-import de.jensklingenberg.tuxoid.utils.LoadGame;
-import de.jensklingenberg.tuxoid.utils.LoadSidebar;
 
 public class MainFragment extends Fragment implements MainContract.View {
 
-    private static final String TAG = MainActivity.class.getSimpleName();
-
     private GridLayout grid;
     private ImageView[][] imgGameField;
-    public static String ARG_LEVEL = "ARG_LEVEL";
 
-    MainContract.Presenter presenter;
+    private MainContract.Presenter presenter;
 
-
-    @Inject
-    LevelHelper levelHelper;
-
-    @Inject
-    LevelDataSource levelDataSource;
-
-    @Inject
-    LoadSidebar loadSidebar;
-
-
-    GView gView;
-    View myView;
+    private GView gView;
+    private View myView;
 
     @Nullable
     @Override
@@ -68,82 +46,67 @@ public class MainFragment extends Fragment implements MainContract.View {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+       new MyImage(getContext());
+
         myView = view;
         presenter = new MainPresenter(this);
 
         gView = view.findViewById(R.id.canvas);
-        LinearLayout rel = myView.findViewById(R.id.sidebarLayout);
 
 
-        levelHelper.setListener(presenter);
         grid = myView.findViewById(R.id.glGame);
         if(getArguments()!=null){
-            String level = getArguments().getString(ARG_LEVEL);
+            String level =  MainFragmentArgs.fromBundle(getArguments()).component1();
+            presenter.createLevel(Integer.parseInt(level));
 
-
-        }
-        presenter.createLevel(Integer.parseInt("1"));
-
-
-
-
-
-        Element[][][] sidebar = loadSidebar.createLevel(levelHelper.aktLevel);
-
-        if (null != sidebar) {
-            for (Element[] elements : sidebar[0]) {
-                SidebarImageView side = new SidebarImageView(getContext(), elements[0]);
-
-                rel.addView(side);
-            }
         }
 
     }
 
 
 
+    @Override
+    public void onRefresh(@org.jetbrains.annotations.Nullable Element[][][] levelData, int aktEbene) {
+        gView.refresh(levelData, aktEbene);
+    }
 
-    private void initImgGameField(Element[][][] level) {
+    @Override
+    public void setGameData(@NotNull Element[][] levelData1, int aktEbene) {
 
         Display display = getActivity().getWindowManager().getDefaultDisplay();
         Point size = new Point();
         display.getSize(size);
         int width = size.x - 100;
         int height = size.y;
-        // grid.getLayoutParams().height = height;
-        //grid.getLayoutParams().width = width;
-
-        int lvlRows = level[levelHelper.aktEbene].length;
-        int lvlColums = level[levelHelper.aktEbene][0].length;
+        int lvlRows = levelData1.length;
+        int lvlColums = levelData1[0].length;
 
         grid.setRowCount(lvlRows);
         grid.setColumnCount(lvlColums);
 
         imgGameField = new ImageView[lvlRows][lvlColums];
 
-        //  imgGameField = GameImageView.initGameField(levelHelper.level);
-
         gView.setWidthL(width / lvlColums);
         gView.setHeightL(height / lvlRows);
 
         for (int y = 0; y < lvlRows; y++) {
 
-            for (int x = 0; x < level[levelHelper.aktEbene][y].length; x++) {
+            for (int x = 0; x < levelData1[y].length; x++) {
 
-                imgGameField[y][x] = new GameImageView(getContext(), levelHelper.level[levelHelper.aktEbene][y][x]);
+                imgGameField[y][x] = new GameImageView(getContext(), levelData1[y][x]);
                 imgGameField[y][x].setId(x);
                 imgGameField[y][x].setTag(new int[]{y, x});
                 imgGameField[y][x].setLayoutParams(new LinearLayout.LayoutParams(width / lvlColums, height / lvlRows));
                 imgGameField[y][x].setOnClickListener(v -> {
                     int[] coord = (int[]) v.getTag();
-                    screenTouched(coord[0], coord[1]);
+                    presenter.screenTouched(coord[0], coord[1]);
                 });
 
                 imgGameField[y][x].setOnDragListener((v, event) -> {
 
                     if (event.getAction() == DragEvent.ACTION_DROP) {
                         int[] cord = (int[]) v.getTag();
-                        levelHelper.onDrag(new Coordinate(levelHelper.aktEbene, cord[0], cord[1]), Sidebar.DragElement);
+                        presenter.onDrag(new Coordinate(aktEbene, cord[0], cord[1]), Sidebar.DragElement);
                     }
                     return true;
                 });
@@ -161,22 +124,16 @@ public class MainFragment extends Fragment implements MainContract.View {
 
     }
 
-    private void refresh() {
-        GView gView = myView.findViewById(R.id.canvas);
-        gView.refresh(levelHelper.level, levelHelper.aktEbene);
-    }
-
-    public void screenTouched(int y, int x) {
-        levelHelper.screenTouched(y, x);
-    }
-
     @Override
-    public void onRefresh() {
-        refresh();
-    }
+    public void setSidebarData(@NotNull Element[][][] sidebar) {
+        LinearLayout rel = getView().findViewById(R.id.sidebarLayout);
 
-    @Override
-    public void setGameData(@NotNull Element[][][] level) {
-        initImgGameField(level);
+        if (null != sidebar) {
+            for (Element[] elements : sidebar[0]) {
+                SidebarImageView side = new SidebarImageView(getContext(), elements[0]);
+
+                rel.addView(side);
+            }
+        }
     }
 }
