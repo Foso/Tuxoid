@@ -8,10 +8,64 @@ import de.jensklingenberg.tuxoid.model.element.ElementType
  * Created by jens on 18.04.17.
  */
 
-class Game {
+
+class FishData {
+
+    var fishCount = 0
+        internal set
+
+
+    fun addFish() {
+        fishCount++
+    }
+
+    //FISCH
+    fun eatFish() {
+        fishCount--
+    }
+
+    fun resetFish() {
+        fishCount = 0
+    }
+
+}
+
+class GameState {
+
+
+    val fishData = FishData()
+    var moving_Wood = IntArray(3)
+    val mapMoving = SparseArray<IntArray>()
+    val mapDoor: SparseArray<Coordinate>
+        get() = Companion.mapDoor
+
+    val mapKey: SparseArray<IntArray>
+        get() = Companion.mapKey
+
+    fun setMoving(type: Int, z: Int, y: Int, x: Int) {
+        when (type) {
+            ElementType.MOVING_WOOD -> {
+                moving_Wood = intArrayOf(z, y, x)
+
+            }
+        }
+
+
+        mapMoving.put(mapMoving.size() + 1, intArrayOf(z, y, x))
+
+
+    }
+
+
+    fun checkWin(): Boolean {
+        return fishData.fishCount == 0
+    }
+
+
 
 
     companion object {
+
 
         private var TeleInPos = IntArray(3)
         var mapKey = SparseArray<IntArray>()
@@ -84,53 +138,6 @@ class Game {
             return exitPos[2]
         }
     }
-
-
-    var moving_Wood = IntArray(3)
-    val mapMoving = SparseArray<IntArray>()
-
-
-    fun setMoving(type: Int, z: Int, y: Int, x: Int) {
-        when (type) {
-            ElementType.MOVING_WOOD -> {
-                moving_Wood = intArrayOf(z, y, x)
-
-            }
-        }
-
-
-        mapMoving.put(mapMoving.size() + 1, intArrayOf(z, y, x))
-
-
-    }
-
-
-    var fish = 0
-        internal set
-
-
-    fun addFish() {
-        fish++
-    }
-
-    //FISCH
-    fun eatFish() {
-        fish--
-    }
-
-    fun checkWin(): Boolean {
-        return fish == 0
-    }
-
-    fun resetFish() {
-        fish = 0
-    }
-
-    val mapDoor: SparseArray<Coordinate>
-        get() = Companion.mapDoor
-
-    val mapKey: SparseArray<IntArray>
-        get() = Companion.mapKey
 
 
 }

@@ -12,8 +12,8 @@ interface MvpPresenter{
 
 interface GameContract {
     interface View {
-        fun onRefresh(levelData: Array<Array<Array<Element>>>?, aktEbene: Int)
-        fun setGameData(level: Array<Array<Element>>, aktEbene: Int)
+        fun onRefresh(levelData: Array<Array<Element>>)
+        fun setGameData(level: Array<Array<Element>>)
         fun setSidebarData(sidebar: Array<Array<Array<Element>>>)
     }
 

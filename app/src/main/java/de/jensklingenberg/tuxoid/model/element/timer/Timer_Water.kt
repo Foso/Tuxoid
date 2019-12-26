@@ -2,20 +2,26 @@ package de.jensklingenberg.tuxoid.model.element.timer
 
 class Timer_Water
 /**
- * @param mainActivity
+ * @param timerClock
  */
-    (
-    /**
-     *
-     */
-    private val mainActivity: TimerClock?
+(
+        /**
+         *
+         */
+
 ) : Runnable {
+
+    private var timerClock: TimerClock? = null
+
+    fun setListener(timerClock: TimerClock) {
+        this.timerClock = timerClock
+    }
 
 
     override fun run() {
         /* do what you need to do */
 
-        mainActivity?.waterTimerUpdate()
+        timerClock?.waterTimerUpdate()
 
     }
 

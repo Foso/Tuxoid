@@ -2,17 +2,17 @@ package de.jensklingenberg.tuxoid.model.element.timer
 
 class Timer_ice
 /**
- * @param mainActivity
+ * @param timerClock
  */
     (
     /**
      *
      */
-    private val mainActivity: TimerClock
+    private val timerClock: TimerClock
 ) : Runnable {
 
     override fun run() {
-mainActivity.iceTimerUpdate()
+timerClock.iceTimerUpdate()
 
     }
 

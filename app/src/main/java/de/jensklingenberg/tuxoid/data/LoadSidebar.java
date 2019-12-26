@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
+import de.jensklingenberg.tuxoid.model.ElementFactory;
 import de.jensklingenberg.tuxoid.ui.MainActivity;
 import de.jensklingenberg.tuxoid.model.element.Element;
 
@@ -86,7 +87,7 @@ public class LoadSidebar {
 
                     for (int n = 0; n < num.length; n++) {
 
-                        Element ele = Element.Companion.elementFactory(Integer.parseInt(num[n]), ebene, i, n);
+                        Element ele = ElementFactory.elementFactory(Integer.parseInt(num[n]), ebene, i, n);
 
                         sidebarElement[ebene][i][n] = ele;
                     }

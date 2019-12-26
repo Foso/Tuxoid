@@ -5,6 +5,7 @@ import android.util.Log
 import de.jensklingenberg.tuxoid.interfaces.Removable
 import de.jensklingenberg.tuxoid.model.Coordinate
 import de.jensklingenberg.tuxoid.model.Direction
+import de.jensklingenberg.tuxoid.model.ElementFactory
 import de.jensklingenberg.tuxoid.model.element.*
 import de.jensklingenberg.tuxoid.model.element.character.NPC
 import de.jensklingenberg.tuxoid.model.element.character.Player
@@ -55,7 +56,7 @@ class LevelHelper() : Timer_Arrow.TimerClock, Timer_Water.TimerClock, Timer_ice.
 
     var refreshListener: RefreshListener? = null
 
-    var timer_water: Runnable? = null
+    var timer_water: Timer_Water? = null
     var timer_arrow: Runnable? = null
     var timer_ice: Runnable? = null
 
@@ -73,7 +74,7 @@ class LevelHelper() : Timer_Arrow.TimerClock, Timer_Water.TimerClock, Timer_ice.
                     ElementType.BACKGROUND, Coordinate(
                     aktEbene,
                     ObjectY, ObjectX
-            ), Element.elementFactory(type, ObjectZ, ObjectY, ObjectX)
+            ), ElementFactory.elementFactory(type, ObjectZ, ObjectY, ObjectX)
             )
 
             //  this.mainActivity.handler.postDelayed(this, 300);
@@ -92,7 +93,7 @@ class LevelHelper() : Timer_Arrow.TimerClock, Timer_Water.TimerClock, Timer_ice.
 
         if (getElementAt(cord).typeId == ElementType.BACKGROUND) {
 
-            val newElement = Element.changeElement(
+            val newElement = ElementFactory.changeElement(
                     dragElement.typeId,
                     dragElement.elementGroup,
                     dragElement
@@ -101,7 +102,7 @@ class LevelHelper() : Timer_Arrow.TimerClock, Timer_Water.TimerClock, Timer_ice.
             levelData!![cord.z][cord.y][cord.x] = newElement
 
             if (newElement is Removable) {
-                levelo!![cord.z][cord.y][cord.x] = Element.elementFactory(ElementType.BACKGROUND, cord)
+                levelo!![cord.z][cord.y][cord.x] = ElementFactory.elementFactory(ElementType.BACKGROUND, cord)
 
             } else {
                 levelo!![cord.z][cord.y][cord.x] = newElement
@@ -126,7 +127,7 @@ class LevelHelper() : Timer_Arrow.TimerClock, Timer_Water.TimerClock, Timer_ice.
                             Player.position.y,
                             Player.position.x
                     ),
-                    Element.elementFactory(
+                    ElementFactory.elementFactory(
                             ElementType.PLAYER, Player.position.z, Player.position.y,
                             Player.position.x
 
@@ -241,7 +242,7 @@ class LevelHelper() : Timer_Arrow.TimerClock, Timer_Water.TimerClock, Timer_ice.
                     Coordinate(
                             aktEbene, Player.position.y, Player.position.x
                     ),
-                    Element.elementFactory(
+                    ElementFactory.elementFactory(
                             ElementType.PLAYER, Player.position.z, Player.position.y,
                             Player.position.x
 
@@ -255,7 +256,9 @@ class LevelHelper() : Timer_Arrow.TimerClock, Timer_Water.TimerClock, Timer_ice.
 
 
     init {
-        timer_water = Timer_Water(this)
+        timer_water = Timer_Water().also {
+            it.setListener(this)
+        }
         timer_arrow = Timer_Arrow(this)
         timer_ice = Timer_ice(this)
         aktEbene = 0
@@ -313,7 +316,7 @@ class LevelHelper() : Timer_Arrow.TimerClock, Timer_Water.TimerClock, Timer_ice.
         when (aktObject) {
             ElementType.FISH -> {
                 setPos(callingCharacter.typeId, Coordinate(aktEbene, y, x))
-                game.eatFish()
+                game.fishData.eatFish()
             }
 
             ElementType.KEY1 -> {
@@ -354,13 +357,13 @@ class LevelHelper() : Timer_Arrow.TimerClock, Timer_Water.TimerClock, Timer_ice.
         when (oldType) {
             ElementType.SWITCH -> if (ElementType.CRATE_BLOCK == newType) {
                 setPos(ElementType.SWITCH_CRATE_BLOCK, Coordinate(aktEbene, y, x))
-                if (Game.getGate() != null) {
+                if (GameState.getGate() != null) {
                     setPos(
                             newType = BACKGROUND,
                             newCoord = Coordinate(
-                                    Game.getGate()!![0],
-                                    Game.getGate()!![1],
-                                    Game.getGate()!![2]
+                                    GameState.getGate()!![0],
+                                    GameState.getGate()!![1],
+                                    GameState.getGate()!![2]
                             )
                     )
                 }
@@ -395,7 +398,7 @@ class LevelHelper() : Timer_Arrow.TimerClock, Timer_Water.TimerClock, Timer_ice.
 
         when (newType) {
             ElementType.MOVING_WATER -> {
-                levelData!![z][y][x] = Element.changeElement(
+                levelData!![z][y][x] = ElementFactory.changeElement(
                         ElementType.MOVING_WATER,
                         ElementGroup.EMPTY,
                         levelData!![z][y][x]
@@ -406,7 +409,7 @@ class LevelHelper() : Timer_Arrow.TimerClock, Timer_Water.TimerClock, Timer_ice.
             }
 
             ElementType.MOVING_WOOD -> {
-                levelData!![z][y][x] = Element.changeElement(
+                levelData!![z][y][x] = ElementFactory.changeElement(
                         ElementType.MOVING_WOOD, ElementGroup.Destination,
                         levelData!![z][y][x]
                 )
@@ -513,7 +516,7 @@ class LevelHelper() : Timer_Arrow.TimerClock, Timer_Water.TimerClock, Timer_ice.
         }
 
 
-        if (Element.collectableList.contains(getElementAt(z, y, x).typeId)) {
+        if (ElementFactory.collectableList.contains(getElementAt(z, y, x).typeId)) {
             move_To_Collectable(
                     y,
                     x,
@@ -522,7 +525,7 @@ class LevelHelper() : Timer_Arrow.TimerClock, Timer_Water.TimerClock, Timer_ice.
             )
         }
 
-        if (Element.destinationsList.contains(getElementAt(z, y, x).typeId)) {
+        if (ElementFactory.destinationsList.contains(getElementAt(z, y, x).typeId)) {
 
             move_to_destination(
                     direction,
@@ -536,7 +539,7 @@ class LevelHelper() : Timer_Arrow.TimerClock, Timer_Water.TimerClock, Timer_ice.
             )
         }
 
-        if (Element.moveablesList.contains(getElementAt(z, y, x).typeId)) {
+        if (ElementFactory.moveablesList.contains(getElementAt(z, y, x).typeId)) {
             move_moveable(
                     direction,
                     newCoord,
@@ -576,7 +579,7 @@ class LevelHelper() : Timer_Arrow.TimerClock, Timer_Water.TimerClock, Timer_ice.
             ElementGroup.TeleportOut -> if (Object == ElementType.TELEIN1) {
                 checkMove(
                         direction, aktObject,
-                        Coordinate(Game.getTeleOutPosZ(), y + dirY, x + dirX), callingCharacter
+                        Coordinate(GameState.getTeleOutPosZ(), y + dirY, x + dirX), callingCharacter
                 )
             }
         }
@@ -606,7 +609,7 @@ class LevelHelper() : Timer_Arrow.TimerClock, Timer_Water.TimerClock, Timer_ice.
     }
 
     fun Crate_block_can_move(nextObjectDestination: Int): Boolean {
-        return Element.destinationsList.contains(nextObjectDestination) || Element.arrowList.contains(
+        return ElementFactory.destinationsList.contains(nextObjectDestination) || ElementFactory.arrowList.contains(
                 nextObjectDestination
         )
         //return nextObjectDestination == ElementGroup.Destination || nextObjectDestination == ElementGroup.Arrow
@@ -614,9 +617,9 @@ class LevelHelper() : Timer_Arrow.TimerClock, Timer_Water.TimerClock, Timer_ice.
 
 
     fun Crate_blue_can_move(nextObjectDestination: Int): Boolean {
-        return Element.moveablesList.contains(nextObjectDestination) || Element.destinationsList.contains(
+        return ElementFactory.moveablesList.contains(nextObjectDestination) || ElementFactory.destinationsList.contains(
                 nextObjectDestination
-        ) || Element.arrowList.contains(nextObjectDestination)
+        ) || ElementFactory.arrowList.contains(nextObjectDestination)
         // return nextObjectDestination == ElementGroup.Moveable || nextObjectDestination == ElementGroup.Destination || nextObjectDestination == ElementGroup.Arrow
     }
 
@@ -742,8 +745,8 @@ class LevelHelper() : Timer_Arrow.TimerClock, Timer_Water.TimerClock, Timer_ice.
                 checkMove(
                         direction, aktObject,
                         Coordinate(
-                                Game.getTeleOutPosZ(), Game.getTeleOutPosY(),
-                                Game.getTeleOutPosX()
+                                GameState.getTeleOutPosZ(), GameState.getTeleOutPosY(),
+                                GameState.getTeleOutPosX()
                         ), callingCharacter
                 )
             }
@@ -886,13 +889,13 @@ class LevelHelper() : Timer_Arrow.TimerClock, Timer_Water.TimerClock, Timer_ice.
     // Called when teleport found
     fun move_teleport(direction: Direction, y: Int, x: Int, dirX: Int, dirY: Int) {
 
-        val tOZ = Game.getTeleOutPosZ()
-        val tOY = Game.getTeleOutPosY()
-        val tOX = Game.getTeleOutPosX()
+        val tOZ = GameState.getTeleOutPosZ()
+        val tOY = GameState.getTeleOutPosY()
+        val tOX = GameState.getTeleOutPosX()
 
-        val tIZ = Game.getTeleInPosZ()
-        val tIY = Game.getTeleInPosY()
-        val tIX = Game.getTeleInPosX()
+        val tIZ = GameState.getTeleInPosZ()
+        val tIY = GameState.getTeleInPosY()
+        val tIX = GameState.getTeleInPosX()
 
         // Left Right
         if (DirectionUtils.DirectionLeftOrRight(direction)) {
@@ -1020,12 +1023,12 @@ class LevelHelper() : Timer_Arrow.TimerClock, Timer_Water.TimerClock, Timer_ice.
         val y = newCoord.y
         val x = newCoord.x
 
-        level[z][y][x] = Element.elementFactory(newType, z, y, x)
+        level[z][y][x] = ElementFactory.elementFactory(newType, z, y, x)
     }
 
     companion object {
         @JvmStatic
-        val game = Game()
+        val game = GameState()
 
     }
 

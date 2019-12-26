@@ -8,6 +8,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 
 import de.jensklingenberg.tuxoid.interfaces.Removable;
+import de.jensklingenberg.tuxoid.model.ElementFactory;
 import de.jensklingenberg.tuxoid.model.element.Element;
 import de.jensklingenberg.tuxoid.model.element.ElementType;
 
@@ -20,6 +21,11 @@ public class LoadGame {
 
     private LevelLoadListener loadListener;
     private AssetManager assetManager;
+
+
+    public static Element[][][] test(int stage, int cols, int row) {
+        return new Element[stage][cols][row];
+    }
 
 
     public LoadGame(AssetManager assetManager) {
@@ -36,8 +42,11 @@ public class LoadGame {
     }
 
     public void createLevel(String aktLevel) throws IOException {
-         Element[][][] levelE;
-         Element[][][] levelEo;
+        // Element[][][] levelE;
+        // Element[][][] levelEo;
+         Integer[][][] intLevel;
+        Integer[][][] intLevelo;
+
         int ebene = 0;
         String[] num = null;
         int colCount = 0; // Anzahl Felder/Spalten
@@ -65,8 +74,10 @@ public class LoadGame {
         BufferedReader reader2 = new BufferedReader(new InputStreamReader(in2));
         String line2;
 
-        levelE = new Element[ebene + 1][rowCount[0]][colCount];
-        levelEo = new Element[ebene + 1][rowCount[0]][colCount];
+      //  levelE = new Element[ebene + 1][rowCount[0]][colCount];
+      //  levelEo = new Element[ebene + 1][rowCount[0]][colCount];
+        intLevel = new Integer[ebene + 1][rowCount[0]][colCount];
+        intLevelo = new Integer[ebene + 1][rowCount[0]][colCount];
 
         int i = 0;
         ebene = 0;
@@ -81,13 +92,18 @@ public class LoadGame {
                 num = line2.split(",");
 
                 for (int n = 0; n < num.length; n++) {
-                    Element ele = Element.elementFactory(Integer.parseInt(num[n]), ebene, i, n);
+                    Element ele = ElementFactory.elementFactory(Integer.parseInt(num[n]), ebene, i, n);
 
-                    levelE[ebene][i][n] = ele;
-                    levelEo[ebene][i][n] = ele;
+                   // levelE[ebene][i][n] = ele;
+                   // levelEo[ebene][i][n] = ele;
+                    intLevel[ebene][i][n] = Integer.parseInt(num[n]);
+                    intLevelo[ebene][i][n] = Integer.parseInt(num[n]);
 
-                    if (levelEo[ebene][i][n] instanceof Removable) {
-                        levelEo[ebene][i][n] = Element.elementFactory(ElementType.BACKGROUND, ebene, i, n);
+
+                    if (ele instanceof Removable) {
+                       // levelEo[ebene][i][n] = ElementFactory.elementFactory(ElementType.BACKGROUND, ebene, i, n);
+                        intLevelo[ebene][i][n] = ElementType.BACKGROUND;
+
                     }
 
                 }
@@ -99,7 +115,7 @@ public class LoadGame {
         reader.close();
 
         if (loadListener != null) {
-            loadListener.onLevelLoaded(levelE, levelEo);
+            loadListener.onIntLevelLoaded(intLevel,intLevelo);
         }
 
     }

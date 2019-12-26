@@ -3,8 +3,9 @@ package de.jensklingenberg.tuxoid.data
 import de.jensklingenberg.tuxoid.model.element.Element
 
 interface LevelLoadListener {
-    fun onLevelLoaded(
-            levelE: Array<Array<Array<Element>>>,
-            oldLevel: Array<Array<Array<Element>>>
+
+    fun onIntLevelLoaded(
+            levelEint: Array<Array<Array<Int>>>,
+            oldLevelint: Array<Array<Array<Int>>>
     )
 }

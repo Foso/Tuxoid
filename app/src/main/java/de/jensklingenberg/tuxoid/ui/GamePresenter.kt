@@ -10,8 +10,7 @@ import javax.inject.Inject
 
 class GamePresenter(private val view: GameContract.View) : GameContract.Presenter {
 
-    @Inject
-    lateinit var levelHelper: LevelHelper
+
 
 
     @Inject
@@ -23,20 +22,13 @@ class GamePresenter(private val view: GameContract.View) : GameContract.Presente
     }
 
     override fun createLevel(level: Int) {
-        levelHelper.refreshListener = (this)
-
-        levelDataSource.setListener(object : LevelLoadListener {
-            override fun onLevelLoaded(levelE: Array<Array<Array<Element>>>, oldLevel: Array<Array<Array<Element>>>) {
-                levelHelper.setLevel(levelE, oldLevel)
-
-            }
-        })
-
+        levelDataSource.setRefreshListener(this)
+        levelDataSource.setListener()
 
         levelDataSource.loadLevel(level)
 
 
-        view.setGameData(levelHelper.levelData!![levelHelper.aktEbene]!!, levelHelper.aktEbene)
+        view.setGameData(levelDataSource.getLevelE()[levelDataSource.getAktEbene()])
 
         val sidebar: Array<Array<Array<Element>>>? = levelDataSource.loadSidebar(level)
         sidebar?.let {
@@ -46,16 +38,16 @@ class GamePresenter(private val view: GameContract.View) : GameContract.Presente
     }
 
     override fun screenTouched(touchY: Int, touchX: Int) {
-        levelHelper.screenTouched(touchY, touchX)
+        levelDataSource.screenTouched(touchY, touchX)
     }
 
     override fun onDrag(coordinate: Coordinate, dragElement: Element) {
-        levelHelper.onDrag(coordinate, dragElement)
+        levelDataSource.onDrag(coordinate, dragElement)
     }
 
 
     override fun onRefresh() {
-        view.onRefresh(levelHelper.levelData, levelHelper.aktEbene)
+        view.onRefresh(levelDataSource.getLevelE()[levelDataSource.getAktEbene()])
 
     }
 

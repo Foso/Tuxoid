@@ -17,7 +17,7 @@ open class AppModule(private val application: App) {
 
     @Provides
     @Singleton
-    fun provideAssetManager(context:Context): AssetManager = context.assets
+    fun provideAssetManager(context: Context): AssetManager = context.assets
 
 
     @Provides
@@ -26,7 +26,7 @@ open class AppModule(private val application: App) {
 
     @Provides
     @Singleton
-    fun provideLoadGame(context:Context): LoadGame = LoadGame(context.assets)
+    fun provideLoadGame(context: Context): LoadGame = LoadGame(context.assets)
 
     @Provides
     @Singleton
@@ -38,14 +38,14 @@ open class AppModule(private val application: App) {
 
     @Provides
     @Singleton
-    fun provideMyImage(context:Context): ImageRepository = ImageRepository(context)
+    fun provideMyImage(context: Context): ImageRepository = ImageRepository(context)
 
     @Provides
     @Singleton
-    fun provideImageSource(context:Context): ImageSource = ImageRepository(context)
+    fun provideImageSource(context: Context): ImageSource = ImageRepository(context)
 
     @Provides
     @Singleton
-    fun provideLevelDataSource(loadGame: LoadGame, loadSidebar: LoadSidebar): LevelDataSource = LevelRepository(loadGame,loadSidebar)
+    fun provideLevelDataSource(loadGame: LoadGame, loadSidebar: LoadSidebar, levelHelper: LevelHelper): LevelDataSource = LevelRepository(loadGame, loadSidebar, levelHelper)
 
 }
