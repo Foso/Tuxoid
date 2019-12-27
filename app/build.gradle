@@ -3,11 +3,11 @@ buildscript {
 }
 
 
-
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'androidx.navigation.safeargs.kotlin'
+apply plugin: 'kotlin-android-extensions'
 
 android {
     packagingOptions {
@@ -71,7 +71,7 @@ dependencies {
     implementation "com.google.dagger:dagger-android-support:2.25.3"
     // if you use the support libraries
     kapt "com.google.dagger:dagger-compiler:2.25.3"
-   kapt "com.google.dagger:dagger-android-processor:2.25.3"
+    kapt "com.google.dagger:dagger-android-processor:2.25.3"
 
     //NavigationLib
     implementation "androidx.navigation:navigation-fragment-ktx:$libs.androidX.nav_version"
@@ -81,6 +81,7 @@ dependencies {
     //RxJava
     implementation "io.reactivex.rxjava2:rxandroid:2.1.0"
     implementation "io.reactivex.rxjava2:rxjava:2.2.2"
+    implementation "io.reactivex.rxjava2:rxkotlin:${libs.rxkotlin}"
 }
 repositories {
     mavenCentral()

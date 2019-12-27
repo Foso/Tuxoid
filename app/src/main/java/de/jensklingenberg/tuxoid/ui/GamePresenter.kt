@@ -1,12 +1,19 @@
 package de.jensklingenberg.tuxoid.ui
 
 import de.jensklingenberg.tuxoid.App
+import de.jensklingenberg.tuxoid.data.Array3D
 import de.jensklingenberg.tuxoid.data.LevelDataSource
 import de.jensklingenberg.tuxoid.model.Coordinate
 import de.jensklingenberg.tuxoid.model.element.Element
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.rxkotlin.addTo
+import io.reactivex.rxkotlin.subscribeBy
+import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
 class GamePresenter(private val view: GameContract.View) : GameContract.Presenter {
+val compositeDisposable = CompositeDisposable()
 
     @Inject
     lateinit var levelDataSource: LevelDataSource
@@ -15,18 +22,21 @@ class GamePresenter(private val view: GameContract.View) : GameContract.Presente
         App.appComponent.inject(this)
     }
 
-    override fun createLevel(level: Int) {
+    override fun createLevel(levelId: Int) {
         levelDataSource.setRefreshListener(this)
-        levelDataSource.setListener()
 
-        levelDataSource.loadLevel(level)
+        levelDataSource.loadLevel(levelId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(
+                        AndroidSchedulers.mainThread()
+                ).subscribeBy(onSuccess = {level->
+                    view.setGameData(level.foregroundlevelData[levelDataSource.getAktEbene()])
+                }).addTo(compositeDisposable)
 
 
-        view.setGameData(levelDataSource.getLevelE()[levelDataSource.getAktEbene()])
-
-        val sidebar: Array<Array<Array<Element>>>? = levelDataSource.loadSidebar(level)
+        val sidebar: Array3D<Element>? = levelDataSource.loadSidebar(levelId)
         sidebar?.let {
-            { sidebar: Array<Array<Array<Element>>> -> view.setSidebarData(sidebar) }
+            { sidebar: Array3D<Element> -> view.setSidebarData(sidebar) }
         }
 
     }
@@ -50,7 +60,7 @@ class GamePresenter(private val view: GameContract.View) : GameContract.Presente
     }
 
     override fun onDestroy() {
-
+        compositeDisposable.dispose()
     }
 
 

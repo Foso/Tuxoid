@@ -2,35 +2,42 @@ package de.jensklingenberg.tuxoid.data
 
 import de.jensklingenberg.tuxoid.model.Coordinate
 import de.jensklingenberg.tuxoid.model.element.Element
+import io.reactivex.Single
+
+typealias Array3D<T> = Array<Array<Array<T>>>
+
+typealias Array2D<T> = Array<Array<T>>
 
 
 class LevelRepository(private val loadGame: LoadGame, private val loadSidebar: LoadSidebar, private val levelHelper: LevelHelper,val gameState: GameState) : LevelDataSource {
 
-    private var levelE: Array<Array<Array<Element>>> = arrayOf()
-    private var levelEo: Array<Array<Array<Element>>> = arrayOf()
+    private var levelE: Array3D<Element> = arrayOf()
+    private var levelEo: Array3D<Element> = arrayOf()
 
 
-    override fun loadLevel(aktLevel: Int) {
-        loadGame.createLevel(aktLevel)
+
+    override fun loadLevel(aktLevel: Int) : Single<Level> {
+      return Single.create<Level> {emitter->
+            loadGame.setListener(object : LevelLoadListener {
+
+                override fun onIntLevelLoaded(levelEint: Array3D<Int>, oldLevelint: Array3D<Int>) {
+                    this@LevelRepository.levelE = ElementFactory.mapToElement(levelEint)
+                    this@LevelRepository.levelEo = ElementFactory.mapToElement(oldLevelint)
+                    gameState.setLevel(Level(levelE, levelEo))
+                    val level = Level(levelE,levelEo)
+                    emitter.onSuccess(level)
+                }
+
+            })
+            loadGame.createLevel(aktLevel)
+
+        }
+
     }
 
-    override fun setListener() {
 
-        loadGame.setListener(object : LevelLoadListener {
 
-            override fun onIntLevelLoaded(levelEint: Array<Array<Array<Int>>>, oldLevelint: Array<Array<Array<Int>>>) {
-                this@LevelRepository.levelE = ElementFactory.mapToElement(levelEint)
-                this@LevelRepository.levelEo = ElementFactory.mapToElement(oldLevelint)
-                // listener.onLevelLoaded(levelE!!,levelEo!!)
-                levelHelper.setLevel(levelE, levelEo)
-
-            }
-
-        })
-
-    }
-
-    override fun getLevelE(): Array<Array<Array<Element>>> {
+    override fun getLevelE(): Array3D<Element> {
         return levelE
     }
 
@@ -38,11 +45,11 @@ class LevelRepository(private val loadGame: LoadGame, private val loadSidebar: L
         levelHelper.refreshListener = refreshListener
     }
 
-    override fun getLevelOld(): Array<Array<Array<Element>>> {
+    override fun getLevelOld(): Array3D<Element> {
         return levelEo
     }
 
-    override fun loadSidebar(aktLevel: Int): Array<Array<Array<Element>>>? {
+    override fun loadSidebar(aktLevel: Int): Array3D<Element>? {
         return loadSidebar.createLevel(aktLevel)
     }
 

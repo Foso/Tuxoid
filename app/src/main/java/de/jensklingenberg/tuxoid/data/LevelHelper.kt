@@ -26,24 +26,22 @@ class LevelHelper(private val gameState: GameState, private val elementDataSourc
     var handler: Handler = Handler()
 
 
-    @JvmField
+    
     var arrowTimerRunning = false
-    @JvmField
+    
     var iceTimerRunning = false
 
-    @JvmField
     var OZ = 0
 
-    @JvmField
     var OY = 0
-    @JvmField
+
     var OX = 0
 
-    @JvmField
+    
     var playZ: Int = 0
-    @JvmField
+    
     var playX: Int = 0
-    @JvmField
+    
     var playY: Int = 0
 
 
@@ -79,8 +77,6 @@ class LevelHelper(private val gameState: GameState, private val elementDataSourc
             ), elementDataSource.createElement(type, Coordinate(ObjectZ, ObjectY, ObjectX))
             )
 
-            //  this.mainActivity.handler.postDelayed(this, 300);
-
             NPC.startTimer(npc, 200, this, type)
 
         } else {
@@ -101,13 +97,13 @@ class LevelHelper(private val gameState: GameState, private val elementDataSourc
                     dragElement
             )
 
-            gameState.levelData!![cord.z][cord.y][cord.x] = newElement
+            gameState.levelData!![cord] = newElement
 
             if (newElement is Removable) {
-                gameState.levelo!![cord.z][cord.y][cord.x] = elementDataSource.createElement(BACKGROUND, cord)
+                gameState.levelo!![cord] = elementDataSource.createElement(BACKGROUND, cord)
 
             } else {
-                gameState.levelo!![cord.z][cord.y][cord.x] = newElement
+                gameState.levelo!![cord] = newElement
 
             }
 
@@ -257,8 +253,6 @@ class LevelHelper(private val gameState: GameState, private val elementDataSourc
     }
 
 
-
-
     fun handleNPC(npcCoord: Coordinate, id: Int) {
         OZ = NPC.getMapNpcPosZ(id)
         OY = NPC.getMapNpcPosY(id)
@@ -289,7 +283,11 @@ class LevelHelper(private val gameState: GameState, private val elementDataSourc
         }
     }
 
-    fun activateArrow(z: Int, y: Int, x: Int) {
+    fun activateArrow(coordinate: Coordinate) {
+        val z = coordinate.z
+        val x = coordinate.x
+        val y = coordinate.y
+
         /*Sorgt dafür das Arrows aktiviert werden, wenn der Player darauf tritt */
         if (gameState.levelo!![z][y][x].elementGroup == ElementGroup.Arrow) {
 
@@ -379,14 +377,14 @@ class LevelHelper(private val gameState: GameState, private val elementDataSourc
                 OX = playX
                 setPos(
                         getOldElementAt(
-                               Coordinate( OZ,
-                                       OY,
-                                       OX)
+                                Coordinate(OZ,
+                                        OY,
+                                        OX)
                         ).typeId, Coordinate(playZ, playY, playX)
                 )
                 gameState.aktEbene = z
 
-                activateArrow(z, y, x)
+                activateArrow(Coordinate(z, y, x))
             }
         }
 
@@ -678,13 +676,7 @@ class LevelHelper(private val gameState: GameState, private val elementDataSourc
     }
 
 
-    fun setLevel(
-            levelE: Array<Array<Array<Element>>>,
-            levelEo: Array<Array<Array<Element>>>
-    ) {
-        this.gameState.levelData = levelE
-        this.gameState.levelo = levelEo
-    }
+
 
 
     fun move_to_destination(
@@ -1018,6 +1010,11 @@ class LevelHelper(private val gameState: GameState, private val elementDataSourc
     }
 
 
-
 }
+
+private operator fun <Element> Array3D<Element>.set(cord: Coordinate, value: Element) {
+    this[cord.z][cord.y][cord.x]=value
+}
+
+
 

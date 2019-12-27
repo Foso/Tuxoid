@@ -41,9 +41,9 @@ class GameState {
     var aktEbene = 1
 
     @JvmField
-    var levelData: Array<Array<Array<Element>>>? = null
+    var levelData: Array3D<Element>? = null
     @JvmField
-    var levelo: Array<Array<Array<Element>>>? = null
+    var levelo: Array3D<Element>? = null
 
 
     private var TeleInPos = IntArray(3)
@@ -77,7 +77,12 @@ class GameState {
         return fishData.fishCount == 0
     }
 
-
+    fun setLevel(
+            level: Level
+    ) {
+        this.levelData = level.foregroundlevelData
+        this.levelo = level.backgroundlevelData
+    }
 
 
     companion object {

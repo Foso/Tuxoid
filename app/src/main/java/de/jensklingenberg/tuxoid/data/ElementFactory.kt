@@ -85,7 +85,7 @@ class ElementFactory : ElementDataSource {
 
 
         @JvmStatic
-        private fun elementFactory(type: Int, z: Int, y: Int, x: Int): Element {
+        fun elementFactory(type: Int, z: Int, y: Int, x: Int): Element {
 
             if (ElementType.ArrowGroup.isInThisGroup(type)) {
 

@@ -6,6 +6,7 @@ import android.graphics.Rect
 import android.util.AttributeSet
 import android.view.View
 import de.jensklingenberg.tuxoid.App
+import de.jensklingenberg.tuxoid.data.Array2D
 import de.jensklingenberg.tuxoid.data.ImageSource
 import de.jensklingenberg.tuxoid.model.element.Element
 import javax.inject.Inject
@@ -19,7 +20,7 @@ class GView(context: Context?, attrs: AttributeSet?) : View(context, attrs) {
     @Inject
     lateinit var imageSource: ImageSource
 
-    private var level: Array<Array<Element>>? = null
+    private var level: Array2D<Element>? = null
     var widthL = 50
     var heightL = 50
 

@@ -41,9 +41,8 @@ public class LoadGame {
     }
 
     public void createLevel(String aktLevel) throws IOException {
-        // Element[][][] levelE;
-        // Element[][][] levelEo;
-         Integer[][][] intLevel;
+
+        Integer[][][] intLevel;
         Integer[][][] intLevelo;
 
         int ebene = 0;
@@ -73,8 +72,6 @@ public class LoadGame {
         BufferedReader reader2 = new BufferedReader(new InputStreamReader(in2));
         String line2;
 
-      //  levelE = new Element[ebene + 1][rowCount[0]][colCount];
-      //  levelEo = new Element[ebene + 1][rowCount[0]][colCount];
         intLevel = new Integer[ebene + 1][rowCount[0]][colCount];
         intLevelo = new Integer[ebene + 1][rowCount[0]][colCount];
 
@@ -91,22 +88,16 @@ public class LoadGame {
                 num = line2.split(",");
 
                 for (int n = 0; n < num.length; n++) {
-                    Element ele = ElementFactory.elementFactory(Integer.parseInt(num[n]), ebene, i, n);
+                    Element element = ElementFactory.elementFactory(Integer.parseInt(num[n]), ebene, i, n);
 
-                   // levelE[ebene][i][n] = ele;
-                   // levelEo[ebene][i][n] = ele;
                     intLevel[ebene][i][n] = Integer.parseInt(num[n]);
                     intLevelo[ebene][i][n] = Integer.parseInt(num[n]);
 
 
-                    if (ele instanceof Removable) {
-                       // levelEo[ebene][i][n] = ElementFactory.elementFactory(ElementType.BACKGROUND, ebene, i, n);
+                    if (element instanceof Removable) {
                         intLevelo[ebene][i][n] = ElementType.BACKGROUND;
-
                     }
-
                 }
-
                 i++;
             }
 
