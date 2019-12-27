@@ -4,18 +4,12 @@ import de.jensklingenberg.tuxoid.App
 import de.jensklingenberg.tuxoid.data.LevelDataSource
 import de.jensklingenberg.tuxoid.model.Coordinate
 import de.jensklingenberg.tuxoid.model.element.Element
-import de.jensklingenberg.tuxoid.data.LevelHelper
-import de.jensklingenberg.tuxoid.data.LevelLoadListener
 import javax.inject.Inject
 
 class GamePresenter(private val view: GameContract.View) : GameContract.Presenter {
 
-
-
-
     @Inject
     lateinit var levelDataSource: LevelDataSource
-
 
     init {
         App.appComponent.inject(this)
@@ -46,8 +40,8 @@ class GamePresenter(private val view: GameContract.View) : GameContract.Presente
     }
 
 
-    override fun onRefresh() {
-        view.onRefresh(levelDataSource.getLevelE()[levelDataSource.getAktEbene()])
+    override fun onRefresh(arrayOfArrays: Array<Array<Element>>) {
+        view.onRefresh(arrayOfArrays)
 
     }
 

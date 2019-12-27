@@ -8,7 +8,7 @@ import de.jensklingenberg.tuxoid.model.element.ElementGroup
  * Created by jens on 18.04.17.
  */
 
-open class Destination(type: Int, z: Int, y: Int, x: Int) : Element(type, z, y, x), IReachable {
+open class Destination(type: Int) : Element(type), IReachable {
 
 
     override val elementGroup =  ElementGroup.Destination

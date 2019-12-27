@@ -1,11 +1,10 @@
 package de.jensklingenberg.tuxoid.data
 
 import de.jensklingenberg.tuxoid.model.Coordinate
-import de.jensklingenberg.tuxoid.model.ElementFactory
 import de.jensklingenberg.tuxoid.model.element.Element
 
 
-class LevelRepository(private val loadGame: LoadGame, private val loadSidebar: LoadSidebar, private val levelHelper: LevelHelper) : LevelDataSource {
+class LevelRepository(private val loadGame: LoadGame, private val loadSidebar: LoadSidebar, private val levelHelper: LevelHelper,val gameState: GameState) : LevelDataSource {
 
     private var levelE: Array<Array<Array<Element>>> = arrayOf()
     private var levelEo: Array<Array<Array<Element>>> = arrayOf()
@@ -47,10 +46,9 @@ class LevelRepository(private val loadGame: LoadGame, private val loadSidebar: L
         return loadSidebar.createLevel(aktLevel)
     }
 
-    override fun getGame() = GameState()
 
     override fun getAktEbene(): Int {
-        return levelHelper.aktEbene
+        return gameState.aktEbene
     }
 
     override fun screenTouched(touchY: Int, touchX: Int) {

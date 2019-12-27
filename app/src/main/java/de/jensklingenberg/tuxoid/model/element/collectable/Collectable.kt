@@ -9,7 +9,7 @@ import de.jensklingenberg.tuxoid.model.element.ElementGroup
  */
 
 open class Collectable internal constructor(type: Int, z: Int, y: Int, x: Int) :
-    Element(type, z, y, x), IReachable {
+    Element(type), IReachable {
 
     override val elementGroup= ElementGroup.Collectable
 

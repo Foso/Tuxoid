@@ -32,14 +32,11 @@ open class Element : IElementGroup {
     private var group: ElementGroup? = null
 
 
-    constructor(type: Int, z: Int, y: Int, x: Int) {
+    constructor(type: Int) {
         this.typeId = type
         this.image = imageSource.loadBitmap(type)
 
     }
-
-
-    constructor() {}
 
 
     fun setGroup(group: ElementGroup) {
@@ -54,29 +51,30 @@ open class Element : IElementGroup {
     }
 }
 
-class Door(type: Int, z: Int, y: Int, x: Int) : Element(type, z, y, x), Removable
-class Exit(type: Int, z: Int, y: Int, x: Int) : Element(type, z, y, x)
-class Fish(z: Int, y: Int, x: Int) : Element(ElementType.FISH, z, y, x), Removable
-class Gate(type: Int, z: Int, y: Int, x: Int) : Element(type, z, y, x), Removable
-class Gate_Half(type: Int, z: Int, y: Int, x: Int) : Destination(type, z, y, x)
-class Hole1(type: Int, z: Int, y: Int, x: Int) : Destination(type, z, y, x)
-class Ice(z: Int, y: Int, x: Int) : Destination(ElementType.ICE, z, y, x)
-class Key(type: Int, z: Int, y: Int, x: Int) : Element(type, z, y, x), ICollectable, Removable
-class Ladder_Down(type: Int, z: Int, y: Int, x: Int) : Destination(type, z, y, x)
-class Ladder_Up(type: Int, z: Int, y: Int, x: Int) : Destination(type, z, y, x)
-class Moving_Water(type: Int, z: Int, y: Int, x: Int) : Element(type, z, y, x)
-class Moving_Wood(type: Int, z: Int, y: Int, x: Int) : Destination(type, z, y, x)
-class Red_Button(type: Int, z: Int, y: Int, x: Int) : Destination(type, z, y, x)
-class Switch(type: Int, z: Int, y: Int, x: Int) : Destination(type, z, y, x)
-class Switch_Crate_Block(type: Int, z: Int, y: Int, x: Int) : Destination(type, z, y, x)
-class TeleIn1(type: Int, z: Int, y: Int, x: Int) : Element(type, z, y, x)
-class Crate_Block(type: Int, z: Int, y: Int, x: Int) : Element(type, z, y, x), Moveable, Removable
-class Crate_Blue(type: Int, z: Int, y: Int, x: Int) : Element(type, z, y, x), Moveable, Removable
-class TeleOut1(type: Int, z: Int, y: Int, x: Int) : Element(type, z, y, x) {
+class Door(type: Int) : Element(type), Removable
+class Exit(type: Int) : Element(type)
+class Fish : Element(ElementType.FISH), Removable
+class Gate(type: Int) : Element(type), Removable
+class Gate_Half(type: Int) : Destination(type)
+class Hole1(type: Int) : Destination(type)
+class Ice : Destination(ElementType.ICE)
+class Key(type: Int) : Element(type), ICollectable, Removable
+class LadderDown(type: Int) : Destination(type)
+class Ladder_Up(type: Int) : Destination(type)
+class Moving_Water(type: Int) : Element(type)
+class Moving_Wood(type: Int) : Destination(type)
+class Red_Button(type: Int) : Destination(type)
+class Switch(type: Int) : Destination(type)
+class Switch_Crate_Block(type: Int) : Destination(type)
+class TeleIn1(type: Int) : Element(type)
+class CrateBlock(type: Int) : Element(type), Moveable, Removable
+class CrateBlue(type: Int) : Element(type), Moveable, Removable
+class TeleOut1(type: Int) : Element(type) {
+    override val imageResId: Int= R.drawable.portal_blue
     override val elementGroup = ElementGroup.TeleportOut
 }
 
-class Wall(z: Int, y: Int, x: Int) : Element(ElementType.WALL, z, y, x) {
+class Wall : Element(ElementType.WALL) {
     override val elementGroup = ElementGroup.WALL
     override val imageResId = R.drawable.wallp
 }

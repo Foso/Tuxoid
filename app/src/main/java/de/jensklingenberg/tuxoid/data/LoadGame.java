@@ -8,7 +8,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 
 import de.jensklingenberg.tuxoid.interfaces.Removable;
-import de.jensklingenberg.tuxoid.model.ElementFactory;
 import de.jensklingenberg.tuxoid.model.element.Element;
 import de.jensklingenberg.tuxoid.model.element.ElementType;
 

@@ -30,7 +30,11 @@ open class AppModule(private val application: App) {
 
     @Provides
     @Singleton
-    fun provideLevelHelper(): LevelHelper = LevelHelper()
+    fun provideGameStatee(): GameState = GameState()
+
+    @Provides
+    @Singleton
+    fun provideLevelHelper(gameState: GameState,elementDataSource: ElementDataSource): LevelHelper = LevelHelper(gameState,elementDataSource)
 
     @Provides
     @Singleton
@@ -46,6 +50,10 @@ open class AppModule(private val application: App) {
 
     @Provides
     @Singleton
-    fun provideLevelDataSource(loadGame: LoadGame, loadSidebar: LoadSidebar, levelHelper: LevelHelper): LevelDataSource = LevelRepository(loadGame, loadSidebar, levelHelper)
+    fun provideElementDataSource(): ElementDataSource = ElementFactory()
+
+    @Provides
+    @Singleton
+    fun provideLevelDataSource(loadGame: LoadGame, loadSidebar: LoadSidebar, levelHelper: LevelHelper,gameState: GameState): LevelDataSource = LevelRepository(loadGame, loadSidebar, levelHelper, gameState)
 
 }

@@ -8,8 +8,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-import de.jensklingenberg.tuxoid.model.ElementFactory;
-import de.jensklingenberg.tuxoid.ui.MainActivity;
 import de.jensklingenberg.tuxoid.model.element.Element;
 
 public class LoadSidebar {

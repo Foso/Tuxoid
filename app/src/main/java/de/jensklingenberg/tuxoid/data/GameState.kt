@@ -2,6 +2,7 @@ package de.jensklingenberg.tuxoid.data
 
 import android.util.SparseArray
 import de.jensklingenberg.tuxoid.model.Coordinate
+import de.jensklingenberg.tuxoid.model.element.Element
 import de.jensklingenberg.tuxoid.model.element.ElementType
 
 /**
@@ -31,6 +32,21 @@ class FishData {
 }
 
 class GameState {
+
+    init {
+        Companion.gameState = this
+    }
+
+    @JvmField
+    var aktEbene = 1
+
+    @JvmField
+    var levelData: Array<Array<Array<Element>>>? = null
+    @JvmField
+    var levelo: Array<Array<Array<Element>>>? = null
+
+
+    private var TeleInPos = IntArray(3)
 
 
     val fishData = FishData()
@@ -66,8 +82,12 @@ class GameState {
 
     companion object {
 
+        lateinit var gameState : GameState
 
-        private var TeleInPos = IntArray(3)
+        fun getInstance(): GameState {
+            return gameState
+        }
+
         var mapKey = SparseArray<IntArray>()
 
         internal var gate: IntArray? = null
@@ -95,21 +115,21 @@ class GameState {
 
 
         fun setTeleInPos(z: Int, y: Int, x: Int) {
-            TeleInPos = intArrayOf(z, y, x)
+            gameState.TeleInPos = intArrayOf(z, y, x)
         }
 
 
         //TELEIN
         fun getTeleInPosZ(): Int {
-            return TeleInPos[0]
+            return gameState.TeleInPos[0]
         }
 
         fun getTeleInPosY(): Int {
-            return TeleInPos[1]
+            return gameState.TeleInPos[1]
         }
 
         fun getTeleInPosX(): Int {
-            return TeleInPos[2]
+            return gameState.TeleInPos[2]
         }
 
 
