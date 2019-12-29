@@ -8,6 +8,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 
 import de.jensklingenberg.tuxoid.interfaces.Removable;
+import de.jensklingenberg.tuxoid.model.Coordinate;
 import de.jensklingenberg.tuxoid.model.element.Element;
 import de.jensklingenberg.tuxoid.model.element.ElementType;
 
@@ -88,7 +89,7 @@ public class GameLoader {
                 num = line2.split(",");
 
                 for (int n = 0; n < num.length; n++) {
-                    Element element = ElementFactory.elementFactory(Integer.parseInt(num[n]), ebene, i, n);
+                    Element element = ElementFactory.parseElement(Integer.parseInt(num[n]), new Coordinate(ebene, i, n));
 
                     intLevel[ebene][i][n] = Integer.parseInt(num[n]);
                     intLevelo[ebene][i][n] = Integer.parseInt(num[n]);

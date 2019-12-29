@@ -1,4 +1,4 @@
-package de.jensklingenberg.tuxoid.model.element.character
+package de.jensklingenberg.tuxoid.model.element.player
 
 import de.jensklingenberg.tuxoid.model.Coordinate
 import de.jensklingenberg.tuxoid.model.Direction

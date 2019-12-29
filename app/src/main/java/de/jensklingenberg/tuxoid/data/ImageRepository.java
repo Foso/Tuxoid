@@ -3,12 +3,10 @@ package de.jensklingenberg.tuxoid.data;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.media.Image;
 
 import org.jetbrains.annotations.NotNull;
 
 import de.jensklingenberg.tuxoid.R;
-import de.jensklingenberg.tuxoid.data.ImageSource;
 import de.jensklingenberg.tuxoid.model.element.ElementType;
 
 import static android.graphics.BitmapFactory.decodeResource;
@@ -129,10 +127,10 @@ public class ImageRepository implements ImageSource {
             case ElementType.BACKGROUND:
                 return imgBackground;
 //
-            case ElementType.CRATE_BLUE:
+            case ElementType.CROSS_CRATE:
                 return imgCrateBlue;
 //
-            case ElementType.CRATE_BLOCK:
+            case ElementType.DIAMOND_CRATE:
                 return imgCrateBlock;
 //
             case ElementType.DOOR1:

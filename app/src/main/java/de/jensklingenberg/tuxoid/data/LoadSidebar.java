@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
+import de.jensklingenberg.tuxoid.model.Coordinate;
 import de.jensklingenberg.tuxoid.model.element.Element;
 
 public class LoadSidebar {
@@ -85,7 +86,7 @@ public class LoadSidebar {
 
                     for (int n = 0; n < num.length; n++) {
 
-                        Element ele = ElementFactory.elementFactory(Integer.parseInt(num[n]), ebene, i, n);
+                        Element ele = ElementFactory.elementFactory(Integer.parseInt(num[n]),new Coordinate(ebene, i, n));
 
                         sidebarElement[ebene][i][n] = ele;
                     }

@@ -5,6 +5,7 @@ import de.jensklingenberg.tuxoid.model.Coordinate
 import de.jensklingenberg.tuxoid.model.Level
 import de.jensklingenberg.tuxoid.model.element.Element
 import de.jensklingenberg.tuxoid.model.element.ElementType
+import de.jensklingenberg.tuxoid.model.element.player.PlayerState
 import de.jensklingenberg.tuxoid.model.emptyCoordinate
 
 class GameState {
@@ -14,7 +15,7 @@ class GameState {
     }
 
 
-    var aktEbene = 1
+    var aktEbene = 0
 
 
     var levelData: Array3D<Element>? = null
@@ -32,10 +33,11 @@ class GameState {
     val mapDoor: SparseArray<Coordinate>
         get() = Companion.mapDoor
 
-    val mapKey: SparseArray<IntArray>
+    val mapKey: SparseArray<Coordinate>
         get() = Companion.mapKey
 
 
+    fun getPlayerPosition() = PlayerState.position
 
     fun setMoving(type: Int, coordinate: Coordinate) {
         val (z, y, x) = coordinate
@@ -75,7 +77,7 @@ class GameState {
             return gameState
         }
 
-        var mapKey = SparseArray<IntArray>()
+        var mapKey = SparseArray<Coordinate>()
 
         internal var gate: Coordinate = Coordinate(0,0,0)
         var mapDoor = SparseArray<Coordinate>()

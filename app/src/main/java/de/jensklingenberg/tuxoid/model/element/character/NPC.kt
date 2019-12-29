@@ -3,8 +3,9 @@ package de.jensklingenberg.tuxoid.model.element.character
 import android.os.Handler
 import android.util.Log
 import android.util.SparseArray
-import de.jensklingenberg.tuxoid.interfaces.Moveable
+import de.jensklingenberg.tuxoid.interfaces.Pushable
 import de.jensklingenberg.tuxoid.interfaces.Playable
+import de.jensklingenberg.tuxoid.model.Coordinate
 import de.jensklingenberg.tuxoid.model.Direction
 import de.jensklingenberg.tuxoid.model.element.Element
 import de.jensklingenberg.tuxoid.model.element.ElementGroup
@@ -13,18 +14,10 @@ import de.jensklingenberg.tuxoid.model.element.timer.Timer_npc
 /**
  * Created by jens on 11.02.16.
  */
-class NPC(type: Int, z: Int, y: Int, x: Int, val npcNumber: Int) : Element(type), Moveable, Playable {
+class NPC(type: Int, val npcNumber: Int) : Element(type), Pushable, Playable {
     private val group: ElementGroup = ElementGroup.charNPC
     private val direction = ""
-    private val type: Int
-
-    init {
-        mapNpc.put(npcNumber, intArrayOf(z, y, x))
-        this.type = type
-        if (mapNpcTimerStatus[npcNumber] == null) {
-            setMapNpcTimerStatus(npcNumber, false)
-        }
-    }
+    private val type: Int = type
 
     override val elementGroup: ElementGroup
         get() = ElementGroup.charNPC
@@ -32,29 +25,18 @@ class NPC(type: Int, z: Int, y: Int, x: Int, val npcNumber: Int) : Element(type)
     companion object {
         val handler = Handler()
         private val TAG = Element::class.java.simpleName
-        private val mapNpc = SparseArray<IntArray>()
+        val mapNpc = SparseArray<Coordinate>()
         private val mapNpcDirection = SparseArray<Direction>()
-        private val mapNpcTimerStatus = SparseArray<Boolean>()
+        val mapNpcTimerStatus = SparseArray<Boolean>()
         private val mapNpcTimerRunnable = SparseArray<Timer_npc>()
-        fun setMapNpcCoordinates(i: Int, z: Int, y: Int, x: Int) {
-            mapNpc.put(i, intArrayOf(z, y, x))
+        fun setMapNpcCoordinates(i: Int, coordinate: Coordinate) {
+            mapNpc.put(i, coordinate)
         }
 
-        fun getMapNpcPos(i: Int): IntArray {
+        fun getMapNpcPos(i: Int): Coordinate {
             return mapNpc[i]
         }
 
-        fun getMapNpcPosZ(i: Int): Int {
-            return mapNpc[i][0]
-        }
-
-        fun getMapNpcPosY(i: Int): Int {
-            return mapNpc[i][1]
-        }
-
-        fun getMapNpcPosX(i: Int): Int {
-            return mapNpc[i][2]
-        }
 
         fun getMapNpcDirection(i: Int): Direction {
             return mapNpcDirection[i]

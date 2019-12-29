@@ -4,8 +4,8 @@ class ElementType {
     companion object{
         const val BACKGROUND = 0
         const val WALL = 1
-        const val CRATE_BLUE = 2
-        const val CRATE_BLOCK = 3
+        const val CROSS_CRATE = 2
+        const val DIAMOND_CRATE = 3
         const val FISH = 4
         const val TELEIN1 = 20
         const val TELEOUT1 = 21

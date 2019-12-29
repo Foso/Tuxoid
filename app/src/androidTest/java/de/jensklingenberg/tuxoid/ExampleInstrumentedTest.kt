@@ -81,7 +81,7 @@ val tye= helper.levelData!![0][0][1].typeId
         helper.screenTouched(0,1)
 
         val tye= helper.levelData!![0][0][2].typeId
-        Assert.assertEquals(ElementType.CRATE_BLUE,tye )
+        Assert.assertEquals(ElementType.CROSS_CRATE,tye )
 
     }
 

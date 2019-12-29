@@ -3,14 +3,16 @@ package de.jensklingenberg.tuxoid.data
 import de.jensklingenberg.tuxoid.model.Coordinate
 import de.jensklingenberg.tuxoid.model.element.*
 import de.jensklingenberg.tuxoid.model.element.character.NPC
-import de.jensklingenberg.tuxoid.model.element.character.Player
-import de.jensklingenberg.tuxoid.model.element.character.PlayerState
+import de.jensklingenberg.tuxoid.model.element.player.Player
+import de.jensklingenberg.tuxoid.model.element.player.PlayerState
+import de.jensklingenberg.tuxoid.model.element.crosscrate.CrossCrate
+import de.jensklingenberg.tuxoid.model.element.diamondcrate.DiamondCrate
 
 class ElementFactory : ElementDataSource {
 
 
     override fun createElement(type: Int, coordinate: Coordinate): Element {
-        return elementFactory(type, coordinate.z, coordinate.y, coordinate.x)
+        return parseElement(type, coordinate)
     }
 
     override fun changeElement(type: Int, group: ElementGroup, element: Element): Element {
@@ -43,6 +45,11 @@ class ElementFactory : ElementDataSource {
             return elelevelE
         }
 
+        val arrowList = ArrayList<Int>().apply {
+            add(ElementType.ARROW_DOWN)
+            add(ElementType.ARROW_DOWN_RED)
+        }
+
         val collectableList = ArrayList<Int>().apply {
             add(ElementType.FISH)
             add(ElementType.KEY1)
@@ -58,39 +65,103 @@ class ElementFactory : ElementDataSource {
             add(ElementType.MOVING_WOOD)
             add(ElementType.RED_BUTTON)
             add(ElementType.SWITCH)
-
+            addAll(arrowList)
         }
 
         val moveablesList = ArrayList<Int>().apply {
-            add(ElementType.CRATE_BLOCK)
-            add(ElementType.CRATE_BLUE)
-        }
-
-        val arrowList = ArrayList<Int>().apply {
-            add(ElementType.ARROW_DOWN)
-            add(ElementType.ARROW_DOWN_RED)
+            add(ElementType.DIAMOND_CRATE)
+            add(ElementType.CROSS_CRATE)
         }
 
 
         private fun changeElement(type: Int, group: ElementGroup, element: Element): Element {
             element.typeId = type
             element.setGroup(group)
-          //  element.image = ImageRepository.getImage(type)
+            //  element.image = ImageRepository.getImage(type)
             return element
         }
 
+
         @JvmStatic
-        private fun elementFactory(type: Int, coordinate: Coordinate): Element {
-            return elementFactory(type, coordinate.z, coordinate.y, coordinate.x)
+        fun parseElement(type: Int, coordinate: Coordinate): Element {
+            val element = elementFactory(type, coordinate)
+
+            when (type) {
+                ElementType.DOOR1 -> {
+                    GameState.mapDoor.put(1, coordinate)
+                }
+                ElementType.EXIT -> {
+                    GameState.setExitPos(coordinate)
+                }
+                ElementType.FISH -> {
+                    GameState.getInstance().fishData.addFish()
+                }
+                ElementType.GATE -> {
+                    GameState.gate = coordinate
+                }
+                ElementType.KEY1 -> {
+                    GameState.mapKey.put(1, coordinate)
+                }
+
+                ElementType.KEY2 -> {
+                    GameState.mapKey.put(2, coordinate)
+                    return Key(type)
+                }
+                ElementType.NPC1 -> {
+                    NPC.mapNpc.put(1, coordinate)
+
+                    if (NPC.mapNpcTimerStatus[1] == null) {
+                        NPC.setMapNpcTimerStatus(1, false)
+                    }
+                }
+
+                ElementType.NPC2 -> {
+                    NPC.mapNpc.put(2, coordinate)
+
+                    if (NPC.mapNpcTimerStatus[2] == null) {
+                        NPC.setMapNpcTimerStatus(2, false)
+                    }
+                }
+
+                ElementType.NPC3 -> {
+                    NPC.mapNpc.put(3, coordinate)
+
+                    if (NPC.mapNpcTimerStatus[3] == null) {
+                        NPC.setMapNpcTimerStatus(3, false)
+                    }
+                }
+
+                ElementType.NPC4 -> {
+                    NPC.mapNpc.put(4, coordinate)
+
+                    if (NPC.mapNpcTimerStatus[4] == null) {
+                        NPC.setMapNpcTimerStatus(4, false)
+                    }
+                }
+
+                ElementType.PLAYER -> {
+                    PlayerState.setPlayPos(coordinate)
+                }
+                ElementType.TELEIN1 -> {
+                    GameState.setTeleInPos(coordinate)
+                }
+
+                ElementType.TELEOUT1 -> {
+                    GameState.setTeleOutPos(coordinate)
+                }
+
+            }
+
+            return element
         }
 
 
         @JvmStatic
-        fun elementFactory(type: Int, z: Int, y: Int, x: Int): Element {
+        fun elementFactory(type: Int, coordinate: Coordinate): Element {
 
             if (ElementType.ArrowGroup.isInThisGroup(type)) {
 
-                return ArrowFactory.newArrow(type, z, y, x)
+                return ArrowFactory.newArrow(type, coordinate)
 
             }
 
@@ -102,37 +173,26 @@ class ElementFactory : ElementDataSource {
                 ElementType.ARROW_LEFT_RED -> return ArrowFactory.newArrowRed(type)
 
 
-                ElementType.CRATE_BLUE -> return CrateBlue(type)
+                ElementType.CROSS_CRATE -> return CrossCrate(type)
 
-                ElementType.CRATE_BLOCK -> return CrateBlock(type)
+                ElementType.DIAMOND_CRATE -> return DiamondCrate(type)
 
                 ElementType.BACKGROUND -> return Background()
 
-                ElementType.DOOR1 -> {
-                    GameState.mapDoor.put(1, Coordinate(z, y, x))
-
+                ElementType.DOOR1, ElementType.DOOR2 -> {
                     return Door(type)
                 }
 
-                ElementType.DOOR2 -> {
-                    return Door(type)
-                }
 
                 ElementType.EXIT -> {
-                    GameState.setExitPos(Coordinate(z, y, x))
-
                     return Exit(type)
                 }
 
                 ElementType.FISH -> {
-                    GameState.getInstance().fishData.addFish()
-
                     return Fish()
                 }
 
                 ElementType.GATE -> {
-                    GameState.gate = Coordinate(z, y, x)
-
                     return Gate(type)
                 }
 
@@ -140,15 +200,7 @@ class ElementFactory : ElementDataSource {
 
                 ElementType.HOLE1 -> return Hole1(type)
 
-                ElementType.KEY1 -> {
-                    GameState.mapKey.put(1, intArrayOf(y, x))
-
-                    return Key(type)
-                }
-
-                ElementType.KEY2 -> {
-                    GameState.mapKey.put(2, intArrayOf(y, x))
-
+                ElementType.KEY1, ElementType.KEY2 -> {
                     return Key(type)
                 }
 
@@ -166,22 +218,20 @@ class ElementFactory : ElementDataSource {
                 }
 
                 ElementType.NPC1 -> {
-
-                    return NPC(type, z, y, x, 1)
+                    return NPC(type, 1)
                 }
 
-                ElementType.NPC2 -> return NPC(type, z, y, x, 2)
+                ElementType.NPC2 -> return NPC(type, 2)
 
-                ElementType.NPC3 -> return NPC(type, z, y, x, 3)
+                ElementType.NPC3 -> return NPC(type, 3)
 
-                ElementType.NPC4 -> return NPC(type, z, y, x, 4)
+                ElementType.NPC4 -> return NPC(type, 4)
 
                 ElementType.ICE -> return Ice()
 
                 ElementType.WALL -> return Wall()
 
                 ElementType.PLAYER -> {
-                    PlayerState.setPlayPos(Coordinate(z, y, x))
                     return Player(type)
                 }
 
@@ -192,14 +242,10 @@ class ElementFactory : ElementDataSource {
                 ElementType.SWITCH_CRATE_BLOCK -> return Switch_Crate_Block(type)
 
                 ElementType.TELEIN1 -> {
-                    GameState.setTeleInPos(Coordinate(z, y, x))
-
                     return TeleIn1(type)
                 }
 
                 ElementType.TELEOUT1 -> {
-                    GameState.setTeleOutPos(Coordinate(z, y, x))
-
                     return TeleOut1(type)
                 }
             }
