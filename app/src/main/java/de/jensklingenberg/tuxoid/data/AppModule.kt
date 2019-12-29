@@ -26,7 +26,7 @@ open class AppModule(private val application: App) {
 
     @Provides
     @Singleton
-    fun provideLoadGame(context: Context): LoadGame = LoadGame(context.assets)
+    fun provideLoadGame(context: Context): GameLoader = GameLoader(context.assets)
 
     @Provides
     @Singleton
@@ -54,6 +54,6 @@ open class AppModule(private val application: App) {
 
     @Provides
     @Singleton
-    fun provideLevelDataSource(loadGame: LoadGame, loadSidebar: LoadSidebar, levelHelper: LevelHelper,gameState: GameState): LevelDataSource = LevelRepository(loadGame, loadSidebar, levelHelper, gameState)
+    fun provideLevelDataSource(gameLoader: GameLoader, loadSidebar: LoadSidebar, levelHelper: LevelHelper, gameState: GameState): LevelDataSource = LevelRepository(gameLoader, loadSidebar, levelHelper, gameState)
 
 }

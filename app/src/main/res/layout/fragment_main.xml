@@ -7,7 +7,7 @@
 
     <RelativeLayout
         android:id="@+id/ggView"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignLeft="@id/sidebarLayout"
         android:layout_alignParentLeft="true"
@@ -17,16 +17,16 @@
         <GridLayout
 
             android:id="@+id/glGame"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:background="@android:color/black">
 
         </GridLayout>
 
         <de.jensklingenberg.tuxoid.ui.common.GView
             android:id="@+id/canvas"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_alignBottom="@id/glGame"
             android:layout_alignLeft="@id/glGame"
             android:layout_alignRight="@id/glGame"

@@ -9,9 +9,5 @@ import de.jensklingenberg.tuxoid.model.element.ElementGroup
  */
 
 open class Destination(type: Int) : Element(type), IReachable {
-
-
     override val elementGroup =  ElementGroup.Destination
-
-
 }

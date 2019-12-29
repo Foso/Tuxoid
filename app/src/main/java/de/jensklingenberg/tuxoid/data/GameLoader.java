@@ -16,7 +16,7 @@ import de.jensklingenberg.tuxoid.model.element.ElementType;
  */
 
 
-public class LoadGame {
+public class GameLoader {
 
     private LevelLoadListener loadListener;
     private AssetManager assetManager;
@@ -27,7 +27,7 @@ public class LoadGame {
     }
 
 
-    public LoadGame(AssetManager assetManager) {
+    public GameLoader(AssetManager assetManager) {
         this.assetManager = assetManager;
     }
 

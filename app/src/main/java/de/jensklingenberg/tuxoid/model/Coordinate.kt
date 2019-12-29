@@ -5,3 +5,5 @@ package de.jensklingenberg.tuxoid.model
  */
 
 data class Coordinate(val z: Int, val y: Int, val x: Int)
+
+fun emptyCoordinate() = Coordinate(-1,-1,-1)

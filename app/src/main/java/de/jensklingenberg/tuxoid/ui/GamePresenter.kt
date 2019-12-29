@@ -31,6 +31,7 @@ val compositeDisposable = CompositeDisposable()
                         AndroidSchedulers.mainThread()
                 ).subscribeBy(onSuccess = {level->
                     view.setGameData(level.foregroundlevelData[levelDataSource.getAktEbene()])
+                    view.onRefresh(level.foregroundlevelData[levelDataSource.getAktEbene()])
                 }).addTo(compositeDisposable)
 
 

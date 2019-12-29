@@ -40,6 +40,10 @@ class NPC(type: Int, z: Int, y: Int, x: Int, val npcNumber: Int) : Element(type)
             mapNpc.put(i, intArrayOf(z, y, x))
         }
 
+        fun getMapNpcPos(i: Int): IntArray {
+            return mapNpc[i]
+        }
+
         fun getMapNpcPosZ(i: Int): Int {
             return mapNpc[i][0]
         }

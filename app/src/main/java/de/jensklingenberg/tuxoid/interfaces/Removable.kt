@@ -5,6 +5,5 @@ package de.jensklingenberg.tuxoid.interfaces
  */
 
 interface Removable{
-    fun isRemovable()=true
 
 }

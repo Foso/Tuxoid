@@ -2,34 +2,10 @@ package de.jensklingenberg.tuxoid.data
 
 import android.util.SparseArray
 import de.jensklingenberg.tuxoid.model.Coordinate
+import de.jensklingenberg.tuxoid.model.Level
 import de.jensklingenberg.tuxoid.model.element.Element
 import de.jensklingenberg.tuxoid.model.element.ElementType
-
-/**
- * Created by jens on 18.04.17.
- */
-
-
-class FishData {
-
-    var fishCount = 0
-        internal set
-
-
-    fun addFish() {
-        fishCount++
-    }
-
-    //FISCH
-    fun eatFish() {
-        fishCount--
-    }
-
-    fun resetFish() {
-        fishCount = 0
-    }
-
-}
+import de.jensklingenberg.tuxoid.model.emptyCoordinate
 
 class GameState {
 
@@ -37,20 +13,21 @@ class GameState {
         Companion.gameState = this
     }
 
-    @JvmField
+
     var aktEbene = 1
 
-    @JvmField
+
     var levelData: Array3D<Element>? = null
-    @JvmField
+
     var levelo: Array3D<Element>? = null
 
+    var level2: Level? = null
 
-    private var TeleInPos = IntArray(3)
+    private var TeleInPos = Coordinate(0,0,0)
 
 
     val fishData = FishData()
-    var moving_Wood = IntArray(3)
+    var moving_Wood = emptyCoordinate()
     val mapMoving = SparseArray<IntArray>()
     val mapDoor: SparseArray<Coordinate>
         get() = Companion.mapDoor
@@ -58,10 +35,13 @@ class GameState {
     val mapKey: SparseArray<IntArray>
         get() = Companion.mapKey
 
-    fun setMoving(type: Int, z: Int, y: Int, x: Int) {
+
+
+    fun setMoving(type: Int, coordinate: Coordinate) {
+        val (z, y, x) = coordinate
         when (type) {
             ElementType.MOVING_WOOD -> {
-                moving_Wood = intArrayOf(z, y, x)
+                moving_Wood = coordinate
 
             }
         }
@@ -87,7 +67,9 @@ class GameState {
 
     companion object {
 
-        lateinit var gameState : GameState
+        lateinit var gameState: GameState
+
+
 
         fun getInstance(): GameState {
             return gameState
@@ -95,73 +77,51 @@ class GameState {
 
         var mapKey = SparseArray<IntArray>()
 
-        internal var gate: IntArray? = null
+        internal var gate: Coordinate = Coordinate(0,0,0)
         var mapDoor = SparseArray<Coordinate>()
 
-        private var TeleOutPos = IntArray(3)
+        private var TeleOutPos = Coordinate(0,0,0)
 
-        fun setTeleOutPos(z: Int, y: Int, x: Int) {
-            TeleOutPos = intArrayOf(z, y, x)
+        fun setTeleOutPos(coordinate: Coordinate) {
+            TeleOutPos = coordinate
         }
 
 
         //TELEIN
-        fun getTeleOutPosZ(): Int {
-            return TeleOutPos[0]
-        }
 
-        fun getTeleOutPosY(): Int {
-            return TeleOutPos[1]
-        }
-
-        fun getTeleOutPosX(): Int {
-            return TeleOutPos[2]
+        fun getTeleOutPos(): Coordinate {
+            return TeleOutPos
         }
 
 
-        fun setTeleInPos(z: Int, y: Int, x: Int) {
-            gameState.TeleInPos = intArrayOf(z, y, x)
+        fun setTeleInPos(coordinate: Coordinate) {
+            gameState.TeleInPos = coordinate
         }
 
 
         //TELEIN
-        fun getTeleInPosZ(): Int {
-            return gameState.TeleInPos[0]
-        }
-
-        fun getTeleInPosY(): Int {
-            return gameState.TeleInPos[1]
-        }
-
-        fun getTeleInPosX(): Int {
-            return gameState.TeleInPos[2]
-        }
+        fun getTeleInPos(): Coordinate = gameState.TeleInPos
 
 
-        fun getGate(): IntArray? {
+        fun getGate(): Coordinate{
             return gate
         }
 
 
-        private var exitPos = IntArray(3)
+        private var exitPos = Coordinate(-1,-1,-1)
 
-        fun setExitPos(z: Int, y: Int, x: Int) {
-            exitPos = intArrayOf(z, y, x)
+        fun setExitPos(coordinate: Coordinate) {
+            exitPos = coordinate
         }
 
 
         //TELEIN
-        fun getExitPosZ(): Int {
-            return exitPos[0]
+
+        fun getExitPos(): Coordinate {
+            return exitPos
         }
 
-        fun getExitPosY(): Int {
-            return exitPos[1]
-        }
 
-        fun getExitPosX(): Int {
-            return exitPos[2]
-        }
     }
 
 

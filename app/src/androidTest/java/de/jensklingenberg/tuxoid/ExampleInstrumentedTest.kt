@@ -4,7 +4,7 @@ import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import de.jensklingenberg.tuxoid.model.element.ElementType
 import de.jensklingenberg.tuxoid.data.LevelHelper
-import de.jensklingenberg.tuxoid.data.LoadGame
+import de.jensklingenberg.tuxoid.data.GameLoader
 import junit.framework.Assert
 import org.junit.Assert.assertEquals
 import org.junit.Before
@@ -46,7 +46,7 @@ class ExampleInstrumentedTest {
 
         // assertEquals("de.jensklingenberg.tuxoid", appContext.getPackageName());
 
-val ee = LoadGame(appContext)
+val ee = GameLoader(appContext)
         ee.createLevel("t1")
         val helper= LevelHelper()
 
@@ -72,7 +72,7 @@ val tye= helper.levelData!![0][0][1].typeId
 
         // assertEquals("de.jensklingenberg.tuxoid", appContext.getPackageName());
 
-        val ee = LoadGame(appContext)
+        val ee = GameLoader(appContext)
         ee.createLevel("t2")
         val helper= LevelHelper()
 
@@ -91,7 +91,7 @@ val tye= helper.levelData!![0][0][1].typeId
         // Context of the app under test.
         val appContext = InstrumentationRegistry.getTargetContext()
 
-        val ee = LoadGame(appContext)
+        val ee = GameLoader(appContext)
         ee.createLevel("t3")
         val helper= LevelHelper()
 
@@ -110,7 +110,7 @@ val tye= helper.levelData!![0][0][1].typeId
         // Context of the app under test.
         val appContext = InstrumentationRegistry.getTargetContext()
 
-        val ee = LoadGame(appContext)
+        val ee = GameLoader(appContext)
         ee.createLevel("t4")
         val helper= LevelHelper()
 
@@ -130,7 +130,7 @@ val tye= helper.levelData!![0][0][1].typeId
         // Context of the app under test.
         val appContext = InstrumentationRegistry.getTargetContext()
 
-        val ee = LoadGame(appContext)
+        val ee = GameLoader(appContext)
         ee.createLevel("t5")
         val helper= LevelHelper()
 

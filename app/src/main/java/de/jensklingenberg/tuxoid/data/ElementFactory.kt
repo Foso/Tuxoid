@@ -4,6 +4,7 @@ import de.jensklingenberg.tuxoid.model.Coordinate
 import de.jensklingenberg.tuxoid.model.element.*
 import de.jensklingenberg.tuxoid.model.element.character.NPC
 import de.jensklingenberg.tuxoid.model.element.character.Player
+import de.jensklingenberg.tuxoid.model.element.character.PlayerState
 
 class ElementFactory : ElementDataSource {
 
@@ -26,7 +27,7 @@ class ElementFactory : ElementDataSource {
             val row = levelE[0][0].size
 
 
-            val elelevelE: Array<Array<Array<Element>>> = LoadGame.test(stage, cols, row)
+            val elelevelE: Array<Array<Array<Element>>> = GameLoader.test(stage, cols, row)
 
 
             levelE.forEachIndexed { index1, arrayOfArrays ->
@@ -74,7 +75,7 @@ class ElementFactory : ElementDataSource {
         private fun changeElement(type: Int, group: ElementGroup, element: Element): Element {
             element.typeId = type
             element.setGroup(group)
-            element.image = ImageRepository.getImage(type)
+          //  element.image = ImageRepository.getImage(type)
             return element
         }
 
@@ -118,7 +119,7 @@ class ElementFactory : ElementDataSource {
                 }
 
                 ElementType.EXIT -> {
-                    GameState.setExitPos(z, y, x)
+                    GameState.setExitPos(Coordinate(z, y, x))
 
                     return Exit(type)
                 }
@@ -130,7 +131,7 @@ class ElementFactory : ElementDataSource {
                 }
 
                 ElementType.GATE -> {
-                    GameState.gate = intArrayOf(z, y, x)
+                    GameState.gate = Coordinate(z, y, x)
 
                     return Gate(type)
                 }
@@ -180,7 +181,7 @@ class ElementFactory : ElementDataSource {
                 ElementType.WALL -> return Wall()
 
                 ElementType.PLAYER -> {
-                    Player.setPlayPos(z, y, x)
+                    PlayerState.setPlayPos(Coordinate(z, y, x))
                     return Player(type)
                 }
 
@@ -191,13 +192,13 @@ class ElementFactory : ElementDataSource {
                 ElementType.SWITCH_CRATE_BLOCK -> return Switch_Crate_Block(type)
 
                 ElementType.TELEIN1 -> {
-                    GameState.setTeleInPos(z, y, x)
+                    GameState.setTeleInPos(Coordinate(z, y, x))
 
                     return TeleIn1(type)
                 }
 
                 ElementType.TELEOUT1 -> {
-                    GameState.setTeleOutPos(z, y, x)
+                    GameState.setTeleOutPos(Coordinate(z, y, x))
 
                     return TeleOut1(type)
                 }

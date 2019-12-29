@@ -1,6 +1,7 @@
 package de.jensklingenberg.tuxoid.data
 
 import de.jensklingenberg.tuxoid.model.Coordinate
+import de.jensklingenberg.tuxoid.model.Level
 import de.jensklingenberg.tuxoid.model.element.Element
 import io.reactivex.Single
 
@@ -16,4 +17,3 @@ interface LevelDataSource{
     fun onDrag(coordinate: Coordinate, dragElement: Element)
 }
 
-data class Level(val foregroundlevelData: Array3D<Element>,val backgroundlevelData: Array3D<Element>)

@@ -1,11 +1,9 @@
 package de.jensklingenberg.tuxoid.ui
 
-import android.graphics.Point
+import android.annotation.SuppressLint
 import android.os.Bundle
-import android.view.DragEvent
-import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
-import android.view.ViewGroup
 import android.widget.GridLayout
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -15,12 +13,12 @@ import de.jensklingenberg.tuxoid.App
 import de.jensklingenberg.tuxoid.R
 import de.jensklingenberg.tuxoid.data.Array2D
 import de.jensklingenberg.tuxoid.data.Array3D
-import de.jensklingenberg.tuxoid.data.ImageRepository
 import de.jensklingenberg.tuxoid.model.element.Element
 import de.jensklingenberg.tuxoid.ui.GameFragmentArgs.Companion.fromBundle
 import de.jensklingenberg.tuxoid.ui.common.GView
 import de.jensklingenberg.tuxoid.ui.common.SidebarImageView
 import kotlinx.android.synthetic.main.fragment_main.*
+import kotlin.math.floor
 
 class GameFragment : Fragment(R.layout.fragment_main), GameContract.View {
     private var presenter: GameContract.Presenter = GamePresenter(this)
@@ -30,14 +28,13 @@ class GameFragment : Fragment(R.layout.fragment_main), GameContract.View {
         App.appComponent.inject(this)
     }
 
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        ImageRepository(context)
+        //ImageRepository(context)
         gView = canvas
 
         arguments?.let {
-            val level = fromBundle(arguments!!).levelId
+            val level = fromBundle(it).levelId
             presenter.createLevel(level.toInt())
         }
     }
@@ -46,50 +43,32 @@ class GameFragment : Fragment(R.layout.fragment_main), GameContract.View {
         gView?.refresh(levelData)
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun setGameData(levelData1: Array2D<Element>) {
-        var imgGameField: Array<Array<ImageView?>>?=null
-         var grid: GridLayout? = glGame
 
-        val display = requireActivity().windowManager?.defaultDisplay
-        val size = Point()
-        display?.getSize(size)
-        val width = size.x - 100
-        val height = size.y
+        val width = canvas.width
+        val height = canvas.height
         val lvlRows = levelData1.size
         val lvlColums: Int = levelData1[0].size
-        grid?.rowCount = lvlRows
-        grid!!.columnCount = lvlColums
-        imgGameField = Array(lvlRows) { arrayOfNulls<ImageView>(lvlColums) }
-        gView!!.widthL = width / lvlColums
-        gView!!.heightL = height / lvlRows
-        for (y in 0 until lvlRows) {
-            for (x in 0 until levelData1[y].size) {
-                val giv = AppCompatImageView(requireContext())
-                // giv.setImageBitmap(levelData1[y][x].getImage());
-                giv.id = x
-                giv.tag = intArrayOf(y, x)
-                giv.layoutParams = LinearLayout.LayoutParams(width / lvlColums, height / lvlRows)
-                giv.setOnClickListener { v: View ->
-                    val coord = v.tag as IntArray
-                    presenter.screenTouched(coord[0], coord[1])
-                }
-                giv.setOnDragListener { v: View, event: DragEvent ->
-                    if (event.action == DragEvent.ACTION_DROP) {
-                        val cord = v.tag as IntArray
-                        // presenter.onDrag(new Coordinate(aktEbene, cord[0], cord[1]), Sidebar.DragElement);
-                    }
-                    true
-                }
-                imgGameField[y][x] = giv
+
+
+        gView?.widthL = width / lvlColums
+        gView?.heightL = height / lvlRows
+        gView?.setOnTouchListener { v, event ->
+            (v as GView)
+            if (event.action == MotionEvent.ACTION_DOWN) {
+                val cellWidth = (v).widthL
+                val cellHeight = (v).heightL
+                val rawX = event.rawX
+                val rawY = event.rawY
+                val rowIndex = floor(rawX/cellWidth.toDouble()).toInt()
+                val colIndex = floor(rawY/cellHeight.toDouble()).toInt()
+                presenter.screenTouched(colIndex, rowIndex)
             }
-        }
-        for (anImgGameField in imgGameField) {
-            for (anAnImgGameField in anImgGameField) {
-                grid.addView(anAnImgGameField)
-            }
+
+            true
         }
 
-        onRefresh(levelData1)
     }
 
     override fun setSidebarData(sidebar: Array3D<Element>) {

@@ -4,14 +4,11 @@ import android.graphics.Bitmap
 import de.jensklingenberg.tuxoid.App
 import de.jensklingenberg.tuxoid.R
 import de.jensklingenberg.tuxoid.data.ImageSource
-import de.jensklingenberg.tuxoid.interfaces.ICollectable
-import de.jensklingenberg.tuxoid.interfaces.Moveable
-import de.jensklingenberg.tuxoid.interfaces.Removable
+import de.jensklingenberg.tuxoid.interfaces.*
 import de.jensklingenberg.tuxoid.model.element.destination.*
-import de.jensklingenberg.tuxoid.interfaces.IElementGroup
 import javax.inject.Inject
 
-open class Element : IElementGroup {
+open class Element(type: Int) : IElementGroup {
 
     @Inject
     lateinit var imageSource: ImageSource
@@ -22,21 +19,16 @@ open class Element : IElementGroup {
 
     override val elementGroup: ElementGroup = ElementGroup.EMPTY
 
-    open var image: Bitmap? = null
 
     open val imageResId: Int = 0
 
     //METHODS
 
-    open var typeId: Int = 0
+    open var typeId: Int = type
     private var group: ElementGroup? = null
 
 
-    constructor(type: Int) {
-        this.typeId = type
-        this.image = imageSource.loadBitmap(type)
 
-    }
 
 
     fun setGroup(group: ElementGroup) {
@@ -59,7 +51,7 @@ class Gate_Half(type: Int) : Destination(type)
 class Hole1(type: Int) : Destination(type)
 class Ice : Destination(ElementType.ICE)
 class Key(type: Int) : Element(type), ICollectable, Removable
-class LadderDown(type: Int) : Destination(type)
+class LadderDown(type: Int) : Destination(type),IReachable
 class Ladder_Up(type: Int) : Destination(type)
 class Moving_Water(type: Int) : Element(type)
 class Moving_Wood(type: Int) : Destination(type)

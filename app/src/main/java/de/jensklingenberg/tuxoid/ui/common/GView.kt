@@ -44,5 +44,6 @@ class GView(context: Context?, attrs: AttributeSet?) : View(context, attrs) {
     fun refresh(levelDatum: Array<Array<Element>>) {
         this.level = levelDatum
         invalidate()
+
     }
 }
