@@ -16,7 +16,7 @@ class ElementFactory : ElementDataSource {
     }
 
     override fun changeElement(type: Int, group: ElementGroup, element: Element): Element {
-        return Companion.changeElement(type, group, element)
+        return Companion.elementFactory(type)
     }
 
     companion object {
@@ -35,7 +35,7 @@ class ElementFactory : ElementDataSource {
             levelE.forEachIndexed { index1, arrayOfArrays ->
                 arrayOfArrays.forEachIndexed { index2, ints ->
                     ints.forEachIndexed { index3, i ->
-                        elelevelE[index1][index2][index3] = elementFactory(i, Coordinate(index1, index2, index3))
+                        elelevelE[index1][index2][index3] = elementFactory(i)
                     }
                 }
             }
@@ -84,7 +84,7 @@ class ElementFactory : ElementDataSource {
 
         @JvmStatic
         fun parseElement(type: Int, coordinate: Coordinate): Element {
-            val element = elementFactory(type, coordinate)
+            val element = elementFactory(type)
 
             when (type) {
                 ElementType.DOOR1 -> {
@@ -157,11 +157,11 @@ class ElementFactory : ElementDataSource {
 
 
         @JvmStatic
-        fun elementFactory(type: Int, coordinate: Coordinate): Element {
+        fun elementFactory(type: Int): Element {
 
             if (ElementType.ArrowGroup.isInThisGroup(type)) {
 
-                return ArrowFactory.newArrow(type, coordinate)
+                return ArrowFactory.newArrow(type)
 
             }
 

@@ -221,5 +221,10 @@
     <orderEntry type="library" name="Gradle: androidx.lifecycle:lifecycle-livedata-core:2.0.0@aar" level="project" />
     <orderEntry type="library" name="Gradle: androidx.arch.core:core-runtime:2.0.0@aar" level="project" />
     <orderEntry type="library" name="Gradle: io.reactivex.rxjava2:rxandroid:2.1.0@aar" level="project" />
+    <orderEntry type="module" module-name="libshared" />
+    <orderEntry type="module" module-name="libshared_jvmMain" />
+    <orderEntry type="module" module-name="libshared_commonMain" />
+    <orderEntry type="module" module-name="libshared_jvmTest" scope="TEST" production-on-test="" />
+    <orderEntry type="module" module-name="libshared_commonTest" scope="TEST" production-on-test="" />
   </component>
 </module>

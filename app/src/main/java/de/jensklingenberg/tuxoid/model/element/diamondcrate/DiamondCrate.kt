@@ -6,6 +6,7 @@ import de.jensklingenberg.tuxoid.model.element.Element
 
 class DiamondCrate(type: Int) : Element(type), Pushable, Removable {
 
+    override fun isPushable()=true
     override val moveRule = DiamondCrateMoveRule()
 
 }

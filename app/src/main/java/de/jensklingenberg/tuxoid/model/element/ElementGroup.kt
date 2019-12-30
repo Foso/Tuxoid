@@ -5,7 +5,7 @@ package de.jensklingenberg.tuxoid.model.element
  */
 
 enum class ElementGroup {
-    Collectable, Destination,
+     Destination,
     Moveable, Arrow,
     charPlayer, charNPC, TeleportOut, EMPTY, WALL
 

@@ -1,6 +1,5 @@
 package de.jensklingenberg.tuxoid.model.element
 
-import de.jensklingenberg.tuxoid.model.Coordinate
 import de.jensklingenberg.tuxoid.model.Direction
 
 class ArrowFactory{
@@ -25,7 +24,7 @@ class ArrowFactory{
 
         }
 
-        @JvmStatic fun newArrow(type: Int, coordinate: Coordinate): Arrow {
+        @JvmStatic fun newArrow(type: Int): Arrow {
 
             var direction: Direction = Direction.STAY
 

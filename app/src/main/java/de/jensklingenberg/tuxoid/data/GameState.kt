@@ -24,7 +24,7 @@ class GameState {
 
     var level2: Level? = null
 
-    private var TeleInPos = Coordinate(0,0,0)
+    private var TeleInPos = Coordinate(0, 0, 0)
 
 
     val fishData = FishData()
@@ -79,10 +79,10 @@ class GameState {
 
         var mapKey = SparseArray<Coordinate>()
 
-        internal var gate: Coordinate = Coordinate(0,0,0)
+        internal var gate: Coordinate = Coordinate(0, 0, 0)
         var mapDoor = SparseArray<Coordinate>()
 
-        private var TeleOutPos = Coordinate(0,0,0)
+        private var TeleOutPos = Coordinate(0, 0, 0)
 
         fun setTeleOutPos(coordinate: Coordinate) {
             TeleOutPos = coordinate
@@ -105,12 +105,12 @@ class GameState {
         fun getTeleInPos(): Coordinate = gameState.TeleInPos
 
 
-        fun getGate(): Coordinate{
+        fun getGate(): Coordinate {
             return gate
         }
 
 
-        private var exitPos = Coordinate(-1,-1,-1)
+        private var exitPos = Coordinate(-1, -1, -1)
 
         fun setExitPos(coordinate: Coordinate) {
             exitPos = coordinate

@@ -2,7 +2,6 @@ package de.jensklingenberg.tuxoid.model.element
 
 import de.jensklingenberg.tuxoid.interfaces.IReachable
 import de.jensklingenberg.tuxoid.model.Direction
-import de.jensklingenberg.tuxoid.data.ImageRepository
 import de.jensklingenberg.tuxoid.interfaces.IArrow
 
 /**

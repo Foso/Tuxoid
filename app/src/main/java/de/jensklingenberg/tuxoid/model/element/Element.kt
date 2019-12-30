@@ -17,9 +17,11 @@ class ElementMoveRule : MoveRule {
 }
 
 
-open class Element(type: Int) : IElementGroup {
+open class Element(type: Int)  {
 
     open val moveRule: MoveRule = ElementMoveRule()
+    open val elementGroup: ElementGroup = ElementGroup.EMPTY
+
 
     @Inject
     lateinit var imageSource: ImageSource
@@ -28,13 +30,14 @@ open class Element(type: Int) : IElementGroup {
         App.appComponent.inject(this)
     }
 
-    override val elementGroup: ElementGroup = ElementGroup.EMPTY
 
     open fun isCollectable() = false
 
     open fun isPushable() = false
 
     open val imageResId: Int = 0
+
+    open fun isReachable() = false
 
     //METHODS
 
@@ -56,7 +59,7 @@ open class Element(type: Int) : IElementGroup {
 
 class Door(type: Int) : Element(type), Removable
 class Exit(type: Int) : Element(type)
-class Fish : Element(ElementType.FISH), Removable, ICollectable {
+class Fish : Element(ElementType.FISH), Removable {
     override fun isCollectable() = true
 }
 
@@ -64,12 +67,12 @@ class Gate(type: Int) : Element(type), Removable
 class Gate_Half(type: Int) : Destination(type)
 class Hole1(type: Int) : Destination(type)
 class Ice : Destination(ElementType.ICE)
-class Key(type: Int) : Element(type), ICollectable, Removable {
+class Key(type: Int) : Element(type), Removable {
 
     override fun isCollectable() = true
 }
 
-class LadderDown(type: Int) : Destination(type), IReachable
+class LadderDown(type: Int) : Destination(type)
 class Ladder_Up(type: Int) : Destination(type)
 class Moving_Water(type: Int) : Element(type)
 class Moving_Wood(type: Int) : Destination(type)
