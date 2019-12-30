@@ -22,7 +22,7 @@ class DirectionUtils {
             } else Direction.STAY
         }
 
-        fun DirectionLeftOrRight(direction: Direction): Boolean {
+        fun directionLeftOrRight(direction: Direction): Boolean {
             return direction == Direction.LEFT || direction == Direction.RIGHT
         }
     }

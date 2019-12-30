@@ -9,11 +9,11 @@ import javax.inject.Inject
 
 interface MoveRule {
 
-    fun canMove(nexDes: Int): Boolean
+    fun canMove(neighbourElementType: Int): Boolean
 }
 
 class ElementMoveRule : MoveRule {
-    override fun canMove(nexDes: Int) = false
+    override fun canMove(neighbourElementType: Int) = false
 }
 
 
@@ -60,6 +60,7 @@ open class Element(type: Int)  {
 class Door(type: Int) : Element(type), Removable
 class Exit(type: Int) : Element(type)
 class Fish : Element(ElementType.FISH), Removable {
+
     override fun isCollectable() = true
 }
 
@@ -72,19 +73,11 @@ class Key(type: Int) : Element(type), Removable {
     override fun isCollectable() = true
 }
 
-class LadderDown(type: Int) : Destination(type)
-class Ladder_Up(type: Int) : Destination(type)
 class Moving_Water(type: Int) : Element(type)
 class Moving_Wood(type: Int) : Destination(type)
 class Red_Button(type: Int) : Destination(type)
 class Switch(type: Int) : Destination(type)
 class Switch_Crate_Block(type: Int) : Destination(type)
-class TeleIn1(type: Int) : Element(type)
-
-class TeleOut1(type: Int) : Element(type) {
-    override val imageResId: Int = R.drawable.portal_blue
-    override val elementGroup = ElementGroup.TeleportOut
-}
 
 class Wall : Element(ElementType.WALL) {
     override val elementGroup = ElementGroup.WALL

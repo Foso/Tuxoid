@@ -1,6 +1,5 @@
 package de.jensklingenberg.tuxoid.model.element.destination
 
-import de.jensklingenberg.tuxoid.interfaces.IReachable
 import de.jensklingenberg.tuxoid.model.element.Element
 import de.jensklingenberg.tuxoid.model.element.ElementGroup
 

@@ -7,6 +7,10 @@ import de.jensklingenberg.tuxoid.model.element.player.Player
 import de.jensklingenberg.tuxoid.model.element.player.PlayerState
 import de.jensklingenberg.tuxoid.model.element.crosscrate.CrossCrate
 import de.jensklingenberg.tuxoid.model.element.diamondcrate.DiamondCrate
+import de.jensklingenberg.tuxoid.model.element.ladder.LadderDown
+import de.jensklingenberg.tuxoid.model.element.ladder.LadderUp
+import de.jensklingenberg.tuxoid.model.element.teleport.TeleIn1
+import de.jensklingenberg.tuxoid.model.element.teleport.TeleOut1
 
 class ElementFactory : ElementDataSource {
 
@@ -206,7 +210,7 @@ class ElementFactory : ElementDataSource {
 
                 ElementType.LADDER_DOWN -> return LadderDown(type)
 
-                ElementType.LADDER_UP -> return Ladder_Up(type)
+                ElementType.LADDER_UP -> return LadderUp(type)
 
                 ElementType.MOVING_WOOD -> {
 

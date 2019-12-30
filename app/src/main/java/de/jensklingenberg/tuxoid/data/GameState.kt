@@ -18,9 +18,9 @@ class GameState {
     var aktEbene = 0
 
 
-    var levelData: Array3D<Element>? = null
+    lateinit var levelData: Array3D<Element>
 
-    var levelo: Array3D<Element>? = null
+    lateinit var levelo: Array3D<Element>
 
     var level2: Level? = null
 
@@ -52,6 +52,11 @@ class GameState {
         mapMoving.put(mapMoving.size() + 1, intArrayOf(z, y, x))
 
 
+    }
+
+
+    fun getGate(): Coordinate {
+        return Companion.gate
     }
 
 
@@ -105,9 +110,6 @@ class GameState {
         fun getTeleInPos(): Coordinate = gameState.TeleInPos
 
 
-        fun getGate(): Coordinate {
-            return gate
-        }
 
 
         private var exitPos = Coordinate(-1, -1, -1)
