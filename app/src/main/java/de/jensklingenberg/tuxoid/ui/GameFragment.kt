@@ -59,8 +59,8 @@ class GameFragment : Fragment(R.layout.fragment_main), GameContract.View {
             if (event.action == MotionEvent.ACTION_DOWN) {
                 val cellWidth = (v).widthL
                 val cellHeight = (v).heightL
-                val rawX = event.rawX
-                val rawY = event.rawY
+                val rawX = event.x
+                val rawY = event.y
                 val rowIndex = floor(rawX/cellWidth.toDouble()).toInt()
                 val colIndex = floor(rawY/cellHeight.toDouble()).toInt()
                 presenter.screenTouched(colIndex, rowIndex)

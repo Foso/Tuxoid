@@ -5,9 +5,9 @@
       <configuration version="3" platform="JavaScript " allPlatforms="JS []" useProjectSettings="false" isTestModule="true" externalProjectId=":libshared">
         <dependsOnModuleNames>libshared_commonTest</dependsOnModuleNames>
         <sourceSets>
-          <sourceSet>libshared_commonTest</sourceSet>
           <sourceSet>libshared_commonMain</sourceSet>
           <sourceSet>libshared_jsMain</sourceSet>
+          <sourceSet>libshared_commonTest</sourceSet>
         </sourceSets>
         <newMppModelJpsModuleKind>COMPILATION_AND_SOURCE_SET_HOLDER</newMppModelJpsModuleKind>
         <compilerSettings />
@@ -53,7 +53,7 @@
     <content url="file://$MODULE_DIR$/src/jsTest/resources" />
     <orderEntry type="jdk" jdkName="Kotlin SDK" jdkType="KotlinSDK" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module" module-name="libshared_commonTest" scope="TEST" production-on-test="" />
+    <orderEntry type="module" module-name="libshared_commonMain" scope="TEST" />
     <orderEntry type="module-library" scope="RUNTIME">
       <library>
         <CLASSES>
@@ -74,7 +74,7 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="module" module-name="libshared_jsMain" scope="TEST" />
+    <orderEntry type="module" module-name="libshared_commonTest" scope="TEST" production-on-test="" />
     <orderEntry type="module-library" scope="TEST">
       <library>
         <CLASSES>
@@ -86,7 +86,7 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="module" module-name="libshared_commonMain" scope="TEST" />
+    <orderEntry type="module" module-name="libshared_jsMain" scope="TEST" />
     <orderEntry type="module-library" scope="TEST">
       <library>
         <CLASSES>
